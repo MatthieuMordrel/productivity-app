@@ -1,20 +1,21 @@
 export interface Session {
+  id: string;
   start: Date;
   end: Date;
-  type: "work" | "pause";
+  type: "Work" | "Pause";
 }
 
 export interface PomodoroState {
   pomodoroDuration: number;
   pauseDuration: number;
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
 }
 
 export interface TimeSegment {
   start: Date;
   end: Date;
-  type: "work" | "pause" | "empty";
+  type: "Work" | "Pause" | "Empty";
   percentage: number;
 }
 

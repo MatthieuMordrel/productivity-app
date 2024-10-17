@@ -12,8 +12,8 @@ type PomodoroAction =
 const initialState: PomodoroState = {
   pomodoroDuration: 25,
   pauseDuration: 5,
-  startTime: "09:00",
-  endTime: "17:00",
+  startTime: new Date(new Date().setHours(9, 0, 0, 0)),
+  endTime: new Date(new Date().setHours(17, 0, 0, 0)),
 };
 
 const PomodoroContext = createContext<
@@ -34,9 +34,9 @@ function pomodoroReducer(
     case "SET_PAUSE_DURATION":
       return { ...state, pauseDuration: action.payload };
     case "SET_START_TIME":
-      return { ...state, startTime: action.payload };
+      return { ...state, startTime: new Date(action.payload) };
     case "SET_END_TIME":
-      return { ...state, endTime: action.payload };
+      return { ...state, endTime: new Date(action.payload) };
     default:
       return state;
   }

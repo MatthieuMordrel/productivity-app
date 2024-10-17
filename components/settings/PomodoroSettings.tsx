@@ -35,7 +35,6 @@ const PomodoroSettings: React.FC = () => {
 
       <div className="mb-4 flex items-center justify-between">
         <label className="text-lg font-medium">Start of Day</label>
-
         <TimePicker
           value={state.startTime}
           onChange={(value) =>
@@ -46,7 +45,6 @@ const PomodoroSettings: React.FC = () => {
 
       <div className="mb-4 flex items-center justify-between">
         <label className="text-lg font-medium">End of Day</label>
-
         <TimePicker
           value={state.endTime}
           onChange={(value) =>
