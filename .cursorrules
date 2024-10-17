@@ -1,0 +1,16 @@
+Always ensure proper Typescript usage.
+Only use functional components and hooks.
+Only use Tailwind CSS for styling. Note the following variables are available:
+
+background: 'var(--background)',
+foreground: 'var(--foreground)',
+primary: 'var(--primary)',
+secondary: 'var(--secondary)'
+
+Use Next.js features when relevant.
+Use absolute import as per tsconfig files
+Use latest React features such as server actions, useFormState ect.
+Always ensure that components are responsive, and aesthetically pleasing.
+Add many comments to explain the code.
+
+If needed ask for more information.

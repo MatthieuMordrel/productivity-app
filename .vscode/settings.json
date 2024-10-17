@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    "*.css": "tailwindcss" //Convert t
+  },
+  "svg.preview.background": "editor",
+  "workbench.editor.customLabels.patterns": {
+    "**/app/**/page.tsx": "${dirname} - Page",
+    "**/app/**/layout.tsx": "${dirname} - Layout",
+    "**/app/**/route.tsx": "${dirname} - Route"
+  },
+  "typescript.tsdk": "node_modules\\typescript\\lib"
+}
