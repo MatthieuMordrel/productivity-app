@@ -1,5 +1,16 @@
 import { useMemo } from "react";
-import { HourBlock, Session, TimeSegment } from "../types";
+import { Session } from "../types";
+export interface TimeSegment {
+  start: Date;
+  end: Date;
+  type: "Work" | "Pause" | "Empty";
+  percentage: number;
+}
+
+export interface HourBlock {
+  hour: Date;
+  segments: TimeSegment[];
+}
 
 // This hook is used to get the hours to display on the timeline
 export function useHoursToDisplay(startTime: string, endTime: string): Date[] {

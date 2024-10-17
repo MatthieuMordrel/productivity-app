@@ -6,8 +6,8 @@ import { PomodoroState } from "../lib/types";
 type PomodoroAction =
   | { type: "SET_POMODORO_DURATION"; payload: number }
   | { type: "SET_PAUSE_DURATION"; payload: number }
-  | { type: "SET_START_TIME"; payload: string }
-  | { type: "SET_END_TIME"; payload: string };
+  | { type: "SET_START_TIME"; payload: Date }
+  | { type: "SET_END_TIME"; payload: Date };
 
 const initialState: PomodoroState = {
   pomodoroDuration: 25,
@@ -34,9 +34,9 @@ function pomodoroReducer(
     case "SET_PAUSE_DURATION":
       return { ...state, pauseDuration: action.payload };
     case "SET_START_TIME":
-      return { ...state, startTime: new Date(action.payload) };
+      return { ...state, startTime: action.payload };
     case "SET_END_TIME":
-      return { ...state, endTime: new Date(action.payload) };
+      return { ...state, endTime: action.payload };
     default:
       return state;
   }

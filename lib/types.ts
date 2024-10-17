@@ -1,10 +1,3 @@
-export interface Session {
-  id: string;
-  start: Date;
-  end: Date;
-  type: "Work" | "Pause";
-}
-
 export interface PomodoroState {
   pomodoroDuration: number;
   pauseDuration: number;
@@ -12,16 +5,13 @@ export interface PomodoroState {
   endTime: Date;
 }
 
-export interface TimeSegment {
+export interface Session {
+  id: string;
   start: Date;
   end: Date;
-  type: "Work" | "Pause" | "Empty";
-  percentage: number;
-}
-
-export interface HourBlock {
-  hour: Date;
-  segments: TimeSegment[];
+  type: "Work" | "Pause";
+  taskTitle: string;
+  index: number;
 }
 
 // Define the Task interface

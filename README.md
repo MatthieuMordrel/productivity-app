@@ -1,9 +1,11 @@
-TODO:
+TO DO:
 
-- Add an seemless way to add breaks to the timeline (should be 15 minutes blocks)
+- Understand why the EventComponent rerenders when the input is being focused
 - Add a way to drag and drop the task in the timeline
 - Add a way to remove tasks and rename them
 - Add the total hours worked expected to be worked during the day
+- Add a trash icon on hover to remove task
+- Allow for the possibility to click and press suppr button to remove task
 
 Done:
 

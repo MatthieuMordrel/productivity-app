@@ -3,7 +3,7 @@
 import PomodoroSettings from "@/components/settings/PomodoroSettings";
 import TaskList from "@/components/task_list/TaskList";
 import PomodoroDay from "@/components/Timeline/PomodoroDay";
-import { onDragEnd } from "@/lib/hooks";
+import { onDragEnd } from "@/lib/functions";
 import { Task } from "@/lib/types";
 import { useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
