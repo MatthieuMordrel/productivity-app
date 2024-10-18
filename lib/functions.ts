@@ -9,24 +9,24 @@ export function createPomodoroDaySessions(
   // Initialize an empty array to store the sessions
   const sessions: Session[] = [];
 
-  // Create a map to store previous session titles by their rank
+  // Create a map to store previous session titles by their index
   const previousTitles = new Map<number, string>();
   if (previousSessions) {
-    previousSessions.forEach((session, index) => {
+    previousSessions.forEach((session) => {
       if (session.type === "Work") {
-        previousTitles.set(Math.floor(index / 2) + 1, session.taskTitle);
+        previousTitles.set(session.index, session.taskTitle);
       }
     });
   }
 
   // Set the current time to the start time from the state
-  let currentTime = state.startTime;
+  let currentTime = new Date(state.startTime);
   // Calculate work duration in milliseconds
   const workDuration = state.pomodoroDuration * 60000;
   // Calculate pause duration in milliseconds
   const pauseDuration = state.pauseDuration * 60000;
 
-  let rank = 0; // Initialize rank counter
+  let sessionIndex = 0;
 
   // Continue creating sessions until we reach the end time
   while (currentTime < state.endTime) {
@@ -36,20 +36,24 @@ export function createPomodoroDaySessions(
     );
 
     // Determine the task title
-    const taskTitle = previousTitles.get(rank) || `Work ${rank}`;
+    const taskTitle =
+      previousTitles.get(sessionIndex) ||
+      `Work ${Math.floor(sessionIndex / 2)}`;
 
     // Add a work session to the array
     sessions.push({
-      id: `${currentTime.getTime()}-${sessionEnd.getTime()}`, // Unique ID for the session
+      id: `Work${sessionIndex}`,
       type: "Work",
       start: new Date(currentTime),
-      end: sessionEnd,
+      end: new Date(sessionEnd),
       taskTitle: taskTitle,
-      index: rank,
+      index: sessionIndex,
     });
 
+    sessionIndex++;
+
     // Update the current time to the end of the work session
-    currentTime = new Date(sessionEnd.getTime());
+    currentTime = new Date(sessionEnd);
 
     // If there's still time left in the day, add a pause session
     if (currentTime < state.endTime) {
@@ -60,60 +64,71 @@ export function createPomodoroDaySessions(
           state.endTime.getTime(),
         ),
       );
+
       // Add a pause session to the array
       sessions.push({
-        id: `${currentTime.getTime()}-${pauseEnd.getTime()}`, // Unique ID for the session
+        id: `Pause${sessionIndex}`,
         type: "Pause",
         start: new Date(currentTime),
-        end: pauseEnd,
+        end: new Date(pauseEnd),
         taskTitle: "Pause",
-        index: rank,
+        index: sessionIndex,
       });
-      // Update the current time to the end of the pause session
-      currentTime = new Date(pauseEnd.getTime());
-    }
 
-    rank++; // Increment rank after each work-pause cycle
+      // Update the current time to the end of the pause session
+      currentTime = new Date(pauseEnd);
+      sessionIndex++;
+    }
   }
 
   return sessions;
 }
 
-// This hook is used to handle the drag and drop events
 export const onDragEnd = (
-  result: DropResult,
+  dropResult: DropResult,
+  sessions: Session[],
+  setSessions: React.Dispatch<React.SetStateAction<Session[]>>,
   tasks: Task[],
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>,
 ) => {
-  const { source, destination } = result;
+  const { destination, draggableId } = dropResult;
 
-  // Dropped outside the list
-  if (!destination) return;
-
-  // Handle reordering within the task list
-  // Check if the drag and drop operation is within the task list
-  if (source.droppableId === "tasks" && destination.droppableId === "tasks") {
-    // Create a new array from the existing tasks
-    const newTasks = Array.from(tasks);
-    // Remove the dragged item from its original position by using the index of the source item and removing 1 item
-    const [reorderedItem] = newTasks.splice(source.index, 1);
-    // Insert the dragged item at its new position by using the index of the destination item and inserting the reordered item at that position
-    newTasks.splice(destination.index, 0, reorderedItem);
-    // Update the state with the new order of tasks
-    setTasks(newTasks);
+  // If dropped outside the list
+  if (!destination) {
+    return;
   }
 
-  // Handle moving task to calendar
-  // This is a placeholder for future implementation
-  if (
-    source.droppableId === "tasks" &&
-    destination.droppableId === "calendar"
-  ) {
-    // Logic to add task to calendar and remove from task list
-    // Example:
-    // const taskToMove = tasks[source.index];
-    // setCalendarEvents(prev => [...prev, { ...taskToMove, date: selectedDate }]);
-    // setTasks(prev => prev.filter((_, index) => index !== source.index));
-    console.log("Task moved to calendar:", tasks[source.index]);
+  // If dropped on a calendar event
+  if (destination.droppableId.startsWith("event_")) {
+    //Get the id of the event
+    const eventId = destination.droppableId.split("_")[1];
+    //Get the task that is being dragged
+    const task = tasks.find((t) => t.id === draggableId);
+
+    if (task) {
+      // Update the session with the new task title
+      const updatedSessions = sessions.map((session) =>
+        session.id === eventId
+          ? { ...session, taskTitle: task.content }
+          : session,
+      );
+      setSessions(updatedSessions);
+    }
   }
+};
+
+// Function to update a specific session
+// This funciton is used to update the title of a session when the user is renaming a task
+export const updateSession = (
+  updatedSession: Session,
+  setSessions: React.Dispatch<React.SetStateAction<Session[]>>,
+  setFocusedEventId: React.Dispatch<React.SetStateAction<string | null>>,
+) => {
+  setSessions((prevSessions) => {
+    const newSessions = prevSessions.map((session) =>
+      session.id === updatedSession.id ? updatedSession : session,
+    );
+    // Set the focused event ID after updating
+    setFocusedEventId(updatedSession.id);
+    return newSessions;
+  });
 };

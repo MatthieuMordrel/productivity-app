@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { Session } from "../types";
+import { Session, Task } from "../types";
+import { DropResult } from "react-beautiful-dnd";
 export interface TimeSegment {
   start: Date;
   end: Date;
@@ -95,3 +96,42 @@ export function useHourBlocks(
     });
   }, [hoursToDisplay, sessions]);
 }
+
+// This hook is used to handle the drag and drop events
+export const onDragEnd = (
+  result: DropResult,
+  tasks: Task[],
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>,
+) => {
+  const { source, destination } = result;
+
+  // Dropped outside the list
+  if (!destination) return;
+
+  // Handle reordering within the task list
+  // Check if the drag and drop operation is within the task list
+  if (source.droppableId === "tasks" && destination.droppableId === "tasks") {
+    // Create a new array from the existing tasks
+    const newTasks = Array.from(tasks);
+    // Remove the dragged item from its original position by using the index of the source item and removing 1 item
+    const [reorderedItem] = newTasks.splice(source.index, 1);
+    // Insert the dragged item at its new position by using the index of the destination item and inserting the reordered item at that position
+    newTasks.splice(destination.index, 0, reorderedItem);
+    // Update the state with the new order of tasks
+    setTasks(newTasks);
+  }
+
+  // Handle moving task to calendar
+  // This is a placeholder for future implementation
+  if (
+    source.droppableId === "tasks" &&
+    destination.droppableId === "calendar"
+  ) {
+    // Logic to add task to calendar and remove from task list
+    // Example:
+    // const taskToMove = tasks[source.index];
+    // setCalendarEvents(prev => [...prev, { ...taskToMove, date: selectedDate }]);
+    // setTasks(prev => prev.filter((_, index) => index !== source.index));
+    console.log("Task moved to calendar:", tasks[source.index]);
+  }
+};

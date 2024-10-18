@@ -14,7 +14,6 @@ export interface Session {
   index: number;
 }
 
-// Define the Task interface
 export interface Task {
   id: string;
   content: string;

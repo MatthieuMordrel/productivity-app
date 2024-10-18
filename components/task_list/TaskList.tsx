@@ -1,15 +1,14 @@
 "use client";
 
+import { useTaskContext } from "@/contexts/TaskContext";
 import { Task } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { Trash2 } from "lucide-react"; // Import the trash icon
 import React, { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 
-interface TaskListProps {
-  tasks: Task[];
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
-}
-
-const TaskList: React.FC<TaskListProps> = ({ tasks, setTasks }) => {
+const TaskList: React.FC = () => {
+  const { tasks, setTasks } = useTaskContext();
   const [newTask, setNewTask] = useState<string>("");
 
   // Handle adding a new task
@@ -23,6 +22,11 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, setTasks }) => {
       setTasks((prevTasks) => [...prevTasks, task]);
       setNewTask("");
     }
+  };
+
+  // Handle deleting a task
+  const handleDeleteTask = (taskId: string) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
   };
 
   return (
@@ -46,46 +50,42 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, setTasks }) => {
         </button>
       </form>
 
-      {/* Droppable area for the entire task list */}
-      {/* Droppable component represents the area where items can be dropped */}
-      <Droppable droppableId="tasks">
-        {/* The Droppable component uses a render prop pattern, providing the 'provided' object */}
-        {(provided) => (
+      <Droppable droppableId="taskList" isDropDisabled={true}>
+        {(provided, snapshot) => (
           <ul
-            /* Spread the droppableProps to enable drop functionality */
             {...provided.droppableProps}
-            /* Attach the innerRef to allow react-beautiful-dnd to track this element */
             ref={provided.innerRef}
-            className="space-y-2"
+            className={cn(
+              "space-y-2",
+              snapshot.isUsingPlaceholder ? "bg-blue-500" : "bg-primary",
+            )}
           >
-            {/* Iterate through tasks to create individual Draggable components */}
             {tasks.map((task, index) => (
-              /* Each Draggable must have a unique draggableId and an index */
               <Draggable key={task.id} draggableId={task.id} index={index}>
-                {/* Draggable also uses a render prop pattern */}
-                {(provided) => (
+                {(provided, snapshot) => (
                   <li
-                    /* Attach the innerRef for tracking */
                     ref={provided.innerRef}
-                    /* Spread draggableProps to make the item draggable */
                     {...provided.draggableProps}
-                    /* Spread dragHandleProps to specify which part of the item can be used to drag it */
                     {...provided.dragHandleProps}
-                    className="rounded bg-secondary p-3 shadow-sm transition-shadow hover:shadow-md"
+                    className={cn(
+                      snapshot.isDragging ? "bg-primary" : "bg-secondary",
+                      "rounded p-3 shadow-sm transition-shadow hover:shadow-md",
+                    )}
                   >
-                    {/* Container for task content */}
                     <div className="flex items-center justify-between">
-                      {/* Display the task content */}
                       <span>{task.content}</span>
+                      <button
+                        onClick={() => handleDeleteTask(task.id)}
+                        className="text-foreground opacity-50 transition-opacity hover:opacity-100"
+                        aria-label="Delete task"
+                      >
+                        <Trash2 size={18} />
+                      </button>
                     </div>
                   </li>
                 )}
               </Draggable>
             ))}
-            {/* 
-              This placeholder is crucial for react-beautiful-dnd to function correctly.
-              It maintains the correct list height when items are being dragged.
-            */}
             {provided.placeholder}
           </ul>
         )}
