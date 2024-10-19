@@ -7,7 +7,6 @@ export function createPomodoroDaySessions(
   previousSessions?: Session[],
 ): Session[] {
   console.log("createPomodoroDaySessions called");
-  console.log(state);
 
   if (state.startTime >= state.endTime) {
     console.warn("Start time is not before end time. No sessions created.");
@@ -78,6 +77,18 @@ export function createPomodoroDaySessions(
     );
     const endTime = nextBreak ? nextBreak.start : state.endTime;
 
+    // Check if current time is within a break
+    const currentBreak = sessions.find(
+      (s) =>
+        s.type === "Break" && s.start <= currentTime && s.end > currentTime,
+    );
+
+    if (currentBreak) {
+      // If we're in a break, move current time to after the break
+      currentTime = new Date(currentBreak.end);
+      continue;
+    }
+
     // Create work session
     const workEndTime = new Date(
       Math.min(currentTime.getTime() + workDuration, endTime.getTime()),
@@ -105,11 +116,6 @@ export function createPomodoroDaySessions(
       );
       sessionIndex++;
       currentTime = new Date(pauseEndTime);
-    }
-
-    // If we've reached a break, move current time to after the break
-    if (nextBreak && currentTime.getTime() >= nextBreak.start.getTime()) {
-      currentTime = new Date(nextBreak.end);
     }
   }
 
