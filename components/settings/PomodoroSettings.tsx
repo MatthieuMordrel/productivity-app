@@ -50,10 +50,8 @@ const PomodoroSettings: React.FC = () => {
   const handleAddBreak = () => {
     const newBreak: Break = {
       start: new Date(new Date().setHours(12, 30, 0, 0)), // Set to 12:30 PM
-
       end: new Date(new Date().setHours(14, 0, 0, 0)), // Set to 2:00 PM
     };
-
     dispatch({ type: "ADD_BREAK", payload: newBreak });
   };
 
