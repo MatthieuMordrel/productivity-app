@@ -21,8 +21,16 @@ const PomodoroSettings: React.FC = () => {
 
   // Effect to watch for changes in start time
   useEffect(() => {
+    // Inline the function to avoid the unnecessary dependency
+    const validateAndAdjustTimes = (start: Date, end: Date) => {
+      if (end <= start) {
+        const newEnd = new Date(start.getTime() + 30 * 60000);
+        dispatch({ type: "SET_END_TIME", payload: newEnd });
+      }
+    };
+
     validateAndAdjustTimes(state.startTime, state.endTime);
-  }, [state.startTime, state.endTime]);
+  }, [state.startTime, state.endTime, dispatch]);
 
   const handleStartTimeChange = (value: Date) => {
     dispatch({ type: "SET_START_TIME", payload: value });
