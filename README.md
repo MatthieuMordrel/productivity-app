@@ -2,13 +2,13 @@ TO DO:
 
 - Understand why the EventComponent rerenders when the input is being focused
 
-- Add a trash icon on hover to remove task from the timeline
 - Allow for the possibility to click and press suppr button to remove task
-- Add a time showing in which session we are
-- Add a the time remaining in the session
 
 Done:
 
+- Add a trash icon on hover to remove task from the timeline
+- Add a time showing in which session we are
+- Add a the time remaining in the session
 - Add a cursor that indivcate the current time and moves along the timeline
 - Add a task list that can be edited
 - Add a way to rename tasks

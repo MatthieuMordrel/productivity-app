@@ -6,7 +6,7 @@ import { eventPropGetter, handleEventDrop } from "@/lib/calendar_functions";
 import {
   createPomodoroDaySessions,
   onDragEnd,
-  updateSession,
+  updateSingleSession,
 } from "@/lib/functions";
 import { Session } from "@/lib/types";
 import moment from "moment";
@@ -18,22 +18,31 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import TaskList from "../task_list/TaskList";
 import { ButtonPause } from "./ButtonPause";
+import { CurrentSessionInfo } from "./CurrentSessionInfo";
 import { EventComponent } from "./EventComponent";
+import { WorkSessionSummary } from "./WorkSessionSummary";
 
 // Create the localizer outside the component
+
 const localizer = momentLocalizer(moment);
+
 const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function PomodoroCalendar() {
   console.log("PomodoroCalendar rendered");
+
   const { state } = usePomodoroContext();
+
   const [sessions, setSessions] = useState<Session[]>(() =>
     createPomodoroDaySessions(state),
   );
+
   const [showPauses, setShowPauses] = useState(false);
+
   const [focusedEventId, setFocusedEventId] = useState<string | null>(null);
 
   // This triggers when the pomodoro settings change and updates the sessions to reflect the new settings
+
   useEffect(() => {
     setSessions((prevSessions) => {
       return createPomodoroDaySessions(state, prevSessions);
@@ -41,11 +50,23 @@ export default function PomodoroCalendar() {
   }, [state]);
 
   // Convert filtered sessions to events
+
   const events = showPauses
     ? sessions
     : sessions.filter((session) => session.type !== "Pause");
 
   const { tasks } = useTaskContext();
+
+  const handleDeleteSession = (sessionId: string) => {
+    setSessions((prevSessions) =>
+      prevSessions.filter((session) => session.id !== sessionId),
+    );
+  };
+
+  // Add this function to handle the reset
+  const handleResetSessions = () => {
+    setSessions(createPomodoroDaySessions(state));
+  };
 
   return (
     <DragDropContext
@@ -55,22 +76,12 @@ export default function PomodoroCalendar() {
     >
       <div className="relative mx-auto w-full max-w-4xl rounded-xl bg-background p-6 text-foreground shadow-lg">
         <ButtonPause onToggle={setShowPauses} isActive={showPauses} />
-        <div>
-          Number of work sessions:&nbsp;
-          {sessions.filter((session) => session.type === "Work").length}
-          <br />
-          Total time expected working:&nbsp;
-          {sessions
-            .filter((session) => session.type === "Work")
-            .reduce(
-              (acc, workSession) =>
-                acc + (workSession.end.getTime() - workSession.start.getTime()),
-              0,
-            ) /
-            (1000 * 60)}{" "}
-          {/* Convert milliseconds to minutes */}
-          minutes
-        </div>
+        <button onClick={handleResetSessions} className="">
+          Reset Sessions
+        </button>
+        <CurrentSessionInfo sessions={sessions} />
+        <WorkSessionSummary sessions={sessions} />
+
         <div className="flex">
           <div className="h-[600px] flex-grow">
             <DnDCalendar
@@ -109,12 +120,13 @@ export default function PomodoroCalendar() {
                     <EventComponent
                       event={event}
                       onUpdateSession={(updatedSession) =>
-                        updateSession(
+                        updateSingleSession(
                           updatedSession,
                           setSessions,
                           setFocusedEventId,
                         )
                       }
+                      onDeleteSession={handleDeleteSession}
                       isFocused={event.id === focusedEventId}
                       onBlur={() => setFocusedEventId(null)}
                     />
