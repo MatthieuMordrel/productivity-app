@@ -3,13 +3,19 @@ export interface PomodoroState {
   pauseDuration: number;
   startTime: Date;
   endTime: Date;
+  breaks: Break[];
+}
+
+export interface Break {
+  start: Date;
+  end: Date;
 }
 
 export interface Session {
   id: string;
   start: Date;
   end: Date;
-  type: "Work" | "Pause";
+  type: "Work" | "Pause" | "Break";
   taskTitle: string;
   index: number;
 }

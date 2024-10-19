@@ -27,6 +27,10 @@ export const eventPropGetter: EventPropGetter<Session> = (event) => ({
   style: {
     cursor: "grab",
     backgroundColor:
-      event.type === "Work" ? "var(--primary)" : "var(--secondary)",
+      event.type === "Work"
+        ? "var(--primary)"
+        : event.type === "Break"
+          ? "var(--secondary)"
+          : "blue",
   },
 });

@@ -3,6 +3,11 @@ TO DO:
 - Understand why the EventComponent rerenders when the input is being focused
 
 - Allow for the possibility to click and press suppr button to remove task
+- Add the posbility to rename breaks
+- ensure that moving breaks on the timeline move them in the settings
+- Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
+- Fix why the app crashes when the start time is set to now
+- Allow the break to be removed even when it's the only break
 
 Done:
 

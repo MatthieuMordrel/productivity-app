@@ -33,21 +33,37 @@ export default function PomodoroCalendar() {
 
   const { state } = usePomodoroContext();
 
+  // Add a check for invalid time range
+  const isInvalidTimeRange = state.startTime >= state.endTime;
+
   const [sessions, setSessions] = useState<Session[]>(() =>
-    createPomodoroDaySessions(state),
+    isInvalidTimeRange ? [] : createPomodoroDaySessions(state),
   );
 
   const [showPauses, setShowPauses] = useState(false);
 
   const [focusedEventId, setFocusedEventId] = useState<string | null>(null);
 
+  // Add a check for empty sessions
+  useEffect(() => {
+    if (sessions.length === 0) {
+      console.warn(
+        "No sessions available. This may be due to invalid time settings.",
+      );
+    }
+  }, [sessions]);
+
   // This triggers when the pomodoro settings change and updates the sessions to reflect the new settings
 
   useEffect(() => {
-    setSessions((prevSessions) => {
-      return createPomodoroDaySessions(state, prevSessions);
-    });
-  }, [state]);
+    if (!isInvalidTimeRange) {
+      setSessions((prevSessions) => {
+        return createPomodoroDaySessions(state, prevSessions);
+      });
+    } else {
+      setSessions([]);
+    }
+  }, [state, isInvalidTimeRange]);
 
   // Convert filtered sessions to events
 
@@ -82,62 +98,73 @@ export default function PomodoroCalendar() {
         <CurrentSessionInfo sessions={sessions} />
         <WorkSessionSummary sessions={sessions} />
 
-        <div className="flex">
-          <div className="h-[600px] flex-grow">
-            <DnDCalendar
-              localizer={localizer}
-              events={events}
-              className="bg-background text-foreground"
-              defaultView="day"
-              views={["day", "agenda"]}
-              toolbar={true}
-              dayLayoutAlgorithm="no-overlap"
-              resizable={false}
-              onEventDrop={(dropEvent) => {
-                const { event, start, end } = dropEvent;
-                const updatedSessions = handleEventDrop({
-                  event,
-                  start,
-                  end,
-                  sessions,
+        {isInvalidTimeRange ? (
+          <div className="mb-4 text-center text-red-500">
+            Invalid time range: Start time must be before end time. Please check
+            your settings.
+          </div>
+        ) : sessions.length === 0 ? (
+          <div className="mb-4 text-center text-red-500">
+            No sessions available. Please check your time settings.
+          </div>
+        ) : (
+          <div className="flex">
+            <div className="h-[600px] flex-grow">
+              <DnDCalendar
+                localizer={localizer}
+                events={events}
+                className="bg-background text-foreground"
+                defaultView="day"
+                views={["day", "agenda"]}
+                toolbar={true}
+                dayLayoutAlgorithm="no-overlap"
+                resizable={false}
+                onEventDrop={(dropEvent) => {
+                  const { event, start, end } = dropEvent;
+                  const updatedSessions = handleEventDrop({
+                    event,
+                    start,
+                    end,
+                    sessions,
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  } as any);
+                  setSessions(updatedSessions);
+                }}
+                // Create a step of 5 minutes
+                step={5}
+                // timselots prop is used to display the time slots in the calendar, 1 corresponds to 1 slot per step
+                timeslots={1}
+                // Limit the calendar view to the first and last events
+                min={new Date(state.startTime)}
+                max={new Date(state.endTime)}
+                // Event prop getter is used to style the events in the calendar, it change the cursor to grab and the background color of the event
+                eventPropGetter={eventPropGetter as EventPropGetter<object>}
+                components={{
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                } as any);
-                setSessions(updatedSessions);
-              }}
-              // Create a step of 5 minutes
-              step={5}
-              // timselots prop is used to display the time slots in the calendar, 1 corresponds to 1 slot per step
-              timeslots={1}
-              // Limit the calendar view to the first and last events
-              min={state.startTime}
-              max={state.endTime}
-              // Event prop getter is used to style the events in the calendar, it change the cursor to grab and the background color of the event
-              eventPropGetter={eventPropGetter as EventPropGetter<object>}
-              components={{
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                event: ({ event }: any) =>
-                  event.type === "Work" ? (
-                    <EventComponent
-                      event={event}
-                      onUpdateSession={(updatedSession) =>
-                        updateSingleSession(
-                          updatedSession,
-                          setSessions,
-                          setFocusedEventId,
-                        )
-                      }
-                      onDeleteSession={handleDeleteSession}
-                      isFocused={event.id === focusedEventId}
-                      onBlur={() => setFocusedEventId(null)}
-                    />
-                  ) : null,
-              }}
-            />
+                  event: ({ event }: any) =>
+                    event.type === "Work" ? (
+                      <EventComponent
+                        event={event}
+                        onUpdateSession={(updatedSession) =>
+                          updateSingleSession(
+                            updatedSession,
+                            setSessions,
+                            setFocusedEventId,
+                          )
+                        }
+                        onDeleteSession={handleDeleteSession}
+                        isFocused={event.id === focusedEventId}
+                        onBlur={() => setFocusedEventId(null)}
+                      />
+                    ) : null,
+                }}
+              />
+            </div>
+            <div className="w-1/3">
+              <TaskList />
+            </div>
           </div>
-          <div className="w-1/3">
-            <TaskList />
-          </div>
-        </div>
+        )}
       </div>
     </DragDropContext>
   );

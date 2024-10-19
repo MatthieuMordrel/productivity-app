@@ -6,10 +6,15 @@ export function createPomodoroDaySessions(
   state: PomodoroState,
   previousSessions?: Session[],
 ): Session[] {
-  // Initialize an empty array to store the sessions
-  const sessions: Session[] = [];
+  console.log("createPomodoroDaySessions called");
+  console.log(state);
 
-  // Create a map to store previous session titles by their index
+  if (state.startTime > state.endTime) {
+    console.warn("Start time is after end time. No sessions created.");
+    return [];
+  }
+
+  const sessions: Session[] = [];
   const previousTitles = new Map<number, string>();
   if (previousSessions) {
     previousSessions.forEach((session) => {
@@ -19,69 +24,103 @@ export function createPomodoroDaySessions(
     });
   }
 
-  // Set the current time to the start time from the state
-  let currentTime = new Date(state.startTime);
-  // Calculate work duration in milliseconds
-  const workDuration = state.pomodoroDuration * 60000;
-  // Calculate pause duration in milliseconds
-  const pauseDuration = state.pauseDuration * 60000;
-
   let sessionIndex = 0;
 
-  // Continue creating sessions until we reach the end time
-  while (currentTime < state.endTime) {
-    // Calculate the end time for the work session
-    const sessionEnd = new Date(
-      Math.min(currentTime.getTime() + workDuration, state.endTime.getTime()),
-    );
-
-    // Determine the task title
-    const taskTitle =
-      previousTitles.get(sessionIndex) ||
-      `Work ${Math.floor(sessionIndex / 2)}`;
-
-    // Add a work session to the array
-    sessions.push({
-      id: `Work${sessionIndex}`,
-      type: "Work",
-      start: new Date(currentTime),
-      end: new Date(sessionEnd),
-      taskTitle: taskTitle,
-      index: sessionIndex,
-    });
-
-    sessionIndex++;
-
-    // Update the current time to the end of the work session
-    currentTime = new Date(sessionEnd);
-
-    // If there's still time left in the day, add a pause session
-    if (currentTime < state.endTime) {
-      // Calculate the end time for the pause session
-      const pauseEnd = new Date(
-        Math.min(
-          currentTime.getTime() + pauseDuration,
-          state.endTime.getTime(),
-        ),
-      );
-
-      // Add a pause session to the array
+  // First, add all breaks to the sessions array
+  state.breaks.forEach((breakItem) => {
+    if (breakItem.start >= state.startTime && breakItem.end <= state.endTime) {
       sessions.push({
-        id: `Pause${sessionIndex}`,
-        type: "Pause",
-        start: new Date(currentTime),
-        end: new Date(pauseEnd),
-        taskTitle: "Pause",
+        id: `Break${sessionIndex}`,
+        type: "Break",
+        start: new Date(breakItem.start),
+        end: new Date(breakItem.end),
+        taskTitle: "Break",
         index: sessionIndex,
       });
-
-      // Update the current time to the end of the pause session
-      currentTime = new Date(pauseEnd);
       sessionIndex++;
+    }
+  });
+
+  // Sort all sessions (breaks at this point) by start time
+  sessions.sort((a, b) => a.start.getTime() - b.start.getTime());
+
+  // Now fill in work and pause sessions
+  let currentTime = new Date(state.startTime);
+  const workDuration = state.pomodoroDuration * 60000;
+  const pauseDuration = state.pauseDuration * 60000;
+
+  while (currentTime < state.endTime) {
+    const nextBreak = sessions.find(
+      (s) => s.type === "Break" && s.start > currentTime,
+    );
+    const endTime = nextBreak ? nextBreak.start : state.endTime;
+
+    // Create work session
+    const workEndTime = new Date(
+      Math.min(currentTime.getTime() + workDuration, endTime.getTime()),
+    );
+    if (workEndTime > currentTime) {
+      sessions.push(
+        createWorkSession(
+          currentTime,
+          workEndTime,
+          sessionIndex,
+          previousTitles,
+        ),
+      );
+      sessionIndex++;
+      currentTime = new Date(workEndTime);
+    }
+
+    // If there's time for a pause before the next break or end of day, create it
+    if (currentTime < endTime) {
+      const pauseEndTime = new Date(
+        Math.min(currentTime.getTime() + pauseDuration, endTime.getTime()),
+      );
+      sessions.push(
+        createPauseSession(currentTime, pauseEndTime, sessionIndex),
+      );
+      sessionIndex++;
+      currentTime = new Date(pauseEndTime);
+    }
+
+    // If we've reached a break, move current time to after the break
+    if (nextBreak && currentTime.getTime() === nextBreak.start.getTime()) {
+      currentTime = new Date(nextBreak.end);
     }
   }
 
-  return sessions;
+  // Final sort to ensure all sessions are in chronological order
+  return sessions.sort((a, b) => a.start.getTime() - b.start.getTime());
+}
+
+// Helper function to create a work session
+function createWorkSession(
+  start: Date,
+  end: Date,
+  index: number,
+  previousTitles: Map<number, string>,
+): Session {
+  return {
+    id: `Work${index}`,
+    type: "Work",
+    start: new Date(start),
+    end: new Date(end),
+    taskTitle: previousTitles.get(index) || `Work ${Math.floor(index / 2)}`,
+    index: index,
+  };
+}
+
+// Helper function to create a pause session
+function createPauseSession(start: Date, end: Date, index: number): Session {
+  return {
+    id: `Pause${index}`,
+    type: "Pause",
+    start: new Date(start),
+    end: new Date(end),
+    taskTitle: "Pause",
+    index: index,
+  };
 }
 
 export const onDragEnd = (
@@ -118,7 +157,7 @@ export const onDragEnd = (
 
 // Function to update a specific session
 // This funciton is used to update the title of a session when the user is renaming a task
-export const updateSession = (
+export const updateSingleSession = (
   updatedSession: Session,
   setSessions: React.Dispatch<React.SetStateAction<Session[]>>,
   setFocusedEventId: React.Dispatch<React.SetStateAction<string | null>>,
