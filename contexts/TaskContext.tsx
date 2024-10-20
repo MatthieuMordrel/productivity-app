@@ -16,9 +16,7 @@ const TaskContext = createContext<TaskContextType | undefined>(undefined);
 export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: "1", content: "Test Task" },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   return (
     //Create a provider component that will wrap around the components that need to access the context

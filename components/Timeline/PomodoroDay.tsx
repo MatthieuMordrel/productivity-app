@@ -11,9 +11,12 @@ import TaskList from "../task_list/TaskList";
 import { ButtonPause } from "./ButtonPause";
 import { CurrentSessionInfo } from "./CurrentSessionInfo";
 import { EventComponent } from "./EventComponent";
+import { CustomToolbar } from "./Toolbar";
 import { WorkSessionSummary } from "./WorkSessionSummary";
 
 const DnDCalendar = withDragAndDrop(Calendar);
+
+// Add this custom toolbar component
 
 export default function PomodoroCalendar() {
   const {
@@ -68,8 +71,8 @@ export default function PomodoroCalendar() {
                 onEventDrop={handleEventDrop as any}
                 step={5}
                 timeslots={1}
-                min={new Date(state.startTime)}
-                max={new Date(state.endTime)}
+                min={state.startTime}
+                max={state.endTime}
                 eventPropGetter={eventPropGetter as EventPropGetter<object>}
                 components={{
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,6 +86,7 @@ export default function PomodoroCalendar() {
                         onBlur={() => setFocusedEventId(null)}
                       />
                     ) : null,
+                  toolbar: CustomToolbar,
                 }}
               />
             </div>

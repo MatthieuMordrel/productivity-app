@@ -7,6 +7,7 @@ TO DO:
 - Ensure that moving breaks on the timeline move them in the settings
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
 - Make the calendar look better on long days
+- Change event component to display title as a div, and on click it turns to an input ?
 
 Done:
 

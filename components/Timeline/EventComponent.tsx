@@ -1,7 +1,6 @@
 import { Session } from "@/lib/types";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEventComponent } from "@hooks/useEventComponent";
 import { Droppable } from "react-beautiful-dnd";
-import { useDebouncedCallback } from "use-debounce";
 
 export const EventComponent = ({
   event,
@@ -16,49 +15,14 @@ export const EventComponent = ({
   isFocused: boolean;
   onBlur: () => void;
 }) => {
-  // State to manage the editable task title
-  const [taskTitle, setTaskTitle] = useState(event.taskTitle);
-
-  // Ref for the input element
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  // Debounced function to update the session
-  const debouncedUpdateSession = useDebouncedCallback(
-    (updatedSession: Session) => {
-      onUpdateSession(updatedSession);
-    },
-    300, // Debounce delay in milliseconds
-  );
-
-  // Effect to handle focusing
-  useEffect(() => {
-    if (isFocused) {
-      inputRef.current?.focus();
-    }
-  }, [isFocused]);
-
-  // Update the local state and call the debounced update function
-  const handleTitleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newTitle = e.target.value;
-      setTaskTitle(newTitle);
-
-      // Create an updated session object
-      const updatedSession = {
-        ...event,
-        taskTitle: newTitle,
-      };
-
-      // Call the debounced update function
-      debouncedUpdateSession(updatedSession);
-    },
-    [event, debouncedUpdateSession],
-  );
-
-  // Function to handle session deletion
-  const handleDelete = useCallback(() => {
-    onDeleteSession(event.id);
-  }, [event.id, onDeleteSession]);
+  const { taskTitle, inputRef, handleTitleChange, handleDelete } =
+    useEventComponent(
+      event,
+      onUpdateSession,
+      onDeleteSession,
+      isFocused,
+      onBlur,
+    );
 
   return (
     <Droppable droppableId={`event_${event.id}`}>
@@ -68,7 +32,6 @@ export const EventComponent = ({
           {...provided.droppableProps}
           className="relative h-full rounded-md shadow-sm"
         >
-          {/* Trash icon */}
           <button
             onClick={handleDelete}
             className="absolute right-2 top-2 text-foreground opacity-50 hover:opacity-100 focus:outline-none"
@@ -89,6 +52,7 @@ export const EventComponent = ({
               />
             </svg>
           </button>
+
           <div className="flex h-1/4 space-x-2">
             <input
               ref={inputRef}
@@ -100,6 +64,7 @@ export const EventComponent = ({
               className="w-full rounded border border-primary bg-inherit px-1 py-0.5 text-xl text-background focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
+
           {provided.placeholder}
         </div>
       )}
