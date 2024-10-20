@@ -16,7 +16,6 @@ export const EventComponent = ({
   isFocused: boolean;
   onBlur: () => void;
 }) => {
-  // console.log("Event component rerendered");
   // State to manage the editable task title
   const [taskTitle, setTaskTitle] = useState(event.taskTitle);
 

@@ -4,13 +4,14 @@ TO DO:
 
 - Allow for the possibility to click and press suppr button to remove task
 - Add the posbility to rename breaks
-- ensure that moving breaks on the timeline move them in the settings
+- Ensure that moving breaks on the timeline move them in the settings
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
-- Fix why the app crashes when the start time is set to now
-- Allow the break to be removed even when it's the only break
+- Make the calendar look better on long days
 
 Done:
 
+- Allow the break to be removed even when it's the only break
+- Fix why the app crashes when the start time is set to now
 - Add a trash icon on hover to remove task from the timeline
 - Add a time showing in which session we are
 - Add a the time remaining in the session

@@ -1,20 +1,14 @@
+import { usePomodoroContext } from "@/contexts/PomodoroContext";
 import { Break } from "@/lib/types";
 import React from "react";
-import { BreakSetting } from "./BreakSettings";
+import { BreakSetting } from "./BreakSetting";
 
 interface BreakManagerProps {
   breaks: Break[];
-  onAddBreak: () => void;
-  onUpdateBreak: (index: number, updatedBreak: Break) => void;
-  onRemoveBreak: (index: number) => void;
 }
 
-const BreakManager: React.FC<BreakManagerProps> = ({
-  breaks,
-  onAddBreak,
-  onUpdateBreak,
-  onRemoveBreak,
-}) => {
+const BreakManager: React.FC<BreakManagerProps> = ({ breaks }) => {
+  const { dispatch } = usePomodoroContext();
   const [showBreakSettings, setShowBreakSettings] = React.useState(false);
 
   const toggleBreakSettings = () => {
@@ -33,17 +27,17 @@ const BreakManager: React.FC<BreakManagerProps> = ({
       {showBreakSettings && (
         <div>
           {breaks.map((breakItem, index) => (
-            <BreakSetting
-              key={index}
-              break={breakItem}
-              index={index}
-              onUpdate={onUpdateBreak}
-              onRemove={onRemoveBreak}
-            />
+            <BreakSetting key={index} break={breakItem} index={index} />
           ))}
 
           <button
-            onClick={onAddBreak}
+            onClick={() => {
+              const newBreak: Break = {
+                start: new Date(new Date().setHours(12, 30, 0, 0)), // Set to 12:30 PM
+                end: new Date(new Date().setHours(14, 0, 0, 0)), // Set to 2:00 PM
+              };
+              dispatch({ type: "ADD_BREAK", payload: newBreak });
+            }}
             className="mt-2 rounded-md bg-primary px-4 py-2 text-background"
           >
             Add Another Break

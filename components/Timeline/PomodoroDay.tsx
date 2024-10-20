@@ -1,18 +1,9 @@
 "use client";
 
-import { usePomodoroContext } from "@/contexts/PomodoroContext";
-import { useTaskContext } from "@/contexts/TaskContext";
-import { eventPropGetter, handleEventDrop } from "@/lib/calendar_functions";
-import {
-  createPomodoroDaySessions,
-  onDragEnd,
-  updateSingleSession,
-} from "@/lib/functions";
-import { Session } from "@/lib/types";
-import moment from "moment";
-import { useEffect, useState } from "react";
+import { usePomodoroCalendar } from "@/hooks/usePomodoroCalendar";
+import { eventPropGetter } from "@/lib/calendar_functions";
 import { DragDropContext } from "react-beautiful-dnd";
-import { Calendar, EventPropGetter, momentLocalizer } from "react-big-calendar";
+import { Calendar, EventPropGetter } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -22,74 +13,28 @@ import { CurrentSessionInfo } from "./CurrentSessionInfo";
 import { EventComponent } from "./EventComponent";
 import { WorkSessionSummary } from "./WorkSessionSummary";
 
-// Create the localizer outside the component
-
-const localizer = momentLocalizer(moment);
-
 const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function PomodoroCalendar() {
-  console.log("PomodoroCalendar rendered");
-
-  const { state } = usePomodoroContext();
-
-  // Add a check for invalid time range
-  const isInvalidTimeRange = state.startTime >= state.endTime;
-
-  const [sessions, setSessions] = useState<Session[]>(() =>
-    isInvalidTimeRange ? [] : createPomodoroDaySessions(state),
-  );
-
-  const [showPauses, setShowPauses] = useState(false);
-
-  const [focusedEventId, setFocusedEventId] = useState<string | null>(null);
-
-  // Add a check for empty sessions
-  useEffect(() => {
-    if (sessions.length === 0) {
-      console.warn(
-        "No sessions available. This may be due to invalid time settings.",
-      );
-    }
-  }, [sessions]);
-
-  // This triggers when the pomodoro settings change and updates the sessions to reflect the new settings
-
-  useEffect(() => {
-    if (!isInvalidTimeRange) {
-      setSessions((prevSessions) => {
-        return createPomodoroDaySessions(state, prevSessions);
-      });
-    } else {
-      setSessions([]);
-    }
-  }, [state, isInvalidTimeRange]);
-
-  // Convert filtered sessions to events
-
-  const events = showPauses
-    ? sessions
-    : sessions.filter((session) => session.type !== "Pause");
-
-  const { tasks } = useTaskContext();
-
-  const handleDeleteSession = (sessionId: string) => {
-    setSessions((prevSessions) =>
-      prevSessions.filter((session) => session.id !== sessionId),
-    );
-  };
-
-  // Add this function to handle the reset
-  const handleResetSessions = () => {
-    setSessions(createPomodoroDaySessions(state));
-  };
+  const {
+    localizer,
+    events,
+    sessions,
+    isInvalidTimeRange,
+    showPauses,
+    focusedEventId,
+    state,
+    handleDeleteSession,
+    handleResetSessions,
+    handleDragEnd,
+    handleEventDrop,
+    handleUpdateSession,
+    setShowPauses,
+    setFocusedEventId,
+  } = usePomodoroCalendar();
 
   return (
-    <DragDropContext
-      onDragEnd={(dropResult) =>
-        onDragEnd(dropResult, sessions, setSessions, tasks)
-      }
-    >
+    <DragDropContext onDragEnd={handleDragEnd}>
       <div className="relative mx-auto w-full max-w-4xl rounded-xl bg-background p-6 text-foreground shadow-lg">
         <ButtonPause onToggle={setShowPauses} isActive={showPauses} />
         <button onClick={handleResetSessions} className="">
@@ -119,25 +64,12 @@ export default function PomodoroCalendar() {
                 toolbar={true}
                 dayLayoutAlgorithm="no-overlap"
                 resizable={false}
-                onEventDrop={(dropEvent) => {
-                  const { event, start, end } = dropEvent;
-                  const updatedSessions = handleEventDrop({
-                    event,
-                    start,
-                    end,
-                    sessions,
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  } as any);
-                  setSessions(updatedSessions);
-                }}
-                // Create a step of 5 minutes
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onEventDrop={handleEventDrop as any}
                 step={5}
-                // timselots prop is used to display the time slots in the calendar, 1 corresponds to 1 slot per step
                 timeslots={1}
-                // Limit the calendar view to the first and last events
                 min={new Date(state.startTime)}
                 max={new Date(state.endTime)}
-                // Event prop getter is used to style the events in the calendar, it change the cursor to grab and the background color of the event
                 eventPropGetter={eventPropGetter as EventPropGetter<object>}
                 components={{
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -145,13 +77,7 @@ export default function PomodoroCalendar() {
                     event.type === "Work" ? (
                       <EventComponent
                         event={event}
-                        onUpdateSession={(updatedSession) =>
-                          updateSingleSession(
-                            updatedSession,
-                            setSessions,
-                            setFocusedEventId,
-                          )
-                        }
+                        onUpdateSession={handleUpdateSession}
                         onDeleteSession={handleDeleteSession}
                         isFocused={event.id === focusedEventId}
                         onBlur={() => setFocusedEventId(null)}

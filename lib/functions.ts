@@ -1,5 +1,4 @@
-import { Break, PomodoroState, Session, Task } from "@/lib/types";
-import { DropResult } from "react-beautiful-dnd";
+import { Break, PomodoroState, Session } from "@/lib/types";
 
 // Function to create Pomodoro day sessions based on the given state
 export function createPomodoroDaySessions(
@@ -214,38 +213,6 @@ function createPauseSession(start: Date, end: Date, index: number): Session {
     index: index,
   };
 }
-
-export const onDragEnd = (
-  dropResult: DropResult,
-  sessions: Session[],
-  setSessions: React.Dispatch<React.SetStateAction<Session[]>>,
-  tasks: Task[],
-) => {
-  const { destination, draggableId } = dropResult;
-
-  // If dropped outside the list
-  if (!destination) {
-    return;
-  }
-
-  // If dropped on a calendar event
-  if (destination.droppableId.startsWith("event_")) {
-    //Get the id of the event
-    const eventId = destination.droppableId.split("_")[1];
-    //Get the task that is being dragged
-    const task = tasks.find((t) => t.id === draggableId);
-
-    if (task) {
-      // Update the session with the new task title
-      const updatedSessions = sessions.map((session) =>
-        session.id === eventId
-          ? { ...session, taskTitle: task.content }
-          : session,
-      );
-      setSessions(updatedSessions);
-    }
-  }
-};
 
 // Function to update a specific session
 // This funciton is used to update the title of a session when the user is renaming a task

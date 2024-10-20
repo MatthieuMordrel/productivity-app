@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, ReactNode, useContext, useReducer } from "react";
-
 import { Break, PomodoroState } from "../lib/types";
 
 type PomodoroAction =
@@ -24,7 +23,6 @@ const initialState: PomodoroState = {
 const PomodoroContext = createContext<
   | {
       state: PomodoroState;
-
       dispatch: React.Dispatch<PomodoroAction>;
     }
   | undefined
@@ -32,7 +30,6 @@ const PomodoroContext = createContext<
 
 function pomodoroReducer(
   state: PomodoroState,
-
   action: PomodoroAction,
 ): PomodoroState {
   switch (action.type) {
@@ -43,10 +40,7 @@ function pomodoroReducer(
       return { ...state, pauseDuration: action.payload };
 
     case "SET_START_TIME":
-      console.log("Previous state:", state);
-      const newState = { ...state, startTime: action.payload };
-      console.log("New state:", newState);
-      return newState;
+      return { ...state, startTime: action.payload };
 
     case "SET_END_TIME":
       return { ...state, endTime: action.payload };
@@ -89,7 +83,6 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
 
 export function usePomodoroContext() {
   const context = useContext(PomodoroContext);
-  // console.log(context?.state);
   if (context === undefined) {
     throw new Error(
       "usePomodoroContext must be used within a PomodoroProvider",

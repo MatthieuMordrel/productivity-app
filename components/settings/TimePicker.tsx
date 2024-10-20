@@ -50,15 +50,6 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     onChange(now);
   };
 
-  // Calculate min attribute for input
-  const minTimeString = minTime
-    ? minTime.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      })
-    : undefined;
-
   return (
     <div className="flex items-center space-x-2">
       <input
@@ -66,7 +57,6 @@ export const TimePicker: React.FC<TimePickerProps> = ({
         type="time"
         value={timeString}
         onChange={handleChange}
-        min={minTimeString}
         className="rounded-md bg-secondary p-2 text-foreground"
         placeholder="HH:MM"
       />

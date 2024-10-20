@@ -2,8 +2,7 @@
 
 import { TimePicker } from "@/components/settings/TimePicker";
 import { usePomodoroContext } from "@/contexts/PomodoroContext";
-import { Break } from "@/lib/types";
-import React, { useEffect } from "react";
+import React from "react";
 import BreakManager from "./BreakManager";
 import { NumberSetting } from "./NumberSetting";
 
@@ -19,19 +18,6 @@ const PomodoroSettings: React.FC = () => {
     }
   };
 
-  // Effect to watch for changes in start time
-  useEffect(() => {
-    // Inline the function to avoid the unnecessary dependency
-    const validateAndAdjustTimes = (start: Date, end: Date) => {
-      if (end <= start) {
-        const newEnd = new Date(start.getTime() + 30 * 60000);
-        dispatch({ type: "SET_END_TIME", payload: newEnd });
-      }
-    };
-
-    validateAndAdjustTimes(state.startTime, state.endTime);
-  }, [state.startTime, state.endTime, dispatch]);
-
   const handleStartTimeChange = (value: Date) => {
     dispatch({ type: "SET_START_TIME", payload: value });
     validateAndAdjustTimes(value, state.endTime);
@@ -45,22 +31,6 @@ const PomodoroSettings: React.FC = () => {
       const newEnd = new Date(state.startTime.getTime() + 30 * 60000);
       dispatch({ type: "SET_END_TIME", payload: newEnd });
     }
-  };
-
-  const handleAddBreak = () => {
-    const newBreak: Break = {
-      start: new Date(new Date().setHours(12, 30, 0, 0)), // Set to 12:30 PM
-      end: new Date(new Date().setHours(14, 0, 0, 0)), // Set to 2:00 PM
-    };
-    dispatch({ type: "ADD_BREAK", payload: newBreak });
-  };
-
-  const handleUpdateBreak = (index: number, updatedBreak: Break) => {
-    dispatch({ type: "UPDATE_BREAK", payload: { index, break: updatedBreak } });
-  };
-
-  const handleRemoveBreak = (index: number) => {
-    dispatch({ type: "REMOVE_BREAK", payload: index });
   };
 
   return (
@@ -112,12 +82,7 @@ const PomodoroSettings: React.FC = () => {
           />
         </div>
 
-        <BreakManager
-          breaks={state.breaks}
-          onAddBreak={handleAddBreak}
-          onUpdateBreak={handleUpdateBreak}
-          onRemoveBreak={handleRemoveBreak}
-        />
+        <BreakManager breaks={state.breaks} />
       </div>
 
       <button className="mt-6 w-full rounded-md bg-primary py-2 text-background transition-opacity hover:opacity-90">
