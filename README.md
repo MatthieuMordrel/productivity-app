@@ -8,6 +8,8 @@ TO DO:
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
 - Make the calendar look better on long days
 - Change event component to display title as a div, and on click it turns to an input ?
+- ensure the task on the timeline and task list are synced, from one way to task list to timeline
+- Consider removing the ability to edit the task name within the timeline
 
 Done:
 

@@ -1,5 +1,6 @@
 import { Session } from "@/lib/types";
 import { useEventComponent } from "@hooks/useEventComponent";
+import { useEffect, useRef, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 
 export const EventComponent = ({
@@ -15,14 +16,32 @@ export const EventComponent = ({
   isFocused: boolean;
   onBlur: () => void;
 }) => {
-  const { taskTitle, inputRef, handleTitleChange, handleDelete } =
-    useEventComponent(
-      event,
-      onUpdateSession,
-      onDeleteSession,
-      isFocused,
-      onBlur,
-    );
+  const { taskTitle, handleTitleChange, handleDelete } = useEventComponent(
+    event,
+    onUpdateSession,
+    onDeleteSession,
+    isFocused,
+    onBlur,
+  );
+
+  const [isEditing, setIsEditing] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Effect to focus input when entering edit mode
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
+
+  const handleEditStart = () => {
+    setIsEditing(true);
+  };
+
+  const handleEditEnd = () => {
+    setIsEditing(false);
+    onBlur();
+  };
 
   return (
     <Droppable droppableId={`event_${event.id}`}>
@@ -30,9 +49,10 @@ export const EventComponent = ({
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="relative h-full rounded-md shadow-sm"
+          className="relative h-full rounded-md p-2 shadow-sm"
         >
           <button
+            type="button"
             onClick={handleDelete}
             className="absolute right-2 top-2 text-foreground opacity-50 hover:opacity-100 focus:outline-none"
             aria-label="Delete session"
@@ -40,7 +60,7 @@ export const EventComponent = ({
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
-              fill="none"
+              fill="red"
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
@@ -54,15 +74,25 @@ export const EventComponent = ({
           </button>
 
           <div className="flex h-1/4 space-x-2">
-            <input
-              ref={inputRef}
-              aria-label="Task"
-              type="text"
-              value={taskTitle}
-              onChange={handleTitleChange}
-              onBlur={onBlur}
-              className="w-full rounded border border-primary bg-inherit px-1 py-0.5 text-xl text-background focus:outline-none focus:ring-1 focus:ring-primary"
-            />
+            {isEditing ? (
+              <input
+                ref={inputRef}
+                aria-label="Task"
+                type="text"
+                value={taskTitle}
+                onChange={handleTitleChange}
+                onBlur={handleEditEnd}
+                onKeyDown={(e) => e.key === "Enter" && handleEditEnd()}
+                className="w-full rounded-md border border-secondary bg-inherit px-2 py-1 text-xl text-foreground focus:outline-none"
+              />
+            ) : (
+              <div
+                onClick={handleEditStart}
+                className="w-full cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap rounded-md border border-primary bg-inherit px-2 py-1 text-xl text-foreground"
+              >
+                {taskTitle || "Click to edit"}
+              </div>
+            )}
           </div>
 
           {provided.placeholder}
