@@ -1,18 +1,19 @@
 TO DO:
 
-- Understand why the EventComponent rerenders when the input is being focused
-
-- Allow for the possibility to click and press suppr button to remove task
-- Add the posbility to rename breaks
-- Ensure that moving breaks on the timeline move them in the settings
+- Ensure taks name are synced from task to timeline but not from timeline to task
+- Remove the ability to edit the task name within the timeline
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
+- Make the sessions static (can't change the size, can't move them)
+
+Design
+
+- Show a hand moving to display the drag and drop possibilty
 - Make the calendar look better on long days
-- Change event component to display title as a div, and on click it turns to an input ?
-- ensure the task on the timeline and task list are synced, from one way to task list to timeline
-- Consider removing the ability to edit the task name within the timeline
 
 Done:
 
+- Change event component to display title as a div, and on click it turns to an input ?
+- Ensure that break don't reset the task names
 - Allow the break to be removed even when it's the only break
 - Fix why the app crashes when the start time is set to now
 - Add a trash icon on hover to remove task from the timeline
@@ -24,3 +25,12 @@ Done:
 - Add a way to drag and drop the task in the timeline
 - Add a way to remove tasks from the task list
 - Add the total hours worked expected to be worked during the day
+
+When we'll add interactivity:
+
+- Add a way to click on a task in the timeline and edit it
+- Add a way to click on a task in the timeline and remove it
+- Allow for the possibility to click and press suppr button to remove task
+- Ensure that moving breaks on the timeline move them in the settings
+- Add the posbility to rename breaks
+- Ensure the task on the timeline and task list are synced, from one way to task list to timeline

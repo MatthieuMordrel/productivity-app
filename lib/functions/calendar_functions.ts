@@ -1,6 +1,5 @@
+import { Session } from "@lib/types";
 import { EventPropGetter } from "react-big-calendar";
-import { Session } from "./types";
-
 export const eventPropGetter: EventPropGetter<Session> = (event) => ({
   style: {
     cursor: "grab",

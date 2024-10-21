@@ -1,7 +1,7 @@
 "use client";
 
 import { usePomodoroCalendar } from "@/hooks/usePomodoroCalendar";
-import { eventPropGetter } from "@/lib/calendar_functions";
+import { eventPropGetter } from "@/lib/functions/calendar_functions";
 import { DragDropContext } from "react-beautiful-dnd";
 import { Calendar, EventPropGetter } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
@@ -19,11 +19,11 @@ const DnDCalendar = withDragAndDrop(Calendar);
 // Add this custom toolbar component
 
 export default function PomodoroCalendar() {
+  console.log("PomodoroCalendar rerendering");
   const {
     localizer,
     events,
     sessions,
-    isInvalidTimeRange,
     showPauses,
     focusedEventId,
     state,
@@ -46,12 +46,7 @@ export default function PomodoroCalendar() {
         <CurrentSessionInfo sessions={sessions} />
         <WorkSessionSummary sessions={sessions} />
 
-        {isInvalidTimeRange ? (
-          <div className="mb-4 text-center text-red-500">
-            Invalid time range: Start time must be before end time. Please check
-            your settings.
-          </div>
-        ) : sessions.length === 0 ? (
+        {sessions.length === 0 ? (
           <div className="mb-4 text-center text-red-500">
             No sessions available. Please check your time settings.
           </div>

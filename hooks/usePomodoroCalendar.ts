@@ -3,7 +3,7 @@ import { useTaskContext } from "@/contexts/TaskContext";
 import {
   createPomodoroDaySessions,
   updateSingleSession,
-} from "@/lib/functions";
+} from "@/lib/functions/sessions";
 import { Session } from "@/lib/types";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -17,11 +17,8 @@ export const usePomodoroCalendar = () => {
   const { state } = usePomodoroContext();
   const { tasks } = useTaskContext();
 
-  // Check for invalid time range
-  const isInvalidTimeRange = state.startTime >= state.endTime;
-
   const [sessions, setSessions] = useState<Session[]>(() =>
-    isInvalidTimeRange ? [] : createPomodoroDaySessions(state),
+    createPomodoroDaySessions(state),
   );
 
   const [showPauses, setShowPauses] = useState(false);
@@ -29,23 +26,11 @@ export const usePomodoroCalendar = () => {
 
   // Update sessions when pomodoro settings change
   useEffect(() => {
-    if (!isInvalidTimeRange) {
-      setSessions((prevSessions) =>
-        createPomodoroDaySessions(state, prevSessions),
-      );
-    } else {
-      setSessions([]);
-    }
-  }, [state, isInvalidTimeRange]);
-
-  // Log warning if no sessions available
-  useEffect(() => {
-    if (sessions.length === 0) {
-      console.warn(
-        "No sessions available. This may be due to invalid time settings.",
-      );
-    }
-  }, [sessions]);
+    console.log("PomodoroCalendar useEffect called");
+    setSessions((prevSessions) =>
+      createPomodoroDaySessions(state, prevSessions),
+    );
+  }, [state]);
 
   // Filter events based on showPauses state
   const events = showPauses
@@ -96,11 +81,11 @@ export const usePomodoroCalendar = () => {
     end: Date;
   }) => {
     const { event, start, end } = dropEvent;
-    // console.log("handleEventDrop called with:", { event, start, end, sessions });
-    const updatedSessions = sessions.map((session) =>
-      session.id === event.id ? { ...session, start, end } : session,
+    setSessions((prevSessions) =>
+      prevSessions.map((session) =>
+        session.id === event.id ? { ...session, start, end } : session,
+      ),
     );
-    setSessions([...updatedSessions]); // Explicitly set a new array
   };
 
   const handleUpdateSession = (updatedSession: Session) => {
@@ -111,7 +96,6 @@ export const usePomodoroCalendar = () => {
     localizer,
     events,
     sessions,
-    isInvalidTimeRange,
     showPauses,
     focusedEventId,
     state,

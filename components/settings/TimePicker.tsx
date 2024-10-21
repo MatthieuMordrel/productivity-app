@@ -36,7 +36,6 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 
     // Update the state with the new Date object
     onChange(newDate);
-    console.log("New date:", newDate);
   };
 
   // New function to set the time to now
