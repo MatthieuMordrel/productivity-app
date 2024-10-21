@@ -1,47 +1,9 @@
+import { usePomodoroCalendarContext } from "@/contexts/PomodoroCalendarContext";
 import { Session } from "@/lib/types";
-import { useEventComponent } from "@hooks/useEventComponent";
-import { useEffect, useRef, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 
-export const EventComponent = ({
-  event,
-  onUpdateSession,
-  onDeleteSession,
-  isFocused,
-  onBlur,
-}: {
-  event: Session;
-  onUpdateSession: (updatedSession: Session) => void;
-  onDeleteSession: (sessionId: string) => void;
-  isFocused: boolean;
-  onBlur: () => void;
-}) => {
-  const { taskTitle, handleTitleChange, handleDelete } = useEventComponent(
-    event,
-    onUpdateSession,
-    onDeleteSession,
-    isFocused,
-    onBlur,
-  );
-
-  const [isEditing, setIsEditing] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  // Effect to focus input when entering edit mode
-  useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isEditing]);
-
-  const handleEditStart = () => {
-    setIsEditing(true);
-  };
-
-  const handleEditEnd = () => {
-    setIsEditing(false);
-    onBlur();
-  };
+export const EventComponent = ({ event }: { event: Session }) => {
+  const { handleDeleteSession } = usePomodoroCalendarContext();
 
   return (
     <Droppable droppableId={`event_${event.id}`}>
@@ -51,9 +13,10 @@ export const EventComponent = ({
           {...provided.droppableProps}
           className="relative h-full rounded-md p-2 shadow-sm"
         >
+          {/* Delete button */}
           <button
             type="button"
-            onClick={handleDelete}
+            onClick={() => handleDeleteSession(event.id)}
             className="absolute right-2 top-2 text-foreground opacity-50 hover:opacity-100 focus:outline-none"
             aria-label="Delete session"
           >
@@ -73,26 +36,11 @@ export const EventComponent = ({
             </svg>
           </button>
 
+          {/* Non-editable task title */}
           <div className="flex h-1/4 space-x-2">
-            {isEditing ? (
-              <input
-                ref={inputRef}
-                aria-label="Task"
-                type="text"
-                value={taskTitle}
-                onChange={handleTitleChange}
-                onBlur={handleEditEnd}
-                onKeyDown={(e) => e.key === "Enter" && handleEditEnd()}
-                className="w-full rounded-md border border-secondary bg-inherit px-2 py-1 text-xl text-foreground focus:outline-none"
-              />
-            ) : (
-              <div
-                onClick={handleEditStart}
-                className="w-full cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap rounded-md border border-primary bg-inherit px-2 py-1 text-xl text-foreground"
-              >
-                {taskTitle || "Click to edit"}
-              </div>
-            )}
+            <div className="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md border border-primary bg-inherit px-2 py-1 text-xl text-foreground">
+              {event.taskTitle || "No title"}
+            </div>
           </div>
 
           {provided.placeholder}

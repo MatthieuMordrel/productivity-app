@@ -1,20 +1,23 @@
+import { usePomodoroCalendarContext } from "@/contexts/PomodoroCalendarContext";
+import { updateSingleSession } from "@/lib/functions/sessions";
 import { Session } from "@/lib/types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export const useEventComponent = (
   event: Session,
-  onUpdateSession: (updatedSession: Session) => void,
-  onDeleteSession: (sessionId: string) => void,
   isFocused: boolean,
   onBlur: () => void,
 ) => {
+  const { setSessions, setFocusedEventId, handleDeleteSession } =
+    usePomodoroCalendarContext();
+
   const [taskTitle, setTaskTitle] = useState(event.taskTitle);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const debouncedUpdateSession = useDebouncedCallback(
     (updatedSession: Session) => {
-      onUpdateSession(updatedSession);
+      updateSingleSession(updatedSession, setSessions, setFocusedEventId);
     },
     300,
   );
@@ -41,8 +44,8 @@ export const useEventComponent = (
   );
 
   const handleDelete = useCallback(() => {
-    onDeleteSession(event.id);
-  }, [event.id, onDeleteSession]);
+    handleDeleteSession(event.id);
+  }, [event.id, handleDeleteSession]);
 
   return {
     taskTitle,

@@ -1,10 +1,12 @@
 "use client";
 
-import { usePomodoroCalendar } from "@/hooks/usePomodoroCalendar";
+import { usePomodoroCalendarContext } from "@/contexts/PomodoroCalendarContext";
+import { usePomodoroContext } from "@/contexts/PomodoroContext";
 import { eventPropGetter } from "@/lib/functions/calendar_functions";
+import moment from "moment";
+import { useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import { Calendar, EventPropGetter } from "react-big-calendar";
-// import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import { Calendar, EventPropGetter, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import TaskList from "../task_list/TaskList";
@@ -14,24 +16,23 @@ import { EventComponent } from "./EventComponent";
 import { CustomToolbar } from "./Toolbar";
 import { WorkSessionSummary } from "./WorkSessionSummary";
 
-// const DnDCalendar = withDragAndDrop(Calendar);
+// Create the localizer
+const localizer = momentLocalizer(moment);
 
-export default function PomodoroCalendar() {
+export function PomodoroDay() {
   console.log("PomodoroCalendar rerendering");
-  const {
-    localizer,
-    events,
-    sessions,
-    showPauses,
-    focusedEventId,
-    state,
-    handleDeleteSession,
-    handleResetSessions,
-    handleDragEnd,
-    handleUpdateSession,
-    setShowPauses,
-    setFocusedEventId,
-  } = usePomodoroCalendar();
+
+  // Merge usePomodoroCalendar hook logic directly into the component
+  const { state } = usePomodoroContext();
+  const [showPauses, setShowPauses] = useState(false);
+
+  const { sessions, handleResetSessions, handleDragEnd } =
+    usePomodoroCalendarContext();
+
+  // Filter events based on showPauses state
+  const events = showPauses
+    ? sessions
+    : sessions.filter((session) => session.type !== "Pause");
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
@@ -58,8 +59,6 @@ export default function PomodoroCalendar() {
                 views={["day", "agenda"]}
                 toolbar={true}
                 dayLayoutAlgorithm="no-overlap"
-                // resizable={false}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 step={5}
                 timeslots={1}
                 min={state.startTime}
@@ -69,13 +68,7 @@ export default function PomodoroCalendar() {
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   event: ({ event }: any) =>
                     event.type === "Work" ? (
-                      <EventComponent
-                        event={event}
-                        onUpdateSession={handleUpdateSession}
-                        onDeleteSession={handleDeleteSession}
-                        isFocused={event.id === focusedEventId}
-                        onBlur={() => setFocusedEventId(null)}
-                      />
+                      <EventComponent event={event} />
                     ) : null,
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   toolbar: CustomToolbar as any,

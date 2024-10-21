@@ -25,7 +25,8 @@
       "@actions/*": ["./actions/*"],
       "@lib/*": ["./lib/*"],
       "@hooks/*": ["./hooks/*"],
-      "@functions/*": ["./lib/functions/*"]
+      "@functions/*": ["./lib/functions/*"],
+      "@contexts/*": ["./contexts/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
