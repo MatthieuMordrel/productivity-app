@@ -15,13 +15,13 @@ export const EventComponent = ({ event }: { event: Session }) => {
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="relative h-full rounded-md bg-primary bg-opacity-10 p-2 text-white shadow-sm transition-colors duration-200 hover:bg-opacity-20"
+          className="@container relative h-full rounded-md bg-inherit bg-opacity-10 text-white shadow-sm transition-colors duration-200 hover:bg-opacity-20"
         >
           <div className="flex h-full flex-col justify-between">
             {/* Top section: Title and Duration */}
             <div className="mb-1 flex items-start justify-between">
               {/* Task title */}
-              <div className="w-3/4 overflow-hidden text-ellipsis text-lg font-semibold">
+              <div className="w-3/4 overflow-hidden text-ellipsis font-semibold">
                 {event.taskTitle || "No title"}
               </div>
               {/* Duration */}

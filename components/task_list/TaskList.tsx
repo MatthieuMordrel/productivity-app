@@ -75,8 +75,6 @@ const TaskList: React.FC = () => {
 
   return (
     <div className="mx-auto max-w-md bg-background p-4 text-foreground">
-      <h2 className="mb-4 text-2xl font-bold">Task List</h2>
-
       {/* Add new task form */}
       <form onSubmit={handleSubmit} className="mb-4">
         <input

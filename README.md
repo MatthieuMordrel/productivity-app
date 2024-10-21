@@ -8,6 +8,7 @@ Design
 - Show a hand moving to display the drag and drop possibilty
 - Make the calendar look better on long days
 - Add a nice shadcn opup when a sedssion is over (no sound, just a popup)
+- Make hide breaks and pauses toggles
 
 Done:
 

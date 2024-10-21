@@ -1,3 +1,4 @@
+import containerQueries from "@tailwindcss/container-queries";
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
@@ -25,6 +26,12 @@ const config: Config = {
       fontFamily: {
         "geist-sans": ["var(--font-geist-sans)", ...fontFamily.sans],
       },
+      containers: {
+        "h-sm": "50px",
+        "h-md": "100px",
+        "h-lg": "200px",
+        // Add more height-based breakpoints as needed
+      },
     },
   },
   plugins: [
@@ -43,6 +50,7 @@ const config: Config = {
         },
       });
     }),
+    containerQueries,
   ],
 };
 

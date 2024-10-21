@@ -1,12 +1,22 @@
 "use client";
 
 import { TimePicker } from "@/components/settings/TimePicker";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useSessionsContext } from "@/contexts/SessionsContext";
 import { useSettingsContext } from "@/contexts/SettingsContext";
+import { RotateCcw } from "lucide-react";
 import React from "react";
+import { Button } from "../ui/button";
 import BreakManager from "./BreakManager";
 import { NumberSetting } from "./NumberSetting";
 
 const PomodoroSettings: React.FC = () => {
+  const { handleResetSessions } = useSessionsContext();
   const { state, dispatch } = useSettingsContext();
 
   // Function to ensure end time is after start time
@@ -35,8 +45,26 @@ const PomodoroSettings: React.FC = () => {
 
   return (
     <div className="mx-auto max-w-md rounded-lg bg-secondary p-6 shadow-lg">
-      <h2 className="mb-6 text-2xl font-bold">Pomodoro Settings</h2>
-
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-2xl font-bold">Pomodoro Settings</h2>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                onClick={handleResetSessions}
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+              >
+                <RotateCcw className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Reset to default settings</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
       <div className="space-y-4">
         <NumberSetting
           label="Pomodoro Duration"
