@@ -1,7 +1,7 @@
 "use client";
 
-import { usePomodoroCalendarContext } from "@/contexts/PomodoroCalendarContext";
-import { usePomodoroContext } from "@/contexts/PomodoroContext";
+import { useSessionsContext } from "@/contexts/SessionsContext";
+import { useSettingsContext } from "@/contexts/SettingsContext";
 import { eventPropGetter } from "@/lib/functions/calendar_functions";
 import moment from "moment";
 import { useState } from "react";
@@ -23,11 +23,9 @@ export function PomodoroDay() {
   console.log("PomodoroCalendar rerendering");
 
   // Merge usePomodoroCalendar hook logic directly into the component
-  const { state } = usePomodoroContext();
+  const { state } = useSettingsContext();
+  const { sessions, handleResetSessions, handleDragEnd } = useSessionsContext();
   const [showPauses, setShowPauses] = useState(false);
-
-  const { sessions, handleResetSessions, handleDragEnd } =
-    usePomodoroCalendarContext();
 
   // Filter events based on showPauses state
   const events = showPauses
@@ -41,7 +39,7 @@ export function PomodoroDay() {
         <button onClick={handleResetSessions} className="">
           Reset Sessions
         </button>
-        <CurrentSessionInfo sessions={sessions} />
+        <CurrentSessionInfo />
         <WorkSessionSummary sessions={sessions} />
 
         {sessions.length === 0 ? (

@@ -1,6 +1,6 @@
 import PomodoroSettings from "@/components/settings/PomodoroSettings";
 import { PomodoroDay } from "@/components/Timeline/PomodoroDay";
-import { PomodoroCalendarProvider } from "@/contexts/PomodoroCalendarContext";
+import { PomodoroCalendarProvider } from "@/contexts/SessionsContext";
 
 export default function Home() {
   return (

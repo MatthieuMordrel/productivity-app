@@ -12,6 +12,17 @@ export function createPomodoroDaySessions(
     return [];
   }
 
+  // Create sessions without titles
+  const sessions = createSessions(state);
+
+  // Remap titles to the correct sessions
+  const sessionsWithTitles = remapSessionTitles(sessions, previousSessions);
+
+  return sessionsWithTitles;
+}
+
+// Function to create sessions without titles
+function createSessions(state: PomodoroState): Session[] {
   // Process and merge overlapping breaks
   const processedBreaks = processBreaks(
     state.breaks,
@@ -32,27 +43,13 @@ export function createPomodoroDaySessions(
         start: new Date(state.startTime),
         end: new Date(state.endTime),
         taskTitle: "Break",
+        taskId: "",
         index: 0,
       },
     ];
   }
 
-  //Create the sessions array to store all our sessions
   const sessions: Session[] = [];
-
-  //Create a map to store the previous titles of the work sessions
-  const previousTitles = new Map<number, string>();
-  //Create an index to keep track of the work session titles
-  let titleIndex = 0;
-  if (previousSessions) {
-    previousSessions.forEach((session) => {
-      if (session.type === "Work") {
-        previousTitles.set(titleIndex, session.taskTitle);
-        titleIndex++;
-      }
-    });
-  }
-
   let sessionIndex = 0;
 
   // Add all processed breaks to the sessions array
@@ -63,6 +60,7 @@ export function createPomodoroDaySessions(
       start: new Date(breakItem.start),
       end: new Date(breakItem.end),
       taskTitle: "Break",
+      taskId: "",
       index: sessionIndex,
     });
     sessionIndex++;
@@ -72,46 +70,35 @@ export function createPomodoroDaySessions(
   sessions.sort((a, b) => a.start.getTime() - b.start.getTime());
 
   // Now fill in work and pause sessions
-  // Current time will keep track of the startime and endtimes of the session as we create them
   let currentTime = new Date(state.startTime);
   const workDuration = state.pomodoroDuration * 60000;
   const pauseDuration = state.pauseDuration * 60000;
 
-  //Loop through the day and create sessions for work and pause
   while (currentTime < state.endTime) {
-    //Find the next break and return it if it exists
     const nextBreak = sessions.find(
       (s) => s.type === "Break" && s.start > currentTime,
     );
-    //Define the endtime as either the start of the next break or the end of the day
     const endTime = nextBreak ? nextBreak.start : state.endTime;
 
-    // Check if current time is within a break
     const currentBreak = sessions.find(
       (s) =>
-        //Check if the session is a break and if the current time is within the break
         s.type === "Break" && s.start <= currentTime && s.end > currentTime,
     );
 
     if (currentBreak) {
-      // If we're in a break, move current time to after the break
       currentTime = new Date(currentBreak.end);
       continue;
     }
 
-    // Create work session
-    // Define the endtime of the work session as the minimum of either the start of the next break, the end of the day or the normal end of the work session using the pomodoro duration
     const workEndTime = new Date(
       Math.min(currentTime.getTime() + workDuration, endTime.getTime()),
     );
-    //Check if the work end time is after the current time
     if (workEndTime > currentTime) {
       sessions.push(createWorkSession(currentTime, workEndTime, sessionIndex));
       sessionIndex++;
       currentTime = new Date(workEndTime);
     }
 
-    // If there's time for a pause before the next break or end of day, create it
     if (currentTime < endTime) {
       const pauseEndTime = new Date(
         Math.min(currentTime.getTime() + pauseDuration, endTime.getTime()),
@@ -124,27 +111,7 @@ export function createPomodoroDaySessions(
     }
   }
 
-  // Final sort and title reassignment
-  const orderedSessions = sessions.sort(
-    (a, b) => a.start.getTime() - b.start.getTime(),
-  );
-
-  // Reassign titles to work sessions based on their original work session index
-  let workIndex = 0;
-  orderedSessions.forEach((session) => {
-    if (session.type === "Work") {
-      session.taskTitle = previousTitles.get(workIndex) || `Work ${workIndex}`;
-      workIndex++;
-    }
-  });
-
-  if (orderedSessions.length === 0) {
-    console.warn(
-      "No sessions available. This may be due to invalid time settings.",
-    );
-  }
-
-  return orderedSessions;
+  return sessions.sort((a, b) => a.start.getTime() - b.start.getTime());
 }
 
 function processBreaks(
@@ -214,11 +181,12 @@ function processBreaks(
 function createWorkSession(start: Date, end: Date, index: number): Session {
   return {
     id: `Work${index}`,
+    index: index,
     type: "Work",
     start: new Date(start),
     end: new Date(end),
     taskTitle: `Work ${Math.floor(index / 2)}`, // Default title
-    index: index,
+    taskId: "",
   };
 }
 
@@ -230,8 +198,48 @@ function createPauseSession(start: Date, end: Date, index: number): Session {
     start: new Date(start),
     end: new Date(end),
     taskTitle: "Pause",
+    taskId: "",
     index: index,
   };
+}
+
+// Function to remap titles to the correct sessions
+function remapSessionTitles(
+  sessions: Session[],
+  previousSessions?: Session[],
+): Session[] {
+  const previousTitlesAndIds = new Map<number, { title: string; id: string }>();
+  let titleIndex = 0;
+
+  if (previousSessions) {
+    previousSessions.forEach((session) => {
+      if (session.type === "Work") {
+        previousTitlesAndIds.set(titleIndex, {
+          title: session.taskTitle,
+          id: session.taskId,
+        });
+        titleIndex++;
+      }
+    });
+  }
+
+  let workIndex = 0;
+  return sessions.map((session) => {
+    if (session.type === "Work") {
+      const newSession = { ...session };
+      const previousData = previousTitlesAndIds.get(workIndex);
+      if (previousData) {
+        newSession.taskTitle = previousData.title;
+        newSession.taskId = previousData.id;
+      } else {
+        newSession.taskTitle = `Work ${workIndex}`;
+        newSession.taskId = ""; // Reset taskId if no previous data
+      }
+      workIndex++;
+      return newSession;
+    }
+    return session;
+  });
 }
 
 // Function to update a specific session

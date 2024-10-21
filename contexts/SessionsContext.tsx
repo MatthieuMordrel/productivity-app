@@ -2,10 +2,10 @@
 
 import { createPomodoroDaySessions } from "@/lib/functions/sessions";
 import { Session } from "@/lib/types";
-import { usePomodoroContext } from "@contexts/PomodoroContext";
 import { useTaskContext } from "@contexts/TaskContext";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { DropResult } from "react-beautiful-dnd";
+import { useSettingsContext } from "./SettingsContext";
 
 interface PomodoroCalendarContextType {
   sessions: Session[];
@@ -22,9 +22,8 @@ const PomodoroCalendarContext = createContext<
 export const PomodoroCalendarProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const { state } = usePomodoroContext();
+  const { state } = useSettingsContext();
   const { tasks } = useTaskContext();
-
   const [sessions, setSessions] = useState<Session[]>(() =>
     createPomodoroDaySessions(state),
   );
@@ -35,6 +34,32 @@ export const PomodoroCalendarProvider: React.FC<{
       createPomodoroDaySessions(state, prevSessions),
     );
   }, [state]);
+
+  // Watch for changes in task list and update sessions accordingly
+  useEffect(() => {
+    setSessions((prevSessions) =>
+      prevSessions.map((session) => {
+        const correspondingTask = tasks.find(
+          (task) => task.id === session.taskId,
+        );
+        if (correspondingTask) {
+          // Update the session if the task name has changed
+          return {
+            ...session,
+            taskTitle: correspondingTask.content,
+          };
+        } else if (session.taskId) {
+          // If a session has a taskId but no corresponding task, it means task was deleted and we need to reset the session
+          return {
+            ...session,
+            taskTitle: `Work ${session.index + 1}`,
+            taskId: "",
+          };
+        }
+        return session;
+      }),
+    );
+  }, [tasks]);
 
   const handleDeleteSession = (sessionId: string) => {
     setSessions((prevSessions) =>
@@ -62,7 +87,7 @@ export const PomodoroCalendarProvider: React.FC<{
         setSessions((prevSessions) =>
           prevSessions.map((session) =>
             session.id === eventId
-              ? { ...session, taskTitle: task.content }
+              ? { ...session, taskTitle: task.content, taskId: task.id }
               : session,
           ),
         );
@@ -70,26 +95,26 @@ export const PomodoroCalendarProvider: React.FC<{
     }
   };
 
-  const contextValue: PomodoroCalendarContextType = {
-    sessions,
-    setSessions,
-    handleDeleteSession,
-    handleResetSessions,
-    handleDragEnd,
-  };
-
   return (
-    <PomodoroCalendarContext.Provider value={contextValue}>
+    <PomodoroCalendarContext.Provider
+      value={{
+        sessions,
+        setSessions,
+        handleDeleteSession,
+        handleResetSessions,
+        handleDragEnd,
+      }}
+    >
       {children}
     </PomodoroCalendarContext.Provider>
   );
 };
 
-export const usePomodoroCalendarContext = () => {
+export const useSessionsContext = () => {
   const context = useContext(PomodoroCalendarContext);
   if (context === undefined) {
     throw new Error(
-      "usePomodoroCalendarContext must be used within a PomodoroCalendarProvider",
+      "useSessionsContext must be used within a PomodoroCalendarProvider",
     );
   }
   return context;

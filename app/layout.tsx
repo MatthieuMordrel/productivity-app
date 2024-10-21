@@ -1,4 +1,4 @@
-import { PomodoroProvider } from "@/contexts/PomodoroContext";
+import { PomodoroProvider } from "@/contexts/SettingsContext";
 import { TaskProvider } from "@/contexts/TaskContext";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";

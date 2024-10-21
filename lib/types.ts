@@ -17,6 +17,7 @@ export interface Session {
   end: Date;
   type: "Work" | "Pause" | "Break";
   taskTitle: string;
+  taskId: string;
   index: number;
 }
 

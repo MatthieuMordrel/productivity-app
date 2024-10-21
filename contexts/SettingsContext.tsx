@@ -81,11 +81,11 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function usePomodoroContext() {
+export function useSettingsContext() {
   const context = useContext(PomodoroContext);
   if (context === undefined) {
     throw new Error(
-      "usePomodoroContext must be used within a PomodoroProvider",
+      "useSettingsContext must be used within a PomodoroProvider",
     );
   }
 

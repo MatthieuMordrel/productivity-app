@@ -1,47 +1,95 @@
 "use client";
 
 import { useTaskContext } from "@/contexts/TaskContext";
-import { Task } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Trash2 } from "lucide-react"; // Import the trash icon
-import React, { useState } from "react";
+import { Edit2, Trash2 } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 
 const TaskList: React.FC = () => {
-  const { tasks, setTasks } = useTaskContext();
+  const { tasks, addTask, deleteTask, renameTask } = useTaskContext();
   const [newTask, setNewTask] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
+  const [editedTaskContent, setEditedTaskContent] = useState<string>("");
+  const editInputRef = useRef<HTMLInputElement>(null);
 
-  // Handle adding a new task
-  const handleAddTask = (e: React.FormEvent) => {
+  // Handle form submission
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newTask.trim() !== "") {
-      const task: Task = {
-        id: Date.now().toString(),
-        content: newTask.trim(),
-      };
-      setTasks((prevTasks) => [...prevTasks, task]);
+    const errorMessage = addTask(newTask);
+    console.log("errorMessage", errorMessage);
+    if (errorMessage) {
+      setError(errorMessage);
+    } else {
       setNewTask("");
+      setError(null);
     }
   };
 
-  // Handle deleting a task
-  const handleDeleteTask = (taskId: string) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+  // Handle input change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTask(e.target.value);
+    setError(null); // Clear error when user starts typing
   };
+
+  // Handle edit mode activation
+  const handleEditClick = (taskId: string, content: string) => {
+    setEditingTaskId(taskId);
+    setEditedTaskContent(content);
+  };
+
+  // Handle edit input change
+  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedTaskContent(e.target.value);
+  };
+
+  // Handle edit save
+  const handleEditSave = () => {
+    if (editingTaskId && editedTaskContent.trim()) {
+      renameTask(editingTaskId, editedTaskContent.trim());
+      setEditingTaskId(null);
+    }
+  };
+
+  // Handle edit cancel
+  const handleEditCancel = () => {
+    setEditingTaskId(null);
+  };
+
+  // Handle key press in edit input
+  const handleEditKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleEditSave();
+    } else if (e.key === "Escape") {
+      handleEditCancel();
+    }
+  };
+
+  // Effect to focus on edit input when entering edit mode
+  useEffect(() => {
+    if (editingTaskId && editInputRef.current) {
+      editInputRef.current.focus();
+    }
+  }, [editingTaskId]);
 
   return (
     <div className="mx-auto max-w-md bg-background p-4 text-foreground">
       <h2 className="mb-4 text-2xl font-bold">Task List</h2>
 
       {/* Add new task form */}
-      <form onSubmit={handleAddTask} className="mb-4">
+      <form onSubmit={handleSubmit} className="mb-4">
         <input
           type="text"
           value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
+          onChange={handleInputChange}
           placeholder="Enter a new task"
-          className="mb-2 w-full rounded border bg-secondary p-2 text-foreground"
+          className={cn(
+            "mb-2 w-full rounded border bg-secondary p-2 text-foreground",
+            error && "border-red-500",
+          )}
         />
+        {error && <p className="mb-2 text-sm text-red-500">{error}</p>}
         <button
           type="submit"
           className="w-full rounded bg-primary p-2 text-white transition-colors hover:bg-opacity-90"
@@ -73,14 +121,36 @@ const TaskList: React.FC = () => {
                     )}
                   >
                     <div className="flex items-center justify-between">
-                      <span>{task.content}</span>
-                      <button
-                        onClick={() => handleDeleteTask(task.id)}
-                        className="text-foreground opacity-50 transition-opacity hover:opacity-100"
-                        aria-label="Delete task"
-                      >
-                        <Trash2 size={18} />
-                      </button>
+                      {editingTaskId === task.id ? (
+                        <input
+                          ref={editInputRef}
+                          type="text"
+                          value={editedTaskContent}
+                          onChange={handleEditInputChange}
+                          onBlur={handleEditSave}
+                          onKeyDown={handleEditKeyPress}
+                          className="flex-grow bg-secondary p-1 text-foreground"
+                          aria-label="Edit task"
+                        />
+                      ) : (
+                        <span>{task.content}</span>
+                      )}
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleEditClick(task.id, task.content)}
+                          className="text-foreground opacity-50 transition-opacity hover:opacity-100"
+                          aria-label="Edit task"
+                        >
+                          <Edit2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => deleteTask(task.id)}
+                          className="text-foreground opacity-50 transition-opacity hover:opacity-100"
+                          aria-label="Delete task"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
                     </div>
                   </li>
                 )}

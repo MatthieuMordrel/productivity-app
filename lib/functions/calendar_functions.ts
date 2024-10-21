@@ -1,8 +1,11 @@
 import { Session } from "@lib/types";
 import { EventPropGetter } from "react-big-calendar";
+//Control the style of the events
 export const eventPropGetter: EventPropGetter<Session> = (event) => ({
   style: {
-    cursor: "grab",
+    cursor: "default",
+    outline: "none",
+    paddingLeft: "10px",
     backgroundColor:
       event.type === "Work"
         ? "var(--primary)"

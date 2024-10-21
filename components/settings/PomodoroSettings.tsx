@@ -1,13 +1,13 @@
 "use client";
 
 import { TimePicker } from "@/components/settings/TimePicker";
-import { usePomodoroContext } from "@/contexts/PomodoroContext";
+import { useSettingsContext } from "@/contexts/SettingsContext";
 import React from "react";
 import BreakManager from "./BreakManager";
 import { NumberSetting } from "./NumberSetting";
 
 const PomodoroSettings: React.FC = () => {
-  const { state, dispatch } = usePomodoroContext();
+  const { state, dispatch } = useSettingsContext();
 
   // Function to ensure end time is after start time
   const validateAndAdjustTimes = (start: Date, end: Date) => {

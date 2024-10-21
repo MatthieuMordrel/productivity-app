@@ -1,17 +1,21 @@
 TO DO:
 
-- Ensure taks name are synced from task to timeline but not from timeline to task
-- Remove the ability to edit the task name within the timeline
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
-- Make the sessions static (can't change the size, can't move them)
 
 Design
 
 - Show a hand moving to display the drag and drop possibilty
 - Make the calendar look better on long days
+- Add a nice shadcn opup when a sedssion is over (no sound, just a popup)
 
 Done:
 
+- Add session timer and task name in title
+- Ensure taks name are synced from task to timeline but not from timeline to task (on deletion and renaming)
+- Add a way to edit the task name from the task list
+- Add a restriction so the task name can't be the same as another task name
+- Make the sessions static (can't change the size, can't move them)
+- Remove the ability to edit the task name within the timeline
 - Change event component to display title as a div, and on click it turns to an input ?
 - Ensure that break don't reset the task names
 - Allow the break to be removed even when it's the only break

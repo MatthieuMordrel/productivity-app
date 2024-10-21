@@ -1,4 +1,4 @@
-import { usePomodoroContext } from "@/contexts/PomodoroContext";
+import { useSettingsContext } from "@/contexts/SettingsContext";
 import { Break } from "@/lib/types";
 import React from "react";
 import { BreakSetting } from "./BreakSetting";
@@ -8,7 +8,7 @@ interface BreakManagerProps {
 }
 
 const BreakManager: React.FC<BreakManagerProps> = ({ breaks }) => {
-  const { dispatch } = usePomodoroContext();
+  const { dispatch } = useSettingsContext();
   const [showBreakSettings, setShowBreakSettings] = React.useState(false);
 
   const toggleBreakSettings = () => {

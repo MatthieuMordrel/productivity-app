@@ -1,17 +1,16 @@
+import { useSessionsContext } from "@/contexts/SessionsContext";
+import { useTitle } from "@/hooks/useTitle"; // Assume we create this custom hook
 import { Session } from "@/lib/types";
 import React, { useEffect, useState } from "react";
 
-interface CurrentSessionInfoProps {
-  sessions: Session[];
-}
-
-export const CurrentSessionInfo: React.FC<CurrentSessionInfoProps> = ({
-  sessions,
-}) => {
+export const CurrentSessionInfo: React.FC = () => {
+  const { sessions } = useSessionsContext();
   const [currentSession, setCurrentSession] = useState<Session | null>(null);
   const [remainingTime, setRemainingTime] = useState<string>("");
+  const setTitle = useTitle(); // Custom hook to update document title
 
   useEffect(() => {
+    console.log("useEffect");
     const updateCurrentSession = () => {
       const now = new Date();
       const current = sessions.find(
@@ -26,11 +25,14 @@ export const CurrentSessionInfo: React.FC<CurrentSessionInfoProps> = ({
         const remainingMs = currentSession.end.getTime() - now.getTime();
         const remainingMinutes = Math.floor(remainingMs / 60000);
         const remainingSeconds = Math.floor((remainingMs % 60000) / 1000);
-        setRemainingTime(
-          `${remainingMinutes}:${remainingSeconds.toString().padStart(2, "0")}`,
-        );
+        const newRemainingTime = `${remainingMinutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+        setRemainingTime(newRemainingTime);
+
+        // Update the document title with the remaining time
+        setTitle(`${newRemainingTime} - ${currentSession.taskTitle}`);
       } else {
         setRemainingTime("");
+        setTitle("No active session"); // Reset title when no active session
       }
     };
 
@@ -46,7 +48,7 @@ export const CurrentSessionInfo: React.FC<CurrentSessionInfoProps> = ({
       clearInterval(sessionInterval);
       clearInterval(timeInterval);
     };
-  }, [sessions, currentSession]);
+  }, [sessions, currentSession, setTitle]);
 
   if (!currentSession) {
     return <div className="text-foreground">No active session</div>;

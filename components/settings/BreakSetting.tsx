@@ -1,4 +1,4 @@
-import { usePomodoroContext } from "@/contexts/PomodoroContext";
+import { useSettingsContext } from "@/contexts/SettingsContext";
 import { Break } from "@/lib/types";
 import { TimePicker } from "./TimePicker";
 
@@ -11,7 +11,7 @@ export const BreakSetting: React.FC<BreakSettingProps> = ({
   break: breakItem,
   index,
 }) => {
-  const { dispatch } = usePomodoroContext();
+  const { dispatch } = useSettingsContext();
 
   return (
     <div className="mb-4 rounded-lg bg-background p-4 shadow">

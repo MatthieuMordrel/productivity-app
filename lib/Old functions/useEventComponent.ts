@@ -1,4 +1,4 @@
-import { usePomodoroCalendarContext } from "@/contexts/PomodoroCalendarContext";
+import { useSessionsContext } from "@/contexts/SessionsContext";
 import { updateSingleSession } from "@/lib/functions/sessions";
 import { Session } from "@/lib/types";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -9,15 +9,14 @@ export const useEventComponent = (
   isFocused: boolean,
   onBlur: () => void,
 ) => {
-  const { setSessions, setFocusedEventId, handleDeleteSession } =
-    usePomodoroCalendarContext();
+  const { setSessions, handleDeleteSession } = useSessionsContext();
 
   const [taskTitle, setTaskTitle] = useState(event.taskTitle);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const debouncedUpdateSession = useDebouncedCallback(
     (updatedSession: Session) => {
-      updateSingleSession(updatedSession, setSessions, setFocusedEventId);
+      updateSingleSession(updatedSession, setSessions);
     },
     300,
   );
