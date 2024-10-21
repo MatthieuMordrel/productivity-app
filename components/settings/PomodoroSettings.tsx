@@ -7,7 +7,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useSessionsContext } from "@/contexts/SessionsContext";
 import { useSettingsContext } from "@/contexts/SettingsContext";
 import { RotateCcw } from "lucide-react";
 import React from "react";
@@ -16,7 +15,6 @@ import BreakManager from "./BreakManager";
 import { NumberSetting } from "./NumberSetting";
 
 const PomodoroSettings: React.FC = () => {
-  const { handleResetSessions } = useSessionsContext();
   const { state, dispatch } = useSettingsContext();
 
   // Function to ensure end time is after start time
@@ -51,7 +49,7 @@ const PomodoroSettings: React.FC = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                onClick={handleResetSessions}
+                onClick={() => dispatch({ type: "RESET_SETTINGS" })}
                 variant="outline"
                 size="icon"
                 className="h-8 w-8"

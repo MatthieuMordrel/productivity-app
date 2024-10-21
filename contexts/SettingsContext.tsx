@@ -10,7 +10,8 @@ type PomodoroAction =
   | { type: "SET_END_TIME"; payload: Date }
   | { type: "ADD_BREAK"; payload: Break }
   | { type: "REMOVE_BREAK"; payload: number }
-  | { type: "UPDATE_BREAK"; payload: { index: number; break: Break } };
+  | { type: "UPDATE_BREAK"; payload: { index: number; break: Break } }
+  | { type: "RESET_SETTINGS" };
 
 const initialState: PomodoroState = {
   pomodoroDuration: 25,
@@ -65,6 +66,8 @@ function pomodoroReducer(
           index === action.payload.index ? action.payload.break : breakItem,
         ),
       };
+    case "RESET_SETTINGS":
+      return initialState;
 
     default:
       return state;

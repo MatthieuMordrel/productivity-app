@@ -1,13 +1,8 @@
-import { Session } from "@/lib/types";
+import { useSessionsContext } from "@/contexts/SessionsContext";
 import React from "react";
 
-interface WorkSessionSummaryProps {
-  sessions: Session[];
-}
-
-export const WorkSessionSummary: React.FC<WorkSessionSummaryProps> = ({
-  sessions,
-}) => {
+export const WorkSessionSummary: React.FC = () => {
+  const { sessions } = useSessionsContext();
   // Calculate the number of work sessions
   const workSessionCount = sessions.filter(
     (session) => session.type === "Work",

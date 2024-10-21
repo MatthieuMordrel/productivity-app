@@ -1,5 +1,6 @@
 import containerQueries from "@tailwindcss/container-queries";
 import type { Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
 
@@ -17,6 +18,12 @@ const config: Config = {
         foreground: "var(--foreground)",
         primary: "var(--primary)",
         secondary: "var(--secondary)",
+        // Add these new color definitions
+        popover: {
+          DEFAULT: "var(--popover)",
+          foreground: "var(--popover-foreground)",
+        },
+        // Add other color schemes as needed
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -43,14 +50,22 @@ const config: Config = {
           "--foreground": theme("colors.gray.900"),
           "--primary": theme("colors.teal.800"),
           "--secondary": theme("colors.rose.200"),
+          // Add these new CSS variables
+          "--popover": "hsl(0 0% 100%)",
+          "--popover-foreground": "hsl(222.2 84% 4.9%)",
+          // Add other variables as needed
         },
         ".dark": {
           "--background": theme("colors.gray.900"),
           "--foreground": theme("colors.gray.100"),
+          // Add dark mode versions if needed
+          "--popover": "hsl(224 71% 4%)",
+          "--popover-foreground": "hsl(215 20.2% 65.1%)",
         },
       });
     }),
     containerQueries,
+    animate,
   ],
 };
 
