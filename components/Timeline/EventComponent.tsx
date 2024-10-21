@@ -1,8 +1,13 @@
 import { Session } from "@/lib/types";
+import moment from "moment";
 import { Droppable } from "react-beautiful-dnd";
 
 export const EventComponent = ({ event }: { event: Session }) => {
-  // const { handleDeleteSession } = useSessionsContext();
+  // Calculate the duration in minutes
+  const durationMinutes = moment(event.end).diff(
+    moment(event.start),
+    "minutes",
+  );
 
   return (
     <Droppable droppableId={`event_${event.id}`}>
@@ -10,35 +15,23 @@ export const EventComponent = ({ event }: { event: Session }) => {
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="relative h-full rounded-md p-2 shadow-sm"
+          className="relative h-full rounded-md bg-primary bg-opacity-10 p-2 text-white shadow-sm transition-colors duration-200 hover:bg-opacity-20"
         >
-          {/* Delete button */}
-          {/* <button
-            type="button"
-            onClick={() => handleDeleteSession(event.id)}
-            className="absolute right-2 top-2 text-foreground opacity-50 hover:opacity-100 focus:outline-none"
-            aria-label="Delete session"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="red"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
-          </button> */}
+          <div className="flex h-full flex-col justify-between">
+            {/* Top section: Title and Duration */}
+            <div className="mb-1 flex items-start justify-between">
+              {/* Task title */}
+              <div className="w-3/4 overflow-hidden text-ellipsis text-lg font-semibold">
+                {event.taskTitle || "No title"}
+              </div>
+              {/* Duration */}
+              <div className="text-sm opacity-75">{durationMinutes}m</div>
+            </div>
 
-          {/* Non-editable task title */}
-          <div className="flex h-1/4 space-x-2">
-            <div className="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md border border-primary bg-inherit px-2 py-1 text-xl text-foreground">
-              {event.taskTitle || "No title"}
+            {/* Bottom section: Time */}
+            <div className="text-right text-sm opacity-75">
+              {moment(event.start).format("HH:mm")} -{" "}
+              {moment(event.end).format("HH:mm")}
             </div>
           </div>
 
