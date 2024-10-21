@@ -75,19 +75,6 @@ export const usePomodoroCalendar = () => {
     }
   };
 
-  const handleEventDrop = (dropEvent: {
-    event: Session;
-    start: Date;
-    end: Date;
-  }) => {
-    const { event, start, end } = dropEvent;
-    setSessions((prevSessions) =>
-      prevSessions.map((session) =>
-        session.id === event.id ? { ...session, start, end } : session,
-      ),
-    );
-  };
-
   const handleUpdateSession = (updatedSession: Session) => {
     updateSingleSession(updatedSession, setSessions, setFocusedEventId);
   };
@@ -102,7 +89,6 @@ export const usePomodoroCalendar = () => {
     handleDeleteSession,
     handleResetSessions,
     handleDragEnd,
-    handleEventDrop,
     handleUpdateSession,
     setShowPauses,
     setFocusedEventId,

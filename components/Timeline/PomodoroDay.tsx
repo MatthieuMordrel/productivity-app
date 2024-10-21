@@ -4,7 +4,7 @@ import { usePomodoroCalendar } from "@/hooks/usePomodoroCalendar";
 import { eventPropGetter } from "@/lib/functions/calendar_functions";
 import { DragDropContext } from "react-beautiful-dnd";
 import { Calendar, EventPropGetter } from "react-big-calendar";
-import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+// import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import TaskList from "../task_list/TaskList";
@@ -14,9 +14,7 @@ import { EventComponent } from "./EventComponent";
 import { CustomToolbar } from "./Toolbar";
 import { WorkSessionSummary } from "./WorkSessionSummary";
 
-const DnDCalendar = withDragAndDrop(Calendar);
-
-// Add this custom toolbar component
+// const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function PomodoroCalendar() {
   console.log("PomodoroCalendar rerendering");
@@ -30,7 +28,6 @@ export default function PomodoroCalendar() {
     handleDeleteSession,
     handleResetSessions,
     handleDragEnd,
-    handleEventDrop,
     handleUpdateSession,
     setShowPauses,
     setFocusedEventId,
@@ -53,7 +50,7 @@ export default function PomodoroCalendar() {
         ) : (
           <div className="flex">
             <div className="h-[600px] flex-grow">
-              <DnDCalendar
+              <Calendar
                 localizer={localizer}
                 events={events}
                 className="bg-background text-foreground"
@@ -61,9 +58,8 @@ export default function PomodoroCalendar() {
                 views={["day", "agenda"]}
                 toolbar={true}
                 dayLayoutAlgorithm="no-overlap"
-                resizable={false}
+                // resizable={false}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onEventDrop={handleEventDrop as any}
                 step={5}
                 timeslots={1}
                 min={state.startTime}
@@ -81,7 +77,8 @@ export default function PomodoroCalendar() {
                         onBlur={() => setFocusedEventId(null)}
                       />
                     ) : null,
-                  toolbar: CustomToolbar,
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  toolbar: CustomToolbar as any,
                 }}
               />
             </div>

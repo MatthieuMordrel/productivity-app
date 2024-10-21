@@ -1,4 +1,5 @@
 import { PomodoroProvider } from "@/contexts/PomodoroContext";
+import { TaskProvider } from "@/contexts/TaskContext";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <PomodoroProvider>{children}</PomodoroProvider>
+        <TaskProvider>
+          <PomodoroProvider>{children}</PomodoroProvider>
+        </TaskProvider>
       </body>
     </html>
   );
