@@ -3,7 +3,6 @@
   display: none !important;
 }
 
-/* Ensure the event content takes full height */
-.rbc-event-content {
-  height: 100% !important;
+.rbc-time-slot {
+  color: red;
 }
