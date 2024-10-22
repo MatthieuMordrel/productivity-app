@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // Custom hook to check if a media query matches the current viewport
-export function useMediaQuery(query: string): boolean {
+export const useMediaQuery = (query: string): boolean => {
   // State to track whether the media query matches
   const [matches, setMatches] = useState(false);
 
@@ -26,4 +26,4 @@ export function useMediaQuery(query: string): boolean {
 
   // Return the current match state
   return matches;
-}
+};

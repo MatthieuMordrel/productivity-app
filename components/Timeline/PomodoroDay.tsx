@@ -11,8 +11,8 @@ import * as React from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { Calendar, EventPropGetter, momentLocalizer } from "react-big-calendar";
 
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import "@styles/calendar-override.css";
-import { useMediaQuery } from "@uidotdev/usehooks";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Card } from "../ui/card";

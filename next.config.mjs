@@ -11,9 +11,10 @@ const nextConfig = {
       fullUrl: true,
     },
   },
-  experimental: {
-    typedRoutes: true,
-  },
+  //can't use with turbopack
+  // experimental: {
+  //   typedRoutes: true,
+  // },
   devIndicators: {
     buildActivity: true,
     buildActivityPosition: "bottom-right",
