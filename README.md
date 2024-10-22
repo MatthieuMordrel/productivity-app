@@ -43,3 +43,7 @@ When we'll add interactivity:
 - Ensure that moving breaks on the timeline move them in the settings
 - Add the posbility to rename breaks
 - Ensure the task on the timeline and task list are synced, from one way to task list to timeline
+
+GIT:
+
+- use git log --oneline to see the commit history and retrieve old functions
