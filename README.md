@@ -5,13 +5,16 @@ TO DO:
 
 Design
 
+- Decide on the color palette (both light and dark modes)
+- Imagine global design of the page (think mobile first)
 - Show a hand moving to display the drag and drop possibilty
-- Make the calendar look better on long days
 - Add a nice shadcn opup when a sedssion is over (no sound, just a popup)
-- Make hide breaks and pauses toggles
+- Animate when changing the duration only
 
 Done:
 
+- Make the calendar look better on long days
+- Make hide breaks and pauses toggles
 - Add session timer and task name in title
 - Ensure taks name are synced from task to timeline but not from timeline to task (on deletion and renaming)
 - Add a way to edit the task name from the task list

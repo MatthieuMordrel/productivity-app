@@ -110,10 +110,6 @@ const PomodoroSettings: React.FC = () => {
 
         <BreakManager breaks={state.breaks} />
       </div>
-
-      <button className="mt-6 w-full rounded-md bg-primary py-2 text-background transition-opacity hover:opacity-90">
-        Save Settings
-      </button>
     </div>
   );
 };
