@@ -1,0 +1,18 @@
+/* Scrollbar */
+.rbc-time-content::-webkit-scrollbar {
+  width: 5px; /* Reduced width for a thinner scrollbar */
+}
+
+.rbc-time-content::-webkit-scrollbar-track {
+  background: var(--background); /* Using theme variable for consistency */
+}
+
+.rbc-time-content::-webkit-scrollbar-thumb {
+  background: var(--primary); /* Using theme variable for better integration */
+  border-radius: 2px; /* Adjusted for thinner scrollbar */
+  scroll-behavior: smooth;
+}
+
+.rbc-time-content::-webkit-scrollbar-thumb:hover {
+  background: red; /* Using primary color for hover state */
+}

@@ -1,23 +1,17 @@
 "use client";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useTaskContext } from "@/contexts/TaskContext";
 import { cn } from "@/lib/utils";
-import { Info } from "lucide-react";
 import React, { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
-import { Button } from "../ui/button";
 import Task from "./Task";
+import TaskTooltipInfo from "./TaskTooltipInfo";
 
 const TaskList: React.FC = () => {
   const { tasks, addTask } = useTaskContext();
   const [newTask, setNewTask] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [renameError, setRenameError] = useState<string | null>(null);
 
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
@@ -39,40 +33,33 @@ const TaskList: React.FC = () => {
   };
 
   return (
-    <div className="rounded-xl bg-background p-6 shadow-lg">
+    <div className="w-96 rounded-xl bg-background p-6 shadow-lg">
       <h3 className="mb-4 flex items-center justify-between text-lg font-semibold">
         Tasks
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-6 w-6">
-                <Info className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Drag and drop tasks to reorder</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <TaskTooltipInfo />
       </h3>
 
       <div className="mx-auto max-w-md bg-background p-4 text-foreground">
         {/* Add new task form */}
         <form onSubmit={handleSubmit} className="mb-4">
-          <input
-            type="text"
-            value={newTask}
-            onChange={handleInputChange}
-            placeholder="Enter a new task"
-            className={cn(
-              "mb-2 w-full rounded border bg-secondary p-2 text-foreground",
-              error && "border-red-500",
-            )}
-          />
-          {error && <p className="mb-2 text-sm text-red-500">{error}</p>}
+          <div className="space-y-2">
+            <input
+              type="text"
+              value={newTask}
+              onChange={handleInputChange}
+              placeholder="Enter a new task"
+              className={cn(
+                "w-full rounded border bg-secondary p-2 text-foreground",
+                error ? "border-red-500" : "border-gray-200",
+              )}
+            />
+            <div className="h-6">
+              {error && <p className="text-sm text-red-500">{error}</p>}
+            </div>
+          </div>
           <button
             type="submit"
-            className="w-full rounded bg-primary p-2 text-white transition-colors hover:bg-opacity-90"
+            className="mt-2 w-full rounded bg-primary p-2 text-white transition-colors hover:bg-opacity-90"
           >
             Add Task
           </button>
@@ -84,22 +71,31 @@ const TaskList: React.FC = () => {
           isCombineEnabled={false}
           ignoreContainerClipping={false}
         >
-          {(provided, snapshot) => (
+          {(provided) => (
             <ul
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className={cn(
-                "space-y-2",
-                snapshot.isUsingPlaceholder ? "bg-blue-500" : "bg-primary",
-              )}
+              className="space-y-2"
             >
               {tasks.map((task, index) => (
-                <Task key={task.id} task={task} index={index} />
+                <Task
+                  key={task.id}
+                  task={task}
+                  index={index}
+                  setRenameError={setRenameError}
+                />
               ))}
               {provided.placeholder}
             </ul>
           )}
         </Droppable>
+
+        {/* Move renameError below the task list */}
+        {renameError && (
+          <div className="mt-4 text-sm text-red-500" role="alert">
+            {renameError}
+          </div>
+        )}
       </div>
     </div>
   );

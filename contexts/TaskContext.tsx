@@ -3,11 +3,14 @@
 import { Task } from "@/lib/types";
 import React, { createContext, useContext, useState } from "react";
 
+// Define the maximum character limit as a constant
+const MAX_TASK_CHARACTERS = 25;
+
 interface TaskContextType {
   tasks: Task[];
   addTask: (content: string) => string | null;
   deleteTask: (taskId: string) => void;
-  renameTask: (taskId: string, newContent: string) => void;
+  renameTask: (taskId: string, newContent: string) => string | null;
 }
 
 //Create an object that is the context, set to undefined
@@ -20,15 +23,29 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  // Handle adding a new task
-  const addTask = (content: string): string | null => {
+  // Helper function to validate task content
+  const validateTaskContent = (content: string): string | null => {
     const trimmedContent = content.trim();
+
     if (trimmedContent === "") {
       return "Task content cannot be empty";
     }
 
+    if (trimmedContent.length > MAX_TASK_CHARACTERS) {
+      return `Task content cannot exceed ${MAX_TASK_CHARACTERS} characters`;
+    }
+
+    return null;
+  };
+
+  // Handle adding a new task
+  const addTask = (content: string): string | null => {
+    const validationError = validateTaskContent(content);
+    if (validationError) return validationError;
+
+    const trimmedContent = content.trim();
+
     // Check if a similar task already exists
-    console.log("tasks", tasks);
     const isSimilarTaskExists = tasks.some(
       (task) => task.content.toLowerCase() === trimmedContent.toLowerCase(),
     );
@@ -37,7 +54,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
       return "Two tasks cannot have the same name";
     }
 
-    // If no similar task exists, add the new task
+    // If all checks pass, add the new task
     const task: Task = {
       id: Date.now().toString(),
       content: trimmedContent,
@@ -52,12 +69,30 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // Handle renaming a task
-  const renameTask = (taskId: string, newContent: string) => {
+  const renameTask = (taskId: string, newContent: string): string | null => {
+    const validationError = validateTaskContent(newContent);
+    if (validationError) return validationError;
+
+    const trimmedContent = newContent.trim();
+
+    // Check if the new name already exists for another task
+    const isNameTaken = tasks.some(
+      (task) =>
+        task.id !== taskId &&
+        task.content.toLowerCase() === trimmedContent.toLowerCase(),
+    );
+
+    if (isNameTaken) {
+      return "Two tasks cannot have the same name";
+    }
+
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id === taskId ? { ...task, content: newContent } : task,
+        task.id === taskId ? { ...task, content: trimmedContent } : task,
       ),
     );
+
+    return null; // Indicate success
   };
 
   return (

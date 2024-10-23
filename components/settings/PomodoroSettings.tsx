@@ -1,18 +1,11 @@
 "use client";
 
 import { TimePicker } from "@/components/settings/TimePicker";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useSettingsContext } from "@/contexts/SettingsContext";
-import { RotateCcw } from "lucide-react";
 import React from "react";
-import { Button } from "../ui/button";
 import BreakManager from "./BreakManager";
 import { NumberSetting } from "./NumberSetting";
+import { SettingsTooltipReset } from "./SettingsTooltipReset";
 
 const PomodoroSettings: React.FC = () => {
   const { state, dispatch } = useSettingsContext();
@@ -43,38 +36,21 @@ const PomodoroSettings: React.FC = () => {
 
   return (
     <div className="mx-auto max-w-md rounded-lg bg-secondary p-6 shadow-lg">
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Pomodoro Settings</h2>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                onClick={() => dispatch({ type: "RESET_SETTINGS" })}
-                variant="outline"
-                size="icon"
-                className="h-8 w-8"
-              >
-                <RotateCcw className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Reset to default settings</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
       <div className="space-y-4">
-        <NumberSetting
-          label="Pomodoro Duration"
-          value={state.pomodoroDuration}
-          onChange={(value) =>
-            dispatch({ type: "SET_POMODORO_DURATION", payload: value })
-          }
-          min={1}
-          max={60}
-          step={1}
-          presetValues={[25, 45, 60]}
-        />
+        <div className="flex items-center justify-between">
+          <NumberSetting
+            label="Pomodoro Duration"
+            value={state.pomodoroDuration}
+            onChange={(value) =>
+              dispatch({ type: "SET_POMODORO_DURATION", payload: value })
+            }
+            min={1}
+            max={60}
+            step={1}
+            presetValues={[25, 45, 60]}
+          />
+          <SettingsTooltipReset className="self-start" />
+        </div>
 
         <NumberSetting
           label="Pause Duration"

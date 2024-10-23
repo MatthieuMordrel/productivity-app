@@ -7,6 +7,7 @@ import { eventPropGetter } from "@/lib/functions/calendar_functions";
 import "@styles/calendar-agenda.css";
 import "@styles/calendar-event.css";
 import "@styles/calendar-override.css";
+import "@styles/calendar-scrollbar.css";
 import { AnimatePresence, motion } from "framer-motion";
 import moment from "moment";
 import * as React from "react";

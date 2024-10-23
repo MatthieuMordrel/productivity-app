@@ -18,6 +18,7 @@ const config: Config = {
         foreground: "var(--foreground)",
         primary: "var(--primary)",
         secondary: "var(--secondary)",
+        accent: "var(--accent)",
         // Add these new color definitions
         popover: {
           DEFAULT: "var(--popover)",
@@ -50,6 +51,7 @@ const config: Config = {
           "--foreground": "#1C1F2E",
           "--primary": "#1C1F2E",
           "--secondary": "#F8F9FA",
+          "--accent": theme("colors.gray.200"),
           // Add these new CSS variables
           "--popover": "hsl(0 0% 100%)",
           "--popover-foreground": "hsl(222.2 84% 4.9%)",

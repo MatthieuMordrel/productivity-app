@@ -3,13 +3,7 @@
 import { useCurrentSession } from "@/hooks/useCurrentSession";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { CheckCircle, Clock, Coffee, PauseCircle } from "lucide-react";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 interface PomodoroTimerProps {
   onComplete?: () => void;
@@ -24,7 +18,8 @@ interface PomodoroTimerProps {
  * @param onComplete - Callback fired when the timer completes
  */
 export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
-  const { currentSession, remainingTime } = useCurrentSession();
+  const { currentSession, remainingTime, progress } = useCurrentSession();
+  console.log(remainingTime);
   const [isHovered, setIsHovered] = useState(false);
   const controls = useAnimation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -56,23 +51,6 @@ export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
       }
     }
   }, []);
-
-  // Time calculation and display logic
-  const { minutes, seconds, progress } = useMemo(() => {
-    if (!currentSession || !remainingTime) {
-      return { minutes: 0, seconds: 0, progress: 0 };
-    }
-
-    const [minutesStr, secondsStr] = remainingTime.split(":");
-    const minutes = parseInt(minutesStr, 10);
-    const seconds = parseInt(secondsStr, 10);
-
-    const total = currentSession.end.getTime() - currentSession.start.getTime();
-    const elapsed = new Date().getTime() - currentSession.start.getTime();
-    const progress = Math.min(elapsed / total, 1);
-
-    return { minutes, seconds, progress };
-  }, [currentSession, remainingTime]);
 
   // Animation control and state management
   useEffect(() => {
@@ -119,6 +97,7 @@ export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
 
   const { type, taskTitle } = currentSession;
   const colors = getTypeColors(type);
+  const [minutes, seconds] = remainingTime.split(":").map(Number);
 
   return (
     <div

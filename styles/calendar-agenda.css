@@ -14,3 +14,7 @@ rbc-agenda-event-cell */
 .rbc-agenda-date-cell {
   display: none !important;
 }
+
+.rbc-agenda-time-cell {
+  color: white !important;
+}

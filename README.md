@@ -3,17 +3,23 @@ TO DO:
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
 - Add a way to reset the task from the timeline
 - Add a way to center on the current time
+- Make the calendar either work on two days, or limit end day settings to 23h59
+- Add a placeholder when you drag task into the calendar
+- Add a tooltip ++ to click on the task and see which sessions it's linked to
+- Add a settings to set the start time to now visible on the main page
 
 Design
 
 - Decide on the color palette (both light and dark modes)
 - Imagine global design of the page (think mobile first)
 - Show a hand moving to display the drag and drop possibilty
-- Add a nice shadcn opup when a sedssion is over (no sound, just a popup)
+- Add a nice shadcn popup when a session is over (no sound, just a popup)
 - Animate when changing the duration only
+- Create tooltip for day/agenda view and settings
 
 Done:
 
+- Limit task name to 25 characters
 - Make the calendar look better on long days
 - Make hide breaks and pauses toggles
 - Add session timer and task name in title
@@ -36,7 +42,7 @@ Done:
 - Add a way to remove tasks from the task list
 - Add the total hours worked expected to be worked during the day
 
-When we'll add interactivity:
+If and when we'll add interactivity:
 
 - Add a way to click on a task in the timeline and edit it
 - Add a way to click on a task in the timeline and remove it
