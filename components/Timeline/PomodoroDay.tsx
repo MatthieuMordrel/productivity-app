@@ -6,6 +6,7 @@ import { useSettingsContext } from "@/contexts/SettingsContext";
 import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { eventPropGetter } from "@/lib/functions/calendar_functions";
+import "@styles/calendar-agenda.css";
 import "@styles/calendar-event.css";
 import "@styles/calendar-override.css";
 import { AnimatePresence, motion } from "framer-motion";

@@ -1,0 +1,16 @@
+/* rbc-agenda-table
+rbc-agenda-view
+rbc-agenda-content
+rbc-agenda-table
+rbc-agenda-date-cell
+rbc-agenda-time-cell 
+rbc-agenda-event-cell */
+
+/* Hide the date header */
+.rbc-agenda-table thead th:first-child {
+  display: none !important;
+}
+
+.rbc-agenda-date-cell {
+  display: none !important;
+}
