@@ -5,7 +5,6 @@ export const eventPropGetter: EventPropGetter<Session> = (event) => ({
   style: {
     cursor: "default",
     outline: "none",
-    paddingLeft: "10px",
     backgroundColor:
       event.type === "Work"
         ? "var(--primary)"

@@ -15,7 +15,8 @@ export const EventComponent = ({ event }: { event: Session }) => {
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="@container relative h-full rounded-md bg-inherit bg-opacity-10 text-white shadow-sm transition-colors duration-200 hover:bg-opacity-20"
+          //the background is decided by the eventPropGetter
+          className="relative h-full rounded-md bg-inherit bg-opacity-10 text-white shadow-sm transition-colors duration-200 @container hover:bg-opacity-20"
         >
           <div className="flex h-full flex-col justify-between">
             {/* Top section: Title and Duration */}

@@ -4,15 +4,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSessionsContext } from "@/contexts/SessionsContext";
 import { useSettingsContext } from "@/contexts/SettingsContext";
 import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { eventPropGetter } from "@/lib/functions/calendar_functions";
+import "@styles/calendar-event.css";
+import "@styles/calendar-override.css";
 import { AnimatePresence, motion } from "framer-motion";
 import moment from "moment";
 import * as React from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { Calendar, EventPropGetter, momentLocalizer } from "react-big-calendar";
-
-import { useMediaQuery } from "@/hooks/useMediaQuery";
-import "@styles/calendar-override.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Card } from "../ui/card";

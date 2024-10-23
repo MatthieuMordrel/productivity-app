@@ -96,7 +96,12 @@ const TaskList: React.FC = () => {
         </button>
       </form>
 
-      <Droppable droppableId="taskList" isDropDisabled={true}>
+      <Droppable
+        droppableId="taskList"
+        isDropDisabled={true}
+        isCombineEnabled={false}
+        ignoreContainerClipping={false}
+      >
         {(provided, snapshot) => (
           <ul
             {...provided.droppableProps}

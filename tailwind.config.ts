@@ -46,10 +46,10 @@ const config: Config = {
       console.log("Tailwind plugin is running");
       addBase({
         ":root": {
-          "--background": theme("colors.gray.50"),
-          "--foreground": theme("colors.gray.900"),
-          "--primary": theme("colors.teal.800"),
-          "--secondary": theme("colors.rose.200"),
+          "--background": "#F8F9FA",
+          "--foreground": "#1C1F2E",
+          "--primary": "#98DBC6",
+          "--secondary": "#FF6B6B",
           // Add these new CSS variables
           "--popover": "hsl(0 0% 100%)",
           "--popover-foreground": "hsl(222.2 84% 4.9%)",
