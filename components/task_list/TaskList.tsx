@@ -1,13 +1,13 @@
 "use client";
 
-import { useTaskContext } from "@/contexts/TaskContext";
-import { cn } from "@/lib/utils";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@radix-ui/react-tooltip";
+} from "@/components/ui/tooltip";
+import { useTaskContext } from "@/contexts/TaskContext";
+import { cn } from "@/lib/utils";
 import { Info } from "lucide-react";
 import React, { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";

@@ -2,6 +2,7 @@ TO DO:
 
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
 - Add a way to reset the task from the timeline
+- Add a way to center on the current time
 
 Design
 

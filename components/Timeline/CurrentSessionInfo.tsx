@@ -1,68 +1,254 @@
-import { useSessionsContext } from "@/contexts/SessionsContext";
-import { useTitle } from "@/hooks/useTitle"; // Assume we create this custom hook
-import { Session } from "@/lib/types";
-import React, { useEffect, useState } from "react";
+"use client";
 
-export const CurrentSessionInfo: React.FC = () => {
-  const { sessions } = useSessionsContext();
-  const [currentSession, setCurrentSession] = useState<Session | null>(null);
-  const [remainingTime, setRemainingTime] = useState<string>("");
-  const setTitle = useTitle(); // Custom hook to update document title
+import { useCurrentSession } from "@/hooks/useCurrentSession";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
+import { CheckCircle, Clock, Coffee, PauseCircle } from "lucide-react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
+interface PomodoroTimerProps {
+  onComplete?: () => void;
+}
+
+/**
+ * PomodoroTimer Component
+ *
+ * A visual timer component that displays the current Pomodoro session
+ * with animated progress indication and particle effects.
+ *
+ * @param onComplete - Callback fired when the timer completes
+ */
+export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
+  const { currentSession, remainingTime } = useCurrentSession();
+  const [isHovered, setIsHovered] = useState(false);
+  const controls = useAnimation();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Particle system initialization and management
   useEffect(() => {
-    console.log("useEffect");
-    const updateCurrentSession = () => {
-      const now = new Date();
-      const current = sessions.find(
-        (session) => now >= session.start && now < session.end,
-      );
-      setCurrentSession(current || null);
-    };
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        let animationFrameId: number;
 
-    const updateRemainingTime = () => {
-      if (currentSession) {
-        const now = new Date();
-        const remainingMs = currentSession.end.getTime() - now.getTime();
-        const remainingMinutes = Math.floor(remainingMs / 60000);
-        const remainingSeconds = Math.floor((remainingMs % 60000) / 1000);
-        const newRemainingTime = `${remainingMinutes}:${remainingSeconds.toString().padStart(2, "0")}`;
-        setRemainingTime(newRemainingTime);
+        const particles: Particle[] = [];
+        for (let i = 0; i < 50; i++) {
+          particles.push(new Particle(canvas));
+        }
 
-        // Update the document title with the remaining time
-        setTitle(`${newRemainingTime} - ${currentSession.taskTitle}`);
-      } else {
-        setRemainingTime("");
-        setTitle("No active session"); // Reset title when no active session
+        const animate = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach((particle) => particle.update(ctx));
+          animationFrameId = requestAnimationFrame(animate);
+        };
+
+        animate();
+
+        return () => {
+          cancelAnimationFrame(animationFrameId);
+        };
       }
-    };
+    }
+  }, []);
 
-    // Initial update
-    updateCurrentSession();
-    updateRemainingTime();
+  // Time calculation and display logic
+  const { minutes, seconds, progress } = useMemo(() => {
+    if (!currentSession || !remainingTime) {
+      return { minutes: 0, seconds: 0, progress: 0 };
+    }
 
-    // Set up intervals for updates
-    const sessionInterval = setInterval(updateCurrentSession, 1000);
-    const timeInterval = setInterval(updateRemainingTime, 1000);
+    const [minutesStr, secondsStr] = remainingTime.split(":");
+    const minutes = parseInt(minutesStr, 10);
+    const seconds = parseInt(secondsStr, 10);
 
-    return () => {
-      clearInterval(sessionInterval);
-      clearInterval(timeInterval);
-    };
-  }, [sessions, currentSession, setTitle]);
+    const total = currentSession.end.getTime() - currentSession.start.getTime();
+    const elapsed = new Date().getTime() - currentSession.start.getTime();
+    const progress = Math.min(elapsed / total, 1);
+
+    return { minutes, seconds, progress };
+  }, [currentSession, remainingTime]);
+
+  // Animation control and state management
+  useEffect(() => {
+    if (currentSession) {
+      controls.start({ pathLength: progress });
+
+      if (progress === 1) {
+        onComplete?.();
+      }
+    }
+  }, [currentSession, progress, controls, onComplete]);
+
+  // Type-based styling
+  const getTypeColors = useCallback((type: "Work" | "Pause" | "Break") => {
+    switch (type) {
+      case "Work":
+        return { stroke: "#3B82F6", icon: "text-blue-500 dark:text-blue-400" };
+      case "Pause":
+        return {
+          stroke: "#F59E0B",
+          icon: "text-yellow-500 dark:text-yellow-400",
+        };
+      case "Break":
+        return {
+          stroke: "#10B981",
+          icon: "text-green-500 dark:text-green-400",
+        };
+    }
+  }, []);
+
+  const TypeIcon = {
+    Work: Clock,
+    Break: Coffee,
+    Pause: PauseCircle,
+  };
 
   if (!currentSession) {
-    return <div className="text-foreground">No active session</div>;
+    return (
+      <div className="flex h-64 w-64 items-center justify-center rounded-full bg-gradient-to-br from-gray-100 to-gray-200 text-gray-400 shadow-lg backdrop-blur-sm dark:from-gray-800 dark:to-gray-900 dark:text-gray-500">
+        <p className="text-lg font-semibold">No active session</p>
+      </div>
+    );
   }
 
+  const { type, taskTitle } = currentSession;
+  const colors = getTypeColors(type);
+
   return (
-    <div className="rounded-lg bg-primary p-4 text-foreground shadow-md">
-      <h2 className="mb-2 text-xl font-bold">Current Session</h2>
-      <p className="mb-1">
-        <span className="font-semibold">Task:</span> {currentSession.taskTitle}
-      </p>
-      <p>
-        <span className="font-semibold">Remaining Time:</span> {remainingTime}
-      </p>
+    <div
+      className="relative h-64 w-64 cursor-pointer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 rounded-full"
+        width={256}
+        height={256}
+      />
+      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400/30 to-purple-500/30 shadow-lg backdrop-blur-sm dark:from-blue-600/30 dark:to-purple-700/30" />
+      <motion.div
+        className="absolute inset-1 rounded-full bg-white/90 dark:bg-gray-800/90"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      />
+      <svg
+        className="absolute inset-0"
+        width="100%"
+        height="100%"
+        viewBox="0 0 100 100"
+      >
+        <motion.circle
+          cx="50"
+          cy="50"
+          r="45"
+          fill="none"
+          stroke={colors.stroke}
+          strokeWidth="5"
+          strokeDasharray="0 1"
+          animate={controls}
+        />
+      </svg>
+      <div className="absolute inset-4 flex flex-col items-center justify-center rounded-full text-center">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={type}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="flex flex-col items-center"
+          >
+            {React.createElement(TypeIcon[type], {
+              className: `mb-2 h-6 w-6 ${colors.icon}`,
+            })}
+            <h2 className="text-sm font-semibold text-gray-600 dark:text-gray-300">
+              {type} Session
+            </h2>
+          </motion.div>
+        </AnimatePresence>
+        <p className="mt-2 text-3xl font-bold text-gray-800 dark:text-gray-100">
+          {minutes.toString().padStart(2, "0")}:
+          {seconds.toString().padStart(2, "0")}
+        </p>
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          {taskTitle}
+        </p>
+      </div>
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="absolute inset-0 flex items-center justify-center rounded-full bg-black/70 text-white"
+          >
+            <div className="text-center">
+              <p className="text-lg font-semibold">Progress</p>
+              <p className="text-3xl font-bold">
+                {Math.round(progress * 100)}%
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {progress === 1 && (
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="absolute inset-0 flex items-center justify-center rounded-full bg-green-500/90"
+        >
+          <CheckCircle className="h-16 w-16 text-white" />
+        </motion.div>
+      )}
     </div>
   );
-};
+}
+
+/**
+ * Particle class for creating and managing individual particles
+ * in the background animation.
+ */
+class Particle {
+  x: number;
+  y: number;
+  size: number;
+  speedX: number;
+  speedY: number;
+
+  constructor(canvas: HTMLCanvasElement) {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 3 + 1;
+    this.speedX = Math.random() * 3 - 1.5;
+    this.speedY = Math.random() * 3 - 1.5;
+  }
+
+  update(ctx: CanvasRenderingContext2D) {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    if (this.size > 0.2) this.size -= 0.1;
+
+    this.draw(ctx);
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+    ctx.lineWidth = 2;
+
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.fill();
+  }
+}
