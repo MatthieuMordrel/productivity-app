@@ -48,8 +48,8 @@ const config: Config = {
         ":root": {
           "--background": "#F8F9FA",
           "--foreground": "#1C1F2E",
-          "--primary": "#98DBC6",
-          "--secondary": "#FF6B6B",
+          "--primary": "#1C1F2E",
+          "--secondary": "#F8F9FA",
           // Add these new CSS variables
           "--popover": "hsl(0 0% 100%)",
           "--popover-foreground": "hsl(222.2 84% 4.9%)",

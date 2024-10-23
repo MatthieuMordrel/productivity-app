@@ -1,3 +1,4 @@
+import { PomodoroCalendarProvider } from "@/contexts/SessionsContext";
 import { PomodoroProvider } from "@/contexts/SettingsContext";
 import { TaskProvider } from "@/contexts/TaskContext";
 import "@/styles/globals.css";
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <TaskProvider>
-          <PomodoroProvider>{children}</PomodoroProvider>
-        </TaskProvider>
+        <PomodoroProvider>
+          <TaskProvider>
+            <PomodoroCalendarProvider>{children}</PomodoroCalendarProvider>
+          </TaskProvider>
+        </PomodoroProvider>
       </body>
     </html>
   );
