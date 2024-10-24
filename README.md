@@ -5,7 +5,9 @@ TO DO:
 - Add a way to center on the current time
 - Make the calendar either work on two days, or limit end day settings to 23h59
 - Add a placeholder when you drag task into the calendar
-- Add a tooltip ++ to click on the task and see which sessions it's linked to
+- Add a sonner to click on the task and see which sessions it's linked to
+- add a settings to add sound with the sonner and end of session + start of session
+- add custom sound options
 - Add a settings to set the start time to now visible on the main page
 
 Design
@@ -16,6 +18,8 @@ Design
 - Add a nice shadcn popup when a session is over (no sound, just a popup)
 - Animate when changing the duration only
 - Create tooltip for day/agenda view and settings
+- Try changing the color when hovering over a session with a task
+- Try changing the color when the session has a task associated
 
 Done:
 

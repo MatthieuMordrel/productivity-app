@@ -1,10 +1,8 @@
 "use client";
 
+import { MAX_TASK_CHARACTERS } from "@/lib/constants";
 import { Task } from "@/lib/types";
 import React, { createContext, useContext, useState } from "react";
-
-// Define the maximum character limit as a constant
-const MAX_TASK_CHARACTERS = 25;
 
 interface TaskContextType {
   tasks: Task[];
@@ -63,11 +61,6 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
     return null; // Indicate success
   };
 
-  // Handle deleting a task
-  const deleteTask = (taskId: string) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-  };
-
   // Handle renaming a task
   const renameTask = (taskId: string, newContent: string): string | null => {
     const validationError = validateTaskContent(newContent);
@@ -93,6 +86,11 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
     );
 
     return null; // Indicate success
+  };
+
+  // Handle deleting a task
+  const deleteTask = (taskId: string) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
   };
 
   return (

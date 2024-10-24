@@ -19,7 +19,6 @@ interface PomodoroTimerProps {
  */
 export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
   const { currentSession, remainingTime, progress } = useCurrentSession();
-  console.log(remainingTime);
   const [isHovered, setIsHovered] = useState(false);
   const controls = useAnimation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -67,15 +66,18 @@ export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
   const getTypeColors = useCallback((type: "Work" | "Pause" | "Break") => {
     switch (type) {
       case "Work":
-        return { stroke: "#3B82F6", icon: "text-blue-500 dark:text-blue-400" };
+        return {
+          stroke: "var(--work)",
+          icon: "text-blue-500 dark:text-blue-400",
+        };
       case "Pause":
         return {
-          stroke: "#F59E0B",
+          stroke: "var(--pause)",
           icon: "text-yellow-500 dark:text-yellow-400",
         };
       case "Break":
         return {
-          stroke: "#10B981",
+          stroke: "var(--break)",
           icon: "text-green-500 dark:text-green-400",
         };
     }

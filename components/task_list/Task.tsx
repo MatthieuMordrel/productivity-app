@@ -1,8 +1,8 @@
 import { useTaskContext } from "@/contexts/TaskContext";
+import { useTaskActions } from "@/hooks/useTaskActions";
 import type { Task } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Edit2, Trash2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 
 export default function Task({
@@ -14,63 +14,17 @@ export default function Task({
   index: number;
   setRenameError: (error: string | null) => void;
 }) {
-  const { deleteTask, renameTask } = useTaskContext();
-  const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
-  const [editedTaskContent, setEditedTaskContent] = useState<string>("");
-  const [originalTaskContent, setOriginalTaskContent] = useState<string>(""); // New state to store original content
-  const editInputRef = useRef<HTMLInputElement>(null);
+  const {
+    editingTaskId,
+    editedTaskContent,
+    editInputRef,
+    handleEditClick,
+    handleEditInputChange,
+    handleEditKeyPress,
+    handleEditSave,
+  } = useTaskActions(task.id, task.content, setRenameError);
 
-  // Trigger when the user clicks the edit button
-  const handleEditClick = (taskId: string, content: string) => {
-    setEditingTaskId(taskId);
-    setEditedTaskContent(content);
-    setOriginalTaskContent(content); // Store the original content
-    setRenameError(null);
-  };
-
-  // Effect to focus on edit input when entering edit mode
-  useEffect(() => {
-    if (editingTaskId && editInputRef.current) {
-      editInputRef.current.focus();
-    }
-  }, [editingTaskId]);
-
-  // Handle edit input change
-  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedTaskContent(e.target.value);
-    setRenameError(null);
-  };
-
-  // Trigger when the user presses enter or escape in edit input
-  const handleEditKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleEditSave();
-    } else if (e.key === "Escape") {
-      handleEditCancel();
-    }
-  };
-
-  // Update the handleEditSave function
-  const handleEditSave = () => {
-    if (editingTaskId && editedTaskContent.trim()) {
-      const error = renameTask(editingTaskId, editedTaskContent.trim());
-      if (error) {
-        setRenameError(error);
-        // Keep focus on the input field when there's an error
-        editInputRef.current?.focus();
-      } else {
-        setEditingTaskId(null);
-        setRenameError(null);
-      }
-    }
-  };
-
-  // Handle edit cancel
-  const handleEditCancel = () => {
-    setEditingTaskId(null);
-    setEditedTaskContent(originalTaskContent); // Revert to original content
-    setRenameError(null);
-  };
+  const { deleteTask } = useTaskContext();
 
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -102,7 +56,7 @@ export default function Task({
             )}
             <div className="flex flex-shrink-0 space-x-2">
               <button
-                onClick={() => handleEditClick(task.id, task.content)}
+                onClick={() => handleEditClick()}
                 className="text-foreground opacity-50 transition-opacity hover:opacity-100"
                 aria-label="Edit task"
               >

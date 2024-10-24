@@ -3,7 +3,6 @@
 import { useSessionsContext } from "@/contexts/SessionsContext";
 import { useSettingsContext } from "@/contexts/SettingsContext";
 import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
-import { eventPropGetter } from "@/lib/functions/calendar_functions";
 import "@styles/calendar-agenda.css";
 import "@styles/calendar-event.css";
 import "@styles/calendar-override.css";
@@ -34,9 +33,12 @@ export default function PomodoroDay() {
     showBreaks,
     setShowPauses,
     setShowBreaks,
+    eventPropGetter,
   } = useCalendarHelpers(sessions);
 
-  const [view, setView] = React.useState("day");
+  console.log(filteredEvents);
+
+  const [view, setView] = React.useState<"day" | "agenda">("day");
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -77,10 +79,13 @@ export default function PomodoroDay() {
                     max={state.endTime}
                     eventPropGetter={eventPropGetter as EventPropGetter<object>}
                     components={{
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      event: ({ event }: { event: any }) => (
-                        <EventComponent event={event} />
-                      ),
+                      //react-big-calendar passes event and titles as props
+                      event: (props) =>
+                        view === "day" ? (
+                          <EventComponent event={props.event} view={view} />
+                        ) : (
+                          <div>{props.event.taskTitle}</div>
+                        ),
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       toolbar: CustomToolbar as any,
                     }}

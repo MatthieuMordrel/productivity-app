@@ -1,6 +1,7 @@
 import { useSettingsContext } from "@/contexts/SettingsContext";
 import { Session } from "@/lib/types";
 import { useCallback, useMemo, useState } from "react";
+import { EventPropGetter } from "react-big-calendar";
 
 export const useCalendarHelpers = (sessions: Session[]) => {
   const { state } = useSettingsContext();
@@ -50,6 +51,21 @@ export const useCalendarHelpers = (sessions: Session[]) => {
     return now;
   }, []);
 
+  //Control the style of the events
+  const eventPropGetter: EventPropGetter<Session> = (event) => ({
+    style: {
+      cursor: "default",
+      outline: "none",
+      color: "white",
+      backgroundColor:
+        event?.type === "Work"
+          ? "var(--work)"
+          : event?.type === "Break"
+            ? "var(--break)"
+            : "var(--pause)",
+    },
+  });
+
   return {
     showPauses,
     setShowPauses,
@@ -58,5 +74,6 @@ export const useCalendarHelpers = (sessions: Session[]) => {
     filteredEvents,
     stepSize,
     getCurrentScrollTime,
+    eventPropGetter,
   };
 };

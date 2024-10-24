@@ -1,8 +1,8 @@
 "use client";
 
+import PomodoroTimer from "@/components/Pomodoro Timer/PomodoroTimer";
 import TaskList from "@/components/task_list/TaskList";
 import PomodoroDay from "@/components/Timeline/PomodoroDay";
-import PomodoroTimer from "@/components/Timeline/PomodoroTimer";
 import { useSessionsContext } from "@/contexts/SessionsContext";
 import { DragDropContext } from "react-beautiful-dnd";
 

@@ -6,11 +6,15 @@ export default function ViewSwitch({
   view,
   setView,
 }: {
-  view: string;
-  setView: (view: string) => void;
+  view: "day" | "agenda";
+  setView: (view: "day" | "agenda") => void;
 }) {
   return (
-    <Tabs value={view} onValueChange={setView} className="">
+    <Tabs
+      value={view}
+      onValueChange={(value) => setView(value as "day" | "agenda")}
+      className=""
+    >
       <div className="flex items-center justify-between">
         <TabsList>
           <TabsTrigger value="day" className="flex items-center space-x-2">

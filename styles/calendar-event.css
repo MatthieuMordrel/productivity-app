@@ -1,3 +1,14 @@
 .rbc-event-label {
   display: none !important;
 }
+
+.rbc-event {
+  min-height: unset !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.rbc-event-content {
+  height: 100% !important;
+  min-height: unset !important;
+}

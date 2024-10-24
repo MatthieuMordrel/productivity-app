@@ -19,6 +19,9 @@ const config: Config = {
         primary: "var(--primary)",
         secondary: "var(--secondary)",
         accent: "var(--accent)",
+        work: "var(--work)",
+        pause: "var(--pause)",
+        break: "var(--break)",
         // Add these new color definitions
         popover: {
           DEFAULT: "var(--popover)",
@@ -45,6 +48,7 @@ const config: Config = {
   plugins: [
     plugin(({ theme, addBase }) => {
       console.log("Tailwind plugin is running");
+      // console.log(theme);
       addBase({
         ":root": {
           "--background": "#F8F9FA",
@@ -52,6 +56,9 @@ const config: Config = {
           "--primary": "#1C1F2E",
           "--secondary": "#F8F9FA",
           "--accent": theme("colors.gray.200"),
+          "--work": theme("colors.slate.700"),
+          "--pause": "#F59E0B",
+          "--break": "#10B981",
           // Add these new CSS variables
           "--popover": "hsl(0 0% 100%)",
           "--popover-foreground": "hsl(222.2 84% 4.9%)",
