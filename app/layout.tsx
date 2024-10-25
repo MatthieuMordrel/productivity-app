@@ -1,8 +1,11 @@
 import { PomodoroCalendarProvider } from "@/contexts/SessionsContext";
 import { PomodoroProvider } from "@/contexts/SettingsContext";
 import { TaskProvider } from "@/contexts/TaskContext";
+import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
+import Footer from "./footer";
+import Navbar from "./navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn(inter.className, "bg-background text-foreground")}>
         <PomodoroProvider>
           <TaskProvider>
-            <PomodoroCalendarProvider>{children}</PomodoroCalendarProvider>
+            <PomodoroCalendarProvider>
+              <Navbar />
+              {children}
+              <Footer />
+            </PomodoroCalendarProvider>
           </TaskProvider>
         </PomodoroProvider>
       </body>

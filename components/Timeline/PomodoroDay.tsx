@@ -9,14 +9,20 @@ import "@styles/calendar-override.css";
 import "@styles/calendar-scrollbar.css";
 import { AnimatePresence, motion } from "framer-motion";
 import moment from "moment";
-import * as React from "react";
-import { Calendar, EventPropGetter, momentLocalizer } from "react-big-calendar";
+import { useState } from "react";
+import {
+  Calendar,
+  EventPropGetter,
+  momentLocalizer,
+  View,
+} from "react-big-calendar";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Card } from "../ui/card";
 import CalendarButtons from "./CalendarButtons";
 import { EventComponent } from "./EventComponent";
 import NoSession from "./NoSession";
+import { Time } from "./Time";
 import { CustomToolbar } from "./Toolbar";
 import ViewSwitch from "./ViewSwitch";
 
@@ -36,20 +42,25 @@ export default function PomodoroDay() {
     eventPropGetter,
   } = useCalendarHelpers(sessions);
 
-  console.log(filteredEvents);
+  // console.log(filteredEvents);
 
-  const [view, setView] = React.useState<"day" | "agenda">("day");
+  const [view, setView] = useState<View>("day");
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4">
       <Card className="overflow-hidden">
         <div className="p-6">
           {sessions.length === 0 ? (
             <NoSession />
           ) : (
             <div className="flex h-full flex-col space-y-4">
+              {/* Add the current date and time display here */}
+              <Time />
+
               <div className="flex items-center justify-between">
-                <ViewSwitch view={view} setView={setView} />
+                <div className="flex items-center space-x-4">
+                  <ViewSwitch view={view} setView={setView} />
+                </div>
                 <CalendarButtons
                   showPauses={showPauses}
                   setShowPauses={setShowPauses}
@@ -57,6 +68,7 @@ export default function PomodoroDay() {
                   setShowBreaks={setShowBreaks}
                 />
               </div>
+
               <AnimatePresence mode="wait">
                 <motion.div
                   key={view}

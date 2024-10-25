@@ -14,8 +14,8 @@ type PomodoroAction =
   | { type: "RESET_SETTINGS" };
 
 const initialState: PomodoroState = {
-  pomodoroDuration: 25,
-  pauseDuration: 5,
+  pomodoroDuration: 45,
+  pauseDuration: 10,
   startTime: new Date(new Date().setHours(9, 0, 0, 0)),
   endTime: new Date(new Date().setHours(17, 0, 0, 0)),
   breaks: [], // Initialize with an empty array of breaks

@@ -1,7 +1,7 @@
 TO DO:
 
+- Add a way to zoom and dezoom the timeline
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
-- Add a way to reset the task from the timeline
 - Add a way to center on the current time
 - Make the calendar either work on two days, or limit end day settings to 23h59
 - Add a placeholder when you drag task into the calendar
@@ -9,6 +9,7 @@ TO DO:
 - add a settings to add sound with the sonner and end of session + start of session
 - add custom sound options
 - Add a settings to set the start time to now visible on the main page
+- Ensure that the tooltip works on click too
 
 Design
 
@@ -58,3 +59,16 @@ If and when we'll add interactivity:
 GIT:
 
 - use git log --oneline to see the commit history and retrieve old functions
+
+Prompt:
+
+I trigger my switch in @CalendarButtons.tsx . It updates my state in @PomodoroDay.tsx that is @showPauses , this showpauses, trigger the useMemeo function @filteredEvents because the dependecy changes. This triggers a rerender of my calendar with the new filterered events pass as the events props. This triggers also a rerender of all my @EventComponent.tsx because the event changed and react big calendar rerenders the event then
+
+Info in @WorkSessionSummary.tsx:
+
+Number of sessions planned during the day
+Total time expected working
+Total time worked
+Total time remaining
+Start time
+End time

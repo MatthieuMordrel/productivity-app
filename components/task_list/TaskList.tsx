@@ -1,5 +1,6 @@
 "use client";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTaskContext } from "@/contexts/TaskContext";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
@@ -33,13 +34,14 @@ const TaskList: React.FC = () => {
   };
 
   return (
-    <div className="w-96 rounded-xl bg-background p-6 shadow-lg">
-      <h3 className="mb-4 flex items-center justify-between text-lg font-semibold">
-        Tasks
-        <TaskTooltipInfo />
-      </h3>
-
-      <div className="mx-auto max-w-md bg-background p-4 text-foreground">
+    <Card className="min-w-96">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between text-lg">
+          Tasks
+          <TaskTooltipInfo />
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
         {/* Add new task form */}
         <form onSubmit={handleSubmit} className="mb-4">
           <div className="space-y-2">
@@ -96,8 +98,8 @@ const TaskList: React.FC = () => {
             {renameError}
           </div>
         )}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

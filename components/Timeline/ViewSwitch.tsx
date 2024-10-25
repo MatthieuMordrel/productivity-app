@@ -1,13 +1,14 @@
 "use client";
 import { CalendarDays, List } from "lucide-react";
+import { View } from "react-big-calendar";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 
 export default function ViewSwitch({
   view,
   setView,
 }: {
-  view: "day" | "agenda";
-  setView: (view: "day" | "agenda") => void;
+  view: View;
+  setView: (view: View) => void;
 }) {
   return (
     <Tabs

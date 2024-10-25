@@ -21,7 +21,7 @@ const TooltipContent = React.forwardRef<
     className={cn(
       "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md",
       // Faster animation classes
-      "duration-[50] animate-in fade-in-0 zoom-in-95",
+      "duration-100 animate-in fade-in-0 zoom-in-95",
       // Faster exit animation
       "data-[state=closed]:duration-75 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
       // Faster slide animations

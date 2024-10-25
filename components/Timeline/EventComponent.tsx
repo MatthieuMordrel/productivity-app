@@ -1,22 +1,29 @@
-import { useResizeObserver } from "@/hooks/useResizeObserver";
 import { Session } from "@lib/types";
 import { Clock, Coffee, PauseCircle } from "lucide-react";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
+import { View } from "react-big-calendar";
 
 export const EventComponent = ({
   event,
   view,
 }: {
   event: Session;
-  view: "day" | "agenda";
+  view: View;
 }) => {
   const [componentHeight, setComponentHeight] = useState<number>(0);
-  const { ref: resizeRef } = useResizeObserver((entry) => {
-    setComponentHeight(entry.contentRect.height);
-  });
-  console.log(componentHeight);
+  const parentRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const element = parentRef.current;
+    if (element) {
+      // Measure and set the height after each render
+      const newHeight = element.offsetHeight;
+      setComponentHeight(newHeight); // This will trigger a rerender if the height changes
+    }
+    // console.log(componentHeight);
+  }, [componentHeight]);
 
   const durationMinutes = moment(event.end).diff(
     moment(event.start),
@@ -25,9 +32,9 @@ export const EventComponent = ({
 
   // Define color schemes for different event types
   const colorSchemes = {
-    Work: "bg-work text-slate-100",
-    Pause: "bg-pause text-emerald-50",
-    Break: "bg-break text-amber-50",
+    Work: "bg-work ",
+    Pause: "bg-pause ",
+    Break: "bg-break ",
   };
 
   // Determine the appropriate icon based on event type
@@ -49,7 +56,7 @@ export const EventComponent = ({
         <div
           ref={(element) => {
             provided.innerRef(element);
-            if (element) resizeRef.current = element;
+            parentRef.current = element;
           }}
           {...provided.droppableProps}
           className={`relative h-full rounded-md shadow-sm ${colorSchemes[event.type]}`}

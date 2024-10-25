@@ -8,11 +8,16 @@
 }
 
 .rbc-time-content::-webkit-scrollbar-thumb {
-  background: var(--primary); /* Using theme variable for better integration */
+  background: var(--work); /* Using theme variable for better integration */
   border-radius: 2px; /* Adjusted for thinner scrollbar */
   scroll-behavior: smooth;
+  opacity: 0.1;
 }
 
 .rbc-time-content::-webkit-scrollbar-thumb:hover {
-  background: red; /* Using primary color for hover state */
+  background: var(--primary); /* Using primary color for hover state */
+}
+
+.rbc-time-content::-webkit-scrollbar-thumb:active {
+  background: var(--primary); /* Using primary color for hover state */
 }

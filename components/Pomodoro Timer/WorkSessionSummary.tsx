@@ -1,3 +1,4 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSessionsContext } from "@/contexts/SessionsContext";
 import React from "react";
 
@@ -24,19 +25,23 @@ export const WorkSessionSummary: React.FC = () => {
   const minutes = Math.round(totalWorkingTimeMinutes % 60);
 
   return (
-    <div className="rounded-lg bg-secondary p-4 shadow-md">
-      <h3 className="mb-2 text-lg font-semibold">Work Session Summary</h3>
-      <p>
-        Number of work sessions:{" "}
-        <span className="font-bold">{workSessionCount}</span>
-      </p>
-      <p>
-        Total time expected working:{" "}
-        <span className="font-bold">
-          {hours} hour{hours !== 1 ? "s" : ""} and {minutes} minute
-          {minutes !== 1 ? "s" : ""}
-        </span>
-      </p>
-    </div>
+    <Card className="bg-secondary shadow-md">
+      <CardHeader>
+        <CardTitle className="text-lg">Work Session Summary</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="mb-2">
+          Number of work sessions planned:{" "}
+          <span className="font-bold">{workSessionCount}</span>
+        </p>
+        <p>
+          Total time expected working:{" "}
+          <span className="font-bold">
+            {hours} hour{hours !== 1 ? "s" : ""} and {minutes} minute
+            {minutes !== 1 ? "s" : ""}
+          </span>
+        </p>
+      </CardContent>
+    </Card>
   );
 };

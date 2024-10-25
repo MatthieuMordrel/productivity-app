@@ -1,6 +1,7 @@
 "use client";
 
 import PomodoroTimer from "@/components/Pomodoro Timer/PomodoroTimer";
+import { WorkSessionSummary } from "@/components/Pomodoro Timer/WorkSessionSummary";
 import TaskList from "@/components/task_list/TaskList";
 import PomodoroDay from "@/components/Timeline/PomodoroDay";
 import { useSessionsContext } from "@/contexts/SessionsContext";
@@ -11,22 +12,21 @@ export default function Home() {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <main className="flex min-h-screen flex-col bg-background p-4 text-foreground md:flex-row md:p-8">
-        {/* Left column: PomodoroDay (Calendar) */}
-        <div className="mb-8 w-full md:mb-0 md:w-3/5 md:pr-8">
-          <h2 className="text-2xl font-bold">Pomodoro Calendar</h2>
-          <div className="h-[calc(100vh-12rem)]">
+      <main className="flex min-h-screen flex-col justify-center p-4">
+        {/* Responsive grid container with custom column widths and gaps */}
+        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-[40%_20%_40%]">
+          {/* PomodoroDay component */}
+          <div className="mx-auto">
             <PomodoroDay />
           </div>
-        </div>
-
-        {/* Right column: PomodoroTimer and TaskList */}
-        <div className="flex w-full flex-col items-center md:w-2/5">
-          <div className="mb-8">
-            <PomodoroTimer />
-          </div>
-          <div className="flex-grow overflow-auto">
+          {/* TaskList component */}
+          <div className="mx-auto">
             <TaskList />
+          </div>
+          {/* PomodoroTimer component */}
+          <div className="mx-auto flex flex-col items-center gap-4">
+            <WorkSessionSummary />
+            <PomodoroTimer />
           </div>
         </div>
       </main>
