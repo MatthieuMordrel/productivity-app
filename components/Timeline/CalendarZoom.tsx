@@ -24,16 +24,16 @@ const CalendarZoom: React.FC<CalendarZoomProps> = ({
       >
         <ZoomOut className="h-4 w-4" />
       </Button>
-      {/* Set a fixed width to prevent layout shift when zoomLevel changes */}
-      <span className="w-10 text-center text-sm font-medium">{zoomLevel}x</span>
       <Button
         onClick={onZoomIn}
+        // disabled={zoomLevel >= 5}
         variant="outline"
         size="icon"
         className="h-8 w-8"
       >
         <ZoomIn className="h-4 w-4" />
       </Button>
+      {/* Set a fixed width to prevent layout shift when zoomLevel changes */}
     </div>
   );
 };

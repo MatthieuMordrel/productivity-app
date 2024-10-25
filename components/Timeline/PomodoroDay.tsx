@@ -34,7 +34,7 @@ export default function PomodoroDay() {
   const { sessions } = useSessionsContext();
   const {
     filteredEvents,
-    stepSize,
+    // stepSize,
     getCurrentScrollTime,
     showPauses,
     showBreaks,
@@ -46,23 +46,30 @@ export default function PomodoroDay() {
   // console.log(filteredEvents);
 
   const [view, setView] = useState<View>("day");
-  const [zoomLevel, setZoomLevel] = useState(1);
+  const [zoomLevel, setZoomLevel] = useState<number>(1);
 
   // Zoom in function
   const handleZoomIn = () => {
-    setZoomLevel((prevZoom) => prevZoom * 2);
+    setZoomLevel((prevZoom) => prevZoom + 1);
   };
 
   // Zoom out function
   const handleZoomOut = () => {
-    setZoomLevel((prevZoom) => Math.max(1, prevZoom / 2));
+    setZoomLevel((prevZoom) => prevZoom - 1);
   };
 
-  // Calculate step size based on zoom level
-  const calculatedStepSize = stepSize * zoomLevel;
+  const possibleStepSizes = [60, 30, 15, 10, 5];
+
+  const calculatedStepSize = possibleStepSizes[zoomLevel - 1];
+
+  const timeslots = 1;
 
   return (
     <div className="container mx-auto px-4">
+      {/* <p>stepsize: {stepSize} minutes</p> */}
+      <p>zoomlevel: {zoomLevel}</p>
+      <p>calculatedStepSize: {calculatedStepSize} minutes</p>
+      <p>timeslots: {timeslots}</p>
       <Card className="overflow-hidden">
         <div className="p-6">
           {sessions.length === 0 ? (
@@ -107,7 +114,7 @@ export default function PomodoroDay() {
                     toolbar={false}
                     dayLayoutAlgorithm="no-overlap"
                     step={calculatedStepSize}
-                    timeslots={1}
+                    timeslots={timeslots}
                     min={state.startTime}
                     max={state.endTime}
                     eventPropGetter={eventPropGetter as EventPropGetter<object>}

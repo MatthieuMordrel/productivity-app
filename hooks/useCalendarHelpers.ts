@@ -45,6 +45,7 @@ export const useCalendarHelpers = (sessions: Session[]) => {
   // Function to get the current scroll time
   const getCurrentScrollTime = useCallback(() => {
     const now = new Date();
+
     return now;
   }, []);
 
