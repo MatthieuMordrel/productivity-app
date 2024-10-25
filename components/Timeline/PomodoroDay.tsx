@@ -20,6 +20,7 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Card } from "../ui/card";
 import CalendarButtons from "./CalendarButtons";
+import CalendarZoom from "./CalendarZoom";
 import { EventComponent } from "./EventComponent";
 import NoSession from "./NoSession";
 import { Time } from "./Time";
@@ -45,6 +46,20 @@ export default function PomodoroDay() {
   // console.log(filteredEvents);
 
   const [view, setView] = useState<View>("day");
+  const [zoomLevel, setZoomLevel] = useState(1);
+
+  // Zoom in function
+  const handleZoomIn = () => {
+    setZoomLevel((prevZoom) => prevZoom * 2);
+  };
+
+  // Zoom out function
+  const handleZoomOut = () => {
+    setZoomLevel((prevZoom) => Math.max(1, prevZoom / 2));
+  };
+
+  // Calculate step size based on zoom level
+  const calculatedStepSize = stepSize * zoomLevel;
 
   return (
     <div className="container mx-auto px-4">
@@ -60,6 +75,12 @@ export default function PomodoroDay() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <ViewSwitch view={view} setView={setView} />
+                  {/* Add CalendarZoom component */}
+                  <CalendarZoom
+                    zoomLevel={zoomLevel}
+                    onZoomIn={handleZoomIn}
+                    onZoomOut={handleZoomOut}
+                  />
                 </div>
                 <CalendarButtons
                   showPauses={showPauses}
@@ -85,7 +106,7 @@ export default function PomodoroDay() {
                     views={["day", "agenda"]}
                     toolbar={false}
                     dayLayoutAlgorithm="no-overlap"
-                    step={stepSize}
+                    step={calculatedStepSize}
                     timeslots={1}
                     min={state.startTime}
                     max={state.endTime}
