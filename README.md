@@ -22,6 +22,12 @@ Design
 - Try changing the color when hovering over a session with a task
 - Try changing the color when the session has a task associated
 
+To go further:
+
+- Add a way to save your settings
+- Add a way to add recurring tasks that will be setup by default
+- Add a way to save your schedule
+
 Done:
 
 - Limit task name to 25 characters

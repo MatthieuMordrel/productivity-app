@@ -3,6 +3,7 @@
 import { useSessionsContext } from "@/contexts/SessionsContext";
 import { useSettingsContext } from "@/contexts/SettingsContext";
 import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
+import { possibleStepSizes, timeslots } from "@/lib/constants";
 import "@styles/calendar-agenda.css";
 import "@styles/calendar-event.css";
 import "@styles/calendar-override.css";
@@ -18,6 +19,7 @@ import {
 } from "react-big-calendar";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { SheetSettings } from "../settings/SheetSettings";
 import { Card } from "../ui/card";
 import CalendarButtons from "./CalendarButtons";
 import CalendarZoom from "./CalendarZoom";
@@ -34,7 +36,6 @@ export default function PomodoroDay() {
   const { sessions } = useSessionsContext();
   const {
     filteredEvents,
-    // stepSize,
     getCurrentScrollTime,
     showPauses,
     showBreaks,
@@ -42,8 +43,7 @@ export default function PomodoroDay() {
     setShowBreaks,
     eventPropGetter,
   } = useCalendarHelpers(sessions);
-
-  // console.log(filteredEvents);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const [view, setView] = useState<View>("day");
   const [zoomLevel, setZoomLevel] = useState<number>(1);
@@ -58,27 +58,17 @@ export default function PomodoroDay() {
     setZoomLevel((prevZoom) => prevZoom - 1);
   };
 
-  const possibleStepSizes = [60, 30, 15, 10, 5];
-
   const calculatedStepSize = possibleStepSizes[zoomLevel - 1];
-
-  const timeslots = 1;
 
   return (
     <div className="container mx-auto px-4">
-      {/* <p>stepsize: {stepSize} minutes</p> */}
-      {/* <p>zoomlevel: {zoomLevel}</p>
-      <p>calculatedStepSize: {calculatedStepSize} minutes</p>
-      <p>timeslots: {timeslots}</p> */}
       <Card className="overflow-hidden">
         <div className="p-6">
           {sessions.length === 0 ? (
             <NoSession />
           ) : (
             <div className="flex h-full flex-col space-y-4">
-              {/* Add the current date and time display here */}
               <Time />
-
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <ViewSwitch view={view} setView={setView} />
@@ -94,6 +84,10 @@ export default function PomodoroDay() {
                   setShowPauses={setShowPauses}
                   showBreaks={showBreaks}
                   setShowBreaks={setShowBreaks}
+                />
+                <SheetSettings
+                  isSettingsOpen={isSettingsOpen}
+                  setIsSettingsOpen={setIsSettingsOpen}
                 />
               </div>
 

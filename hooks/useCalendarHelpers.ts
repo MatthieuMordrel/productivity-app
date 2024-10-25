@@ -1,10 +1,8 @@
-import { useSettingsContext } from "@/contexts/SettingsContext";
 import { Session } from "@/lib/types";
 import { useCallback, useMemo, useState } from "react";
 import { EventPropGetter } from "react-big-calendar";
 
 export const useCalendarHelpers = (sessions: Session[]) => {
-  const { state } = useSettingsContext();
   const [showPauses, setShowPauses] = useState(false);
   const [showBreaks, setShowBreaks] = useState(true);
 
@@ -23,24 +21,6 @@ export const useCalendarHelpers = (sessions: Session[]) => {
       return true; // Default case, should not be reached
     });
   }, [sessions, showPauses, showBreaks]);
-
-  // Function to determine the appropriate step size based on pomodoro duration
-  const getStepSize = useCallback(() => {
-    const pomodoroDuration = state.pomodoroDuration;
-
-    if (pomodoroDuration <= 15) {
-      return 10;
-    } else if (pomodoroDuration <= 30) {
-      return 15;
-    } else if (pomodoroDuration <= 45) {
-      return 20;
-    } else {
-      return 30;
-    }
-  }, [state.pomodoroDuration]);
-
-  // Calculate the step size
-  const stepSize = useMemo(() => getStepSize(), [getStepSize]);
 
   // Function to get the current scroll time
   const getCurrentScrollTime = useCallback(() => {
@@ -70,7 +50,6 @@ export const useCalendarHelpers = (sessions: Session[]) => {
     showBreaks,
     setShowBreaks,
     filteredEvents,
-    stepSize,
     getCurrentScrollTime,
     eventPropGetter,
   };

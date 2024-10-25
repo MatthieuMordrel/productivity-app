@@ -92,7 +92,7 @@ export const EventComponent = ({
                     {event.taskTitle || "No title"}
                   </div>
                 </div>
-                <div className="text-xs opacity-75">{durationMinutes}m</div>
+                {/* <div className="text-xs opacity-75">{durationMinutes}m</div> */}
               </div>
             </div>
           ) : componentHeight > 16 &&

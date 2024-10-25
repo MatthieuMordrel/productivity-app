@@ -1,6 +1,4 @@
 import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
-import { SheetSettings } from "../settings/SheetSettings";
 
 export default function CalendarButtons({
   showPauses,
@@ -13,8 +11,6 @@ export default function CalendarButtons({
   showBreaks: boolean;
   setShowBreaks: (value: boolean) => void;
 }) {
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-4">
@@ -38,10 +34,6 @@ export default function CalendarButtons({
             Show Breaks
           </label>
         </div>
-        <SheetSettings
-          isSettingsOpen={isSettingsOpen}
-          setIsSettingsOpen={setIsSettingsOpen}
-        />
       </div>
     </div>
   );
