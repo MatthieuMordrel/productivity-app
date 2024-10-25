@@ -64,7 +64,7 @@ export const EventComponent = ({
           {componentHeight > 45 && view === "day" ? (
             <div className="flex h-full flex-col justify-between p-2">
               <div className="mb-1 flex items-start justify-between">
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-1 items-center space-x-2">
                   <span className="flex-shrink-0" aria-hidden="true">
                     {getEventIcon(event.type)}
                   </span>
@@ -79,7 +79,25 @@ export const EventComponent = ({
                 {moment(event.end).format("HH:mm")}
               </div>
             </div>
-          ) : componentHeight > 16 && view === "day" ? (
+          ) : componentHeight > 25 &&
+            view === "day" &&
+            event.type === "Work" ? (
+            <div className="flex h-full flex-col justify-between p-2">
+              <div className="mb-1 flex h-full items-center justify-between">
+                <div className="flex flex-1 items-center space-x-2">
+                  <span className="flex-shrink-0" aria-hidden="true">
+                    {getEventIcon(event.type)}
+                  </span>
+                  <div className="w-3/4 overflow-hidden text-ellipsis text-sm font-medium">
+                    {event.taskTitle || "No title"}
+                  </div>
+                </div>
+                <div className="text-xs opacity-75">{durationMinutes}m</div>
+              </div>
+            </div>
+          ) : componentHeight > 16 &&
+            view === "day" &&
+            event.type !== "Work" ? (
             <div className="flex h-full w-full items-center justify-center">
               <span className="flex-shrink-0" aria-hidden="true">
                 {getEventIcon(event.type)}

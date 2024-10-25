@@ -67,9 +67,9 @@ export default function PomodoroDay() {
   return (
     <div className="container mx-auto px-4">
       {/* <p>stepsize: {stepSize} minutes</p> */}
-      <p>zoomlevel: {zoomLevel}</p>
+      {/* <p>zoomlevel: {zoomLevel}</p>
       <p>calculatedStepSize: {calculatedStepSize} minutes</p>
-      <p>timeslots: {timeslots}</p>
+      <p>timeslots: {timeslots}</p> */}
       <Card className="overflow-hidden">
         <div className="p-6">
           {sessions.length === 0 ? (
