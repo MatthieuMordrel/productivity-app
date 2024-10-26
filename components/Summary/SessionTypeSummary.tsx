@@ -13,28 +13,18 @@ interface SessionTypeSummaryProps {
     percentagePassed: number;
     percentageOfAllSessionsType: number;
   };
-  isActive: boolean;
 }
 
 export const SessionTypeSummary: React.FC<SessionTypeSummaryProps> = React.memo(
-  ({ type, stats, isActive }) => {
+  ({ type, stats }) => {
     const { sessionTextColor, stroke } = getTypeColors(type);
     const Icon = sessionIcons[type];
 
     // Determine the correct session label
     const sessionLabel = stats.sessionCount === 1 ? "session" : "sessions";
 
-    // Add a background color for active sessions
-    const activeBackgroundColor = isActive ? "bg-opacity-10 bg-gray-100" : "";
-
     return (
-      <div
-        className={`rounded-lg p-4 ${sessionTextColor} ${activeBackgroundColor} relative`}
-      >
-        {/* Add an indicator for active sessions */}
-        {isActive && (
-          <div className="absolute right-2 top-2 h-3 w-3 animate-pulse rounded-full bg-gray-300" />
-        )}
+      <div className={`rounded-lg p-4 ${sessionTextColor}`}>
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Icon

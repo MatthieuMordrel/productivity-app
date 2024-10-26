@@ -89,7 +89,6 @@ export const WorkSessionSummary: React.FC = () => {
                 percentageOfAllSessionsType:
                   sessionStats[type].percentageOfAllSessionsType,
               }}
-              isActive={currentSession?.type === type}
             />
           ))}
         </div>
