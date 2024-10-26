@@ -14,20 +14,19 @@ export default function Home() {
     <DragDropContext onDragEnd={handleDragEnd}>
       <main className="px-6">
         {/* Responsive grid container with custom column widths and gaps */}
-        <div className="lg:hScreenWithoutNavbar grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-[40%_30%_30%]">
+        <div className="lg:h-screen-without-navbar grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-[40%_60%]">
           {/* PomodoroDay component */}
           <div className="mx-auto h-full w-full">
             <PomodoroDay />
           </div>
           {/* TaskList component and PomodoroTimer component */}
-          <div className="mx-auto flex w-full flex-col items-center justify-start gap-y-12">
+          <div className="mx-auto flex w-full flex-col items-center justify-center gap-y-12">
             <PomodoroTimer />
-            <TaskList className="w-full" />
           </div>
           {/* WorkSessionSummary component */}
-          <div className="mx-auto w-[80%]"></div>
         </div>
         <WorkSessionSummary />
+        <TaskList className="w-full" />
       </main>
     </DragDropContext>
   );

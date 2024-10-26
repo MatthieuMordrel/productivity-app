@@ -38,6 +38,7 @@ const Time = dynamic(() => import("./Time").then((mod) => mod.Time), {
 const localizer = momentLocalizer(moment);
 
 export default function PomodoroDay() {
+  console.log("PomodoroDay component rendered");
   const { state } = useSettingsContext();
   const { sessions } = useSessionsContext();
   const {
@@ -65,6 +66,8 @@ export default function PomodoroDay() {
   };
 
   const calculatedStepSize = possibleStepSizes[zoomLevel - 1];
+
+  console.log("state", state);
 
   return (
     <div className="container mx-auto">

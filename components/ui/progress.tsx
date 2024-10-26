@@ -5,20 +5,28 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+interface ProgressProps
+  extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
+  isActive?: boolean;
+}
+
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
->(({ className, value, ...props }, ref) => (
+  ProgressProps
+>(({ className, value, isActive, ...props }, ref) => (
   <ProgressPrimitive.Root
     ref={ref}
     className={cn(
-      "relative h-2 w-full overflow-hidden rounded-full bg-slate-900/20 dark:bg-slate-50/20",
+      "relative h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700",
       className,
     )}
     {...props}
   >
     <ProgressPrimitive.Indicator
-      className="h-full w-full flex-1 bg-slate-900 transition-all dark:bg-slate-50"
+      className={cn(
+        "h-full w-full flex-1 bg-slate-900 transition-all dark:bg-slate-50",
+        isActive && "animate-pulse-light",
+      )}
       style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
     />
   </ProgressPrimitive.Root>

@@ -1,6 +1,6 @@
 import { useSessionsContext } from "@/contexts/SessionsContext";
 import { useTitle } from "@/hooks/useTitle";
-import { findCurrentSession } from "@/lib/functions/sessions";
+import { findCurrentSession } from "@/lib/functions/sessionsUtils";
 import { Session } from "@/lib/types";
 import { useCallback, useEffect, useState } from "react";
 

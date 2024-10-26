@@ -3,10 +3,7 @@
 import { SessionTypeSummary } from "@/components/Summary/SessionTypeSummary";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSessionsContext } from "@/contexts/SessionsContext";
-import {
-  findCurrentSession,
-  getSessionTypeStats,
-} from "@/lib/functions/sessions";
+import { getSessionTypeStats } from "@/lib/functions/sessionsUtils";
 import { SessionType } from "@/lib/types";
 import React, { useEffect, useState } from "react";
 
@@ -24,7 +21,8 @@ const getGridClass = (count: number) => {
 
 export const WorkSessionSummary: React.FC = () => {
   const { sessions } = useSessionsContext();
-  const currentSession = findCurrentSession(sessions);
+  //Find the current sessions to check the active session and send the info to the progress bar
+  // const currentSession = findCurrentSession(sessions);
   const [, setTriggerRerender] = useState(0);
 
   // Update every second to trigger rerender

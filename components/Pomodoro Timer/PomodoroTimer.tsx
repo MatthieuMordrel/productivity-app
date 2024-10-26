@@ -1,13 +1,13 @@
 "use client";
 
 import { useCurrentSession } from "@/hooks/useCurrentSession";
-import { getTypeColors } from "@/lib/functions/sessions";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { CompletionOverlay } from "./CompletionOverlay";
 import { ProgressCircle } from "./ProgressCircle";
 import { TimerDisplay } from "./TimerDisplay";
+import { getTypeColors } from "@/lib/functions/sessionsUtils";
 
 interface PomodoroTimerProps {
   onComplete?: () => void;

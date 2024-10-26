@@ -1,4 +1,4 @@
-import { Break, PomodoroState, Session, SessionType } from "@/lib/types";
+import { Break, PomodoroState, Session } from "@/lib/types";
 
 // Function to create Pomodoro day sessions based on the given state
 export function createPomodoroDaySessions(
@@ -6,6 +6,7 @@ export function createPomodoroDaySessions(
   previousSessions?: Session[],
 ): Session[] {
   console.log("createPomodoroDaySessions called");
+  console.log("state", state);
 
   if (state.startTime >= state.endTime) {
     console.warn("Start time is not before end time. No sessions created.");
@@ -17,6 +18,7 @@ export function createPomodoroDaySessions(
 
   // Remap titles to the correct sessions
   const sessionsWithTitles = remapSessionTitles(sessions, previousSessions);
+  console.log("sessionsWithTitles", sessionsWithTitles);
 
   return sessionsWithTitles;
 }
@@ -52,17 +54,16 @@ function createSessions(state: PomodoroState): Session[] {
   const sessions: Session[] = [];
   let sessionIndex = 0;
 
-  // Add all processed breaks to the sessions array
+  // Add all processed breaks to the sessions array using createSession function
   processedBreaks.forEach((breakItem) => {
-    sessions.push({
-      id: `Break${sessionIndex}`,
-      type: "Break",
-      start: new Date(breakItem.start),
-      end: new Date(breakItem.end),
-      taskTitle: "Break",
-      taskId: "",
-      index: sessionIndex,
-    });
+    sessions.push(
+      createSession(
+        new Date(breakItem.start),
+        new Date(breakItem.end),
+        sessionIndex,
+        "Break",
+      ),
+    );
     sessionIndex++;
   });
 
@@ -94,7 +95,9 @@ function createSessions(state: PomodoroState): Session[] {
       Math.min(currentTime.getTime() + workDuration, endTime.getTime()),
     );
     if (workEndTime > currentTime) {
-      sessions.push(createWorkSession(currentTime, workEndTime, sessionIndex));
+      sessions.push(
+        createSession(currentTime, workEndTime, sessionIndex, "Work"),
+      );
       sessionIndex++;
       currentTime = new Date(workEndTime);
     }
@@ -104,7 +107,7 @@ function createSessions(state: PomodoroState): Session[] {
         Math.min(currentTime.getTime() + pauseDuration, endTime.getTime()),
       );
       sessions.push(
-        createPauseSession(currentTime, pauseEndTime, sessionIndex),
+        createSession(currentTime, pauseEndTime, sessionIndex, "Pause"),
       );
       sessionIndex++;
       currentTime = new Date(pauseEndTime);
@@ -114,6 +117,14 @@ function createSessions(state: PomodoroState): Session[] {
   return sessions.sort((a, b) => a.start.getTime() - b.start.getTime());
 }
 
+/**
+ * Processes and merges overlapping breaks within a given time range.
+ *
+ * @param {Break[]} breaks - Array of Break objects to process.
+ * @param {Date} startTime - The start time of the day.
+ * @param {Date} endTime - The end time of the day.
+ * @returns {Break[]} An array of processed Break objects with merged overlaps.
+ */
 function processBreaks(
   breaks: Break[],
   startTime: Date,
@@ -177,33 +188,39 @@ function processBreaks(
   return processedBreaks;
 }
 
-// Simplified helper function to create a work session
-function createWorkSession(start: Date, end: Date, index: number): Session {
+/**
+ * Creates a session object for Work, Pause, or Break.
+ *
+ * @param {Date} start - The start time of the session.
+ * @param {Date} end - The end time of the session.
+ * @param {number} index - The index of the session.
+ * @param {"Work" | "Pause" | "Break"} type - The type of the session.
+ * @returns {Session} A Session object with the specified properties.
+ */
+function createSession(
+  start: Date,
+  end: Date,
+  index: number,
+  type: "Work" | "Pause" | "Break",
+): Session {
   return {
-    id: `Work${index}`,
+    id: `${type}${index}`,
     index: index,
-    type: "Work",
+    type: type,
     start: new Date(start),
     end: new Date(end),
-    taskTitle: `Work ${Math.floor(index / 2)}`, // Default title
+    taskTitle: type === "Work" ? `Work ${Math.floor(index / 2)}` : type,
     taskId: "",
   };
 }
 
-// Helper function to create a pause session
-function createPauseSession(start: Date, end: Date, index: number): Session {
-  return {
-    id: `Pause${index}`,
-    type: "Pause",
-    start: new Date(start),
-    end: new Date(end),
-    taskTitle: "Pause",
-    taskId: "",
-    index: index,
-  };
-}
-
-// Function to remap titles to the correct sessions
+/**
+ * Remaps titles and task IDs to the correct sessions based on previous sessions.
+ *
+ * @param {Session[]} sessions - The current array of sessions to be remapped.
+ * @param {Session[]} [previousSessions] - Optional array of previous sessions to use for remapping.
+ * @returns {Session[]} A new array of sessions with remapped titles and task IDs.
+ */
 function remapSessionTitles(
   sessions: Session[],
   previousSessions?: Session[],
@@ -241,126 +258,3 @@ function remapSessionTitles(
     return session;
   });
 }
-
-// Function to update a specific session
-// This funciton is used to update the title of a session when the user is renaming a task
-export const updateSingleSession = (
-  updatedSession: Session,
-  setSessions: React.Dispatch<React.SetStateAction<Session[]>>,
-  setFocusedEventId: React.Dispatch<React.SetStateAction<string | null>>,
-) => {
-  setSessions((prevSessions) => {
-    const newSessions = prevSessions.map((session) =>
-      session.id === updatedSession.id ? updatedSession : session,
-    );
-    // Set the focused event ID after updating
-    setFocusedEventId(updatedSession.id);
-    return newSessions;
-  });
-};
-
-// Separate function to find the current session
-export const findCurrentSession = (sessions: Session[]): Session | null => {
-  const now = new Date();
-  return (
-    sessions.find((session) => now >= session.start && now < session.end) ||
-    null
-  );
-};
-
-// Get stroke and icon colors based on the session type provided
-export const getTypeColors = (type: SessionType) => {
-  switch (type) {
-    case "Work":
-      return {
-        stroke: "var(--work)",
-        sessionTextColor: "text-slate-700 dark:text-stone-200",
-      };
-    case "Pause":
-      return {
-        stroke: "var(--pause)",
-        sessionTextColor: "text-yellow-500 dark:text-yellow-400",
-      };
-    case "Break":
-      return {
-        stroke: "var(--break)",
-        sessionTextColor: "text-green-500 dark:text-green-400",
-      };
-  }
-};
-
-/**
- * Calculates the total duration, count of sessions, passed duration, remaining duration,
- * percentages for a specific type, and percentage of total duration.
- * @param sessions - Array of all sessions
- * @param type - Type of session to calculate for (SessionType)
- * @returns Object containing total duration, count of sessions, passed duration, remaining duration,
- * percentage passed, percentage remaining, and percentage of total duration in minutes
- */
-export const getSessionTypeStats = (
-  sessions: Session[],
-  type: SessionType,
-): {
-  totalDuration: number;
-  sessionCount: number;
-  passedDuration: number;
-  remainingDuration: number;
-  percentagePassed: number;
-  percentageRemaining: number;
-  percentageOfAllSessionsType: number;
-} => {
-  // Filter sessions by type
-  const filteredSessions = sessions.filter((session) => session.type === type);
-  const now = new Date();
-
-  let totalDuration = 0;
-  let passedDuration = 0;
-  let remainingDuration = 0;
-  let allSessionsDuration = 0;
-
-  // Calculate total duration for all sessions
-  sessions.forEach((session) => {
-    allSessionsDuration +=
-      (session.end.getTime() - session.start.getTime()) / (1000 * 60);
-  });
-
-  // Calculate durations for the specific session type
-  filteredSessions.forEach((session) => {
-    const sessionDuration =
-      (session.end.getTime() - session.start.getTime()) / (1000 * 60); // Convert to minutes
-    totalDuration += sessionDuration;
-
-    // Calculate passed duration if the current time is after the session end
-    if (now >= session.end) {
-      passedDuration += sessionDuration;
-    } else if (now <= session.start) {
-      remainingDuration += sessionDuration;
-    } else {
-      // Calculate passed and remaining duration in the current session
-      const passedInSession =
-        (now.getTime() - session.start.getTime()) / (1000 * 60);
-      const remainingInSession =
-        (session.end.getTime() - now.getTime()) / (1000 * 60);
-      passedDuration += passedInSession;
-      remainingDuration += remainingInSession;
-    }
-  });
-
-  // Calculate percentages
-  const percentagePassed =
-    totalDuration > 0 ? (passedDuration / totalDuration) * 100 : 0;
-  const percentageRemaining =
-    totalDuration > 0 ? (remainingDuration / totalDuration) * 100 : 0;
-  const percentageOfAllSessionsType =
-    allSessionsDuration > 0 ? (totalDuration / allSessionsDuration) * 100 : 0;
-
-  return {
-    totalDuration,
-    sessionCount: filteredSessions.length,
-    passedDuration,
-    remainingDuration,
-    percentagePassed,
-    percentageRemaining,
-    percentageOfAllSessionsType,
-  };
-};

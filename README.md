@@ -22,6 +22,8 @@ Design
 - Try changing the color when the session has a task associated
 - Add a sonner to click on the task and see which sessions it's linked to
 - Add an effect to the current session on the event timeline
+- Ensure that it's visible which current sessions we are in from the summary
+- consider tranforming the pomodoro timer into a progress bar that is sticky on top of the screenn or bottom of the screen
 
 To go further:
 

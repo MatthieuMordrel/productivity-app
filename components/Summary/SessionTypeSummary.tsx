@@ -1,5 +1,5 @@
 import { Progress } from "@/components/ui/progress";
-import { getTypeColors } from "@/lib/functions/sessions";
+import { getTypeColors } from "@/lib/functions/sessionsUtils";
 import { sessionIcons } from "@/lib/logos";
 import { SessionType } from "@/lib/types";
 import { formatMinutesToHoursAndMinutes } from "@/lib/utils";
@@ -53,6 +53,7 @@ export const SessionTypeSummary: React.FC<SessionTypeSummaryProps> = React.memo(
           <Progress
             value={stats.percentagePassed}
             className={`h-2 ${sessionTextColor}`}
+            isActive={true}
           />
         </div>
       </div>
