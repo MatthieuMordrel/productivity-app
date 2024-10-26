@@ -11,11 +11,12 @@ export interface Break {
   end: Date;
 }
 
+export type SessionType = "Work" | "Pause" | "Break";
 export interface Session {
   id: string;
   start: Date;
   end: Date;
-  type: "Work" | "Pause" | "Break";
+  type: SessionType;
   taskTitle: string;
   taskId: string;
   index: number;

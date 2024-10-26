@@ -11,4 +11,6 @@
 .rbc-event-content {
   height: 100% !important;
   min-height: unset !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }

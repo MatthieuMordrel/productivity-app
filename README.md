@@ -8,6 +8,7 @@ TO DO:
 - Add custom sound options
 - Add a settings to set the start time to now visible on the main page
 - Ensure that the tooltip works on click too
+- Create a page describing the most productive rythm to follow (52/17 rule, pomodoro technique, ultradian cycles)
 
 Design
 
@@ -79,3 +80,6 @@ Total time worked
 Total time remaining
 Start time
 End time
+
+% of time as work during the day
+% of time as break or pauses during the day

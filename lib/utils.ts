@@ -1,5 +1,5 @@
-import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 /**
  * Merges multiple class names together using the `clsx` and `tailwind-merge` libraries.
@@ -11,5 +11,26 @@ import { twMerge } from 'tailwind-merge'
  * @returns {string} The merged and deduplicated class names as a string.
  */
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
+
+// Helper function to format time
+/**
+ * Formats a given number of minutes into a string representation of hours and minutes.
+ *
+ * @param {number} minutes - The total number of minutes to format.
+ * @returns {string} A formatted string in the format "Xh Ym" where X is hours and Y is minutes.
+ *
+ * @example
+ * // returns "2h 30m"
+ * formatTime(150);
+ *
+ * @example
+ * // returns "0h 45m"
+ * formatTime(45);
+ */
+export const formatMinutesToHoursAndMinutes = (minutes: number): string => {
+  const hours = Math.floor(minutes / 60);
+  const mins = Math.round(minutes % 60);
+  return `${hours}h ${mins}m`;
+};

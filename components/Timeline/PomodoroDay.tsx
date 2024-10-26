@@ -6,10 +6,12 @@ import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
 import { possibleStepSizes, timeslots } from "@/lib/constants";
 import "@styles/calendar-agenda.css";
 import "@styles/calendar-event.css";
+import "@styles/calendar-header.css";
 import "@styles/calendar-override.css";
 import "@styles/calendar-scrollbar.css";
 import { AnimatePresence, motion } from "framer-motion";
 import moment from "moment";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import {
   Calendar,
@@ -25,9 +27,13 @@ import CalendarButtons from "./CalendarButtons";
 import CalendarZoom from "./CalendarZoom";
 import { EventComponent } from "./EventComponent";
 import NoSession from "./NoSession";
-import { Time } from "./Time";
 import { CustomToolbar } from "./Toolbar";
 import ViewSwitch from "./ViewSwitch";
+
+// Dynamic import for Time component to avoid hydration errors
+const Time = dynamic(() => import("./Time").then((mod) => mod.Time), {
+  ssr: false,
+});
 
 const localizer = momentLocalizer(moment);
 
@@ -61,13 +67,13 @@ export default function PomodoroDay() {
   const calculatedStepSize = possibleStepSizes[zoomLevel - 1];
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto">
       <Card className="overflow-hidden">
         <div className="p-6">
           {sessions.length === 0 ? (
             <NoSession />
           ) : (
-            <div className="flex h-full flex-col space-y-4">
+            <div className="flex flex-col space-y-4">
               <Time />
               <div className="flex flex-col space-y-4">
                 <div className="flex items-center justify-between space-x-4">
@@ -101,7 +107,7 @@ export default function PomodoroDay() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.2 }}
-                  className="h-[calc(100vh-12rem)]"
+                  className="calendarHeight"
                 >
                   <Calendar
                     localizer={localizer}

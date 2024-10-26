@@ -22,6 +22,7 @@ const config: Config = {
         work: "var(--work)",
         pause: "var(--pause)",
         break: "var(--break)",
+        card: "var(--card)",
         // Add these new color definitions
         popover: {
           DEFAULT: "var(--popover)",
@@ -46,7 +47,7 @@ const config: Config = {
     },
   },
   plugins: [
-    plugin(({ theme, addBase }) => {
+    plugin(({ theme, addBase, addUtilities }) => {
       console.log("Tailwind plugin is running");
       // console.log(theme);
       addBase({
@@ -59,6 +60,7 @@ const config: Config = {
           "--work": theme("colors.slate.700"),
           "--pause": "#F59E0B",
           "--break": "#10B981",
+          "--card": "hsl(0 0% 100%)",
           // Add these new CSS variables
           "--popover": "hsl(0 0% 100%)",
           "--popover-foreground": "hsl(222.2 84% 4.9%)",
@@ -70,6 +72,15 @@ const config: Config = {
           // Add dark mode versions if needed
           "--popover": "hsl(224 71% 4%)",
           "--popover-foreground": "hsl(215 20.2% 65.1%)",
+        },
+      });
+      // Add new utility class for 100vh - 40px
+      addUtilities({
+        ".hScreenWithoutNavbar": {
+          height: "calc(100vh - 80px)",
+        },
+        ".calendarHeight": {
+          height: "32rem",
         },
       });
     }),

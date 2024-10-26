@@ -2,7 +2,7 @@ import { CalendarDays } from "lucide-react";
 
 export default function NoSession() {
   return (
-    <div className="flex h-[calc(100vh-12rem)] items-center justify-center rounded-lg border-2 border-dashed">
+    <div className="calendarHeight flex items-center justify-center rounded-lg border-2 border-dashed">
       <div className="text-center">
         <CalendarDays className="text-muted-foreground mx-auto h-12 w-12" />
         <h3 className="mt-2 text-lg font-semibold">No sessions available</h3>

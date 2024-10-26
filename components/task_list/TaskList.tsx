@@ -8,7 +8,7 @@ import { Droppable } from "react-beautiful-dnd";
 import Task from "./Task";
 import TaskTooltipInfo from "./TaskTooltipInfo";
 
-const TaskList: React.FC = () => {
+const TaskList: React.FC<{ className?: string }> = ({ className }) => {
   const { tasks, addTask } = useTaskContext();
   const [newTask, setNewTask] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +34,7 @@ const TaskList: React.FC = () => {
   };
 
   return (
-    <Card className="min-w-96">
+    <Card className={cn("max-w-full", className)}>
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg">
           Tasks
