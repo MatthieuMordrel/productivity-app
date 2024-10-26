@@ -258,3 +258,12 @@ export const updateSingleSession = (
     return newSessions;
   });
 };
+
+// Separate function to find the current session
+export const findCurrentSession = (sessions: Session[]): Session | null => {
+  const now = new Date();
+  return (
+    sessions.find((session) => now >= session.start && now < session.end) ||
+    null
+  );
+};

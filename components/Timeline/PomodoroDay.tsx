@@ -69,26 +69,29 @@ export default function PomodoroDay() {
           ) : (
             <div className="flex h-full flex-col space-y-4">
               <Time />
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
+              <div className="flex flex-col space-y-4">
+                <div className="flex items-center justify-between space-x-4">
                   <ViewSwitch view={view} setView={setView} />
                   {/* Add CalendarZoom component */}
+
+                  <SheetSettings
+                    isSettingsOpen={isSettingsOpen}
+                    setIsSettingsOpen={setIsSettingsOpen}
+                  />
+                </div>
+                <div className="flex items-center justify-between space-x-4">
                   <CalendarZoom
                     zoomLevel={zoomLevel}
                     onZoomIn={handleZoomIn}
                     onZoomOut={handleZoomOut}
                   />
+                  <CalendarButtons
+                    showPauses={showPauses}
+                    setShowPauses={setShowPauses}
+                    showBreaks={showBreaks}
+                    setShowBreaks={setShowBreaks}
+                  />
                 </div>
-                <CalendarButtons
-                  showPauses={showPauses}
-                  setShowPauses={setShowPauses}
-                  showBreaks={showBreaks}
-                  setShowBreaks={setShowBreaks}
-                />
-                <SheetSettings
-                  isSettingsOpen={isSettingsOpen}
-                  setIsSettingsOpen={setIsSettingsOpen}
-                />
               </div>
 
               <AnimatePresence mode="wait">

@@ -1,13 +1,11 @@
 TO DO:
 
-- Add a way to zoom and dezoom the timeline
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
 - Add a way to center on the current time
 - Make the calendar either work on two days, or limit end day settings to 23h59
 - Add a placeholder when you drag task into the calendar
-- Add a sonner to click on the task and see which sessions it's linked to
 - add a settings to add sound with the sonner and end of session + start of session
-- add custom sound options
+- Add custom sound options
 - Add a settings to set the start time to now visible on the main page
 - Ensure that the tooltip works on click too
 
@@ -21,6 +19,8 @@ Design
 - Create tooltip for day/agenda view and settings
 - Try changing the color when hovering over a session with a task
 - Try changing the color when the session has a task associated
+- Add a sonner to click on the task and see which sessions it's linked to
+- Add an effect to the current session on the event timeline
 
 To go further:
 
@@ -30,6 +30,7 @@ To go further:
 
 Done:
 
+- Add a way to zoom and dezoom the timeline
 - Limit task name to 25 characters
 - Make the calendar look better on long days
 - Make hide breaks and pauses toggles

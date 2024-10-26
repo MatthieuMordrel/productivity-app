@@ -1,12 +1,15 @@
 "use client";
 
 import { useCurrentSession } from "@/hooks/useCurrentSession";
+import { TypeIcon } from "@/lib/logos";
+import { cn } from "@/lib/utils";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
-import { CheckCircle, Clock, Coffee, PauseCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 interface PomodoroTimerProps {
   onComplete?: () => void;
+  className?: string;
 }
 
 /**
@@ -17,7 +20,10 @@ interface PomodoroTimerProps {
  *
  * @param onComplete - Callback fired when the timer completes
  */
-export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
+export default function PomodoroTimer({
+  onComplete,
+  className,
+}: PomodoroTimerProps) {
   const { currentSession, remainingTime, progress } = useCurrentSession();
   const [isHovered, setIsHovered] = useState(false);
   const controls = useAnimation();
@@ -83,12 +89,7 @@ export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
     }
   }, []);
 
-  const TypeIcon = {
-    Work: Clock,
-    Break: Coffee,
-    Pause: PauseCircle,
-  };
-
+  // Render a placeholder if there's no active session
   if (!currentSession) {
     return (
       <div className="flex h-64 w-64 items-center justify-center rounded-full bg-gradient-to-br from-gray-100 to-gray-200 text-gray-400 shadow-lg backdrop-blur-sm dark:from-gray-800 dark:to-gray-900 dark:text-gray-500">
@@ -98,28 +99,35 @@ export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
   }
 
   const { type, taskTitle } = currentSession;
+  // Get the right color based on the session type
   const colors = getTypeColors(type);
+  // Split the remaining time into minutes and seconds
   const [minutes, seconds] = remainingTime.split(":").map(Number);
 
   return (
     <div
-      className="relative h-64 w-64 cursor-pointer"
+      className={cn("relative h-64 w-64 cursor-pointer", className)}
+      // Handle hover
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Canvas for particle animation */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 rounded-full"
         width={256}
         height={256}
       />
+      {/* Gradient background */}
       <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400/30 to-purple-500/30 shadow-lg backdrop-blur-sm dark:from-blue-600/30 dark:to-purple-700/30" />
+      {/* Inner circle */}
       <motion.div
         className="absolute inset-1 rounded-full bg-white/90 dark:bg-gray-800/90"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       />
+      {/* SVG for progress circle */}
       <svg
         className="absolute inset-0"
         width="100%"
@@ -138,6 +146,7 @@ export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
         />
       </svg>
       <div className="absolute inset-4 flex flex-col items-center justify-center rounded-full text-center">
+        {/* Session type icon */}
         <AnimatePresence mode="wait">
           <motion.div
             key={type}
@@ -150,11 +159,13 @@ export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
             {React.createElement(TypeIcon[type], {
               className: `mb-2 h-6 w-6 ${colors.icon}`,
             })}
+            {/* Session type */}
             <h2 className="text-sm font-semibold text-gray-600 dark:text-gray-300">
               {type} Session
             </h2>
           </motion.div>
         </AnimatePresence>
+        {/* Remaining time */}
         <p className="mt-2 text-3xl font-bold text-gray-800 dark:text-gray-100">
           {minutes.toString().padStart(2, "0")}:
           {seconds.toString().padStart(2, "0")}
@@ -163,6 +174,7 @@ export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
           {taskTitle}
         </p>
       </div>
+      {/* Hover overlay for progress percentage */}
       <AnimatePresence>
         {isHovered && (
           <motion.div
@@ -180,6 +192,7 @@ export default function PomodoroTimer({ onComplete }: PomodoroTimerProps) {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Completion overlay */}
       {progress === 1 && (
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
@@ -217,19 +230,17 @@ class Particle {
     this.x += this.speedX;
     this.y += this.speedY;
 
-    if (this.size > 0.2) this.size -= 0.1;
+    // Add boundary checking
+    if (this.x < 0 || this.x > ctx.canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > ctx.canvas.height) this.speedY *= -1;
 
     this.draw(ctx);
   }
 
   draw(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-    ctx.lineWidth = 2;
-
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.closePath();
     ctx.fill();
   }
 }
