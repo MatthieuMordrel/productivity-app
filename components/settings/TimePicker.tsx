@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import React, { useEffect, useRef } from "react";
 
 interface TimePickerProps {
@@ -109,52 +110,57 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 
       {showDateToggle && (
         <div className="relative" ref={dropdownRef}>
-          <button
+          <Button
             onClick={() => setIsOpen(!isOpen)}
-            className="text-foreground/70 hover:bg-secondary/80 group flex h-[34px] items-center rounded-md bg-secondary px-1.5 text-[10px]"
+            variant="default"
+            size="sm"
+            className="w-[36px] text-[10px]"
             title={isTomorrow ? "Tomorrow" : "Today"}
           >
             {isTomorrow ? "T+1" : "T"}
-          </button>
+          </Button>
 
           {/* Dropdown menu */}
           {isOpen && (
             <div className="absolute right-0 top-full z-50 mt-1 w-24 rounded-md bg-secondary py-1 shadow-lg">
-              <button
+              <Button
                 onClick={() => {
                   handleToggleDay(false);
                   setIsOpen(false);
                 }}
-                className={`hover:bg-secondary/80 w-full px-3 py-1.5 text-left text-xs ${
+                variant="ghost"
+                className={`h-auto w-full justify-start px-3 py-1.5 text-xs ${
                   !isTomorrow ? "text-primary" : "text-foreground"
                 }`}
               >
                 Today
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => {
                   handleToggleDay(true);
                   setIsOpen(false);
                 }}
-                className={`hover:bg-secondary/80 w-full px-3 py-1.5 text-left text-xs ${
+                variant="ghost"
+                className={`h-auto w-full justify-start px-3 py-1.5 text-xs ${
                   isTomorrow ? "text-primary" : "text-foreground"
                 }`}
               >
                 Tomorrow
-              </button>
+              </Button>
             </div>
           )}
         </div>
       )}
 
       {showSetNowButton && (
-        <button
+        <Button
           onClick={setToNow}
-          className="rounded-md bg-primary px-3 py-2 text-sm text-background transition-colors hover:bg-opacity-90"
+          variant="default"
+          size="sm"
           title="Set to current time"
         >
           Now
-        </button>
+        </Button>
       )}
     </div>
   );

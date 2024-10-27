@@ -37,6 +37,46 @@ const Time = dynamic(() => import("./Time").then((mod) => mod.Time), {
 
 const localizer = momentLocalizer(moment);
 
+// Add this helper function at the top of the file
+const getTimeRangeForDate = (
+  date: Date,
+  startTime: Date,
+  endTime: Date,
+): { calendarStartTime: Date; calendarEndTime: Date } => {
+  const selectedDate = moment(date).startOf("day");
+  const startDate = moment(startTime).startOf("day");
+  const endDate = moment(endTime).startOf("day");
+
+  // If start and end are on the same day, use exact times
+  if (startDate.isSame(endDate, "day")) {
+    return {
+      calendarStartTime: startTime,
+      calendarEndTime: endTime,
+    };
+  }
+
+  // Multi-day handling
+  if (selectedDate.isSame(startDate, "day")) {
+    // If it's the first day, use the actual start time and end at 23:59
+    return {
+      calendarStartTime: startTime,
+      calendarEndTime: moment(date).endOf("day").toDate(),
+    };
+  } else if (selectedDate.isSame(endDate, "day")) {
+    // If it's the last day, start at 00:00 and use the actual end time
+    return {
+      calendarStartTime: moment(date).startOf("day").toDate(),
+      calendarEndTime: endTime,
+    };
+  } else {
+    // For any day in between, show full day
+    return {
+      calendarStartTime: moment(date).startOf("day").toDate(),
+      calendarEndTime: moment(date).endOf("day").toDate(),
+    };
+  }
+};
+
 export default function PomodoroDay() {
   console.log("PomodoroDay component rendered");
   const { state } = useSettingsContext();
@@ -67,15 +107,19 @@ export default function PomodoroDay() {
 
   const calculatedStepSize = possibleStepSizes[zoomLevel - 1];
 
-  let calendarEndTime = state.endTime;
-  let calendarStartTime = state.startTime;
+  const [currentDate, setCurrentDate] = useState(new Date());
 
-  if (state.endTime > moment().endOf("day").toDate()) {
-    calendarEndTime = moment().endOf("day").toDate();
-    calendarStartTime = moment().startOf("day").toDate();
-  }
+  // Calculate time range based on current date
+  const { calendarStartTime, calendarEndTime } = getTimeRangeForDate(
+    currentDate,
+    state.startTime,
+    state.endTime,
+  );
 
-  console.log("state", state);
+  // Add this function to handle date changes
+  const handleDateChange = (newDate: Date) => {
+    setCurrentDate(newDate);
+  };
 
   return (
     <div className="container mx-auto">
@@ -133,20 +177,33 @@ export default function PomodoroDay() {
                     min={calendarStartTime}
                     max={calendarEndTime}
                     eventPropGetter={eventPropGetter as EventPropGetter<object>}
+                    className="h-full rounded-lg border shadow-sm"
+                    scrollToTime={getCurrentScrollTime()}
+                    showMultiDayTimes={true}
+                    date={currentDate}
                     components={{
-                      //react-big-calendar passes event and titles as props
                       event: (props) =>
                         view === "day" ? (
                           <EventComponent event={props.event} view={view} />
                         ) : (
                           <div>{props.event.taskTitle}</div>
                         ),
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      toolbar: CustomToolbar as any,
+                      toolbar: (toolbarProps) => {
+                        // Only show toolbar if start and end times are on different days
+                        if (
+                          state.startTime.getDate() !== state.endTime.getDate()
+                        ) {
+                          return (
+                            <CustomToolbar
+                              {...toolbarProps}
+                              onDateChange={handleDateChange}
+                            />
+                          );
+                        }
+                        // Return null to hide toolbar when on same day
+                        return null;
+                      },
                     }}
-                    className="h-full rounded-lg border shadow-sm"
-                    scrollToTime={getCurrentScrollTime()}
-                    showMultiDayTimes={true}
                   />
                 </motion.div>
               </AnimatePresence>

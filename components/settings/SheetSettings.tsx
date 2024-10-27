@@ -25,7 +25,7 @@ export const SheetSettings = ({
     </SheetTrigger>
     <SheetContent
       side="right"
-      className="w-full max-w-[400px] overflow-y-auto sm:max-w-[440px]"
+      className="w-full max-w-[400px] overflow-y-auto sm:max-w-[480px]"
     >
       <SheetHeader>
         <SheetTitle className="text-xl sm:text-2xl">
