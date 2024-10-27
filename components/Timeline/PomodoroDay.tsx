@@ -67,6 +67,14 @@ export default function PomodoroDay() {
 
   const calculatedStepSize = possibleStepSizes[zoomLevel - 1];
 
+  let calendarEndTime = state.endTime;
+  let calendarStartTime = state.startTime;
+
+  if (state.endTime > moment().endOf("day").toDate()) {
+    calendarEndTime = moment().endOf("day").toDate();
+    calendarStartTime = moment().startOf("day").toDate();
+  }
+
   console.log("state", state);
 
   return (
@@ -117,12 +125,13 @@ export default function PomodoroDay() {
                     events={filteredEvents}
                     view={view as "day" | "agenda"}
                     views={["day", "agenda"]}
-                    toolbar={false}
+                    //Disbale view toolbar
+                    toolbar={true}
                     dayLayoutAlgorithm="no-overlap"
                     step={calculatedStepSize}
                     timeslots={timeslots}
-                    min={state.startTime}
-                    max={state.endTime}
+                    min={calendarStartTime}
+                    max={calendarEndTime}
                     eventPropGetter={eventPropGetter as EventPropGetter<object>}
                     components={{
                       //react-big-calendar passes event and titles as props
@@ -137,6 +146,7 @@ export default function PomodoroDay() {
                     }}
                     className="h-full rounded-lg border shadow-sm"
                     scrollToTime={getCurrentScrollTime()}
+                    showMultiDayTimes={true}
                   />
                 </motion.div>
               </AnimatePresence>
