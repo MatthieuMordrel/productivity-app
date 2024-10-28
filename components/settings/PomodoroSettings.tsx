@@ -71,7 +71,7 @@ const PomodoroSettings: React.FC = () => {
             value={state.startTime}
             onChange={handleStartTimeChange}
             showSetNowButton={true}
-            // showDateToggle={false}
+            showDateToggle={false}
           />
         </div>
 

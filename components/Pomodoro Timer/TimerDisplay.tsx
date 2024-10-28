@@ -40,7 +40,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
           </h2>
         </motion.div>
       </AnimatePresence>
-      <p className="mt-2 text-3xl font-bold text-gray-800 dark:text-gray-100">
+      <p className="mt-2 text-2xl font-bold text-gray-800 dark:text-gray-100">
         {minutes?.toString().padStart(2, "0") ?? "00"}:
         {seconds?.toString().padStart(2, "0") ?? "00"}
       </p>

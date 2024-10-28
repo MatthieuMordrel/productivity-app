@@ -1,5 +1,6 @@
 "use client";
 
+import { SessionTracker } from "@/components/SessionTracker/SessionTracker";
 import {
   Sidebar,
   SidebarContent,
@@ -18,7 +19,7 @@ import { usePathname } from "next/navigation";
 // Define navigation items with typed URL
 const items: Array<{
   title: string;
-  url: string; // Change to string type
+  url: string;
   icon: LucideIcon;
 }> = [
   {
@@ -26,6 +27,7 @@ const items: Array<{
     url: "/",
     icon: Home,
   },
+
   {
     title: "Calendar",
     url: "/calendar",
@@ -46,7 +48,6 @@ const items: Array<{
 export function AppSidebar() {
   // Get current pathname for active state
   const pathname = usePathname();
-
   return (
     <Sidebar>
       <SidebarContent>
@@ -73,6 +74,12 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        {/* Only show SessionTracker when not on focus page */}
+        {pathname !== "/focus" && (
+          <div className="mb-4 mt-auto pt-4">
+            <SessionTracker />
+          </div>
+        )}
       </SidebarContent>
     </Sidebar>
   );

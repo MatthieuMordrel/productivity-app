@@ -6,6 +6,7 @@ interface TimePickerProps {
   onChange: (value: Date) => void;
   showSetNowButton?: boolean;
   minTime?: Date;
+  showDateToggle?: boolean;
 }
 
 export const TimePickerDate: React.FC<TimePickerProps> = ({
@@ -13,6 +14,7 @@ export const TimePickerDate: React.FC<TimePickerProps> = ({
   onChange,
   showSetNowButton = false,
   minTime,
+  showDateToggle = true,
 }) => {
   // Remove isTomorrow state and add date input handling
   const dateString = value.toISOString().split("T")[0]; // Get YYYY-MM-DD format
@@ -82,16 +84,6 @@ export const TimePickerDate: React.FC<TimePickerProps> = ({
 
   return (
     <div className="relative flex items-center space-x-2">
-      {/* Date picker input */}
-      <input
-        title="Date"
-        placeholder="Date"
-        type="date"
-        value={dateString}
-        onChange={handleDateChange}
-        className="rounded-md bg-secondary p-2 text-foreground"
-      />
-
       {/* Time picker input */}
       <input
         title="Time"
@@ -102,6 +94,19 @@ export const TimePickerDate: React.FC<TimePickerProps> = ({
         className="rounded-md bg-secondary p-2 text-foreground"
       />
 
+      {showDateToggle && (
+        <>
+          {/* Date picker input */}
+          <input
+            title="Date"
+            placeholder="Date"
+            type="date"
+            value={dateString}
+            onChange={handleDateChange}
+            className="rounded-md bg-secondary p-2 text-foreground"
+          />
+        </>
+      )}
       {showSetNowButton && (
         <Button
           onClick={setToNow}
