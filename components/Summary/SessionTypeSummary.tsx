@@ -1,5 +1,9 @@
 import { Progress } from "@/components/ui/progress";
-import { getTypeColors } from "@/lib/functions/sessionsUtils";
+import { useSessionsContext } from "@/contexts/SessionsContext";
+import {
+  findCurrentSession,
+  getTypeColors,
+} from "@/lib/functions/sessionsUtils";
 import { sessionIcons } from "@/lib/logos";
 import { SessionType } from "@/lib/types";
 import { formatMinutesToHoursAndMinutes } from "@/lib/utils";
@@ -17,7 +21,11 @@ interface SessionTypeSummaryProps {
 
 export const SessionTypeSummary: React.FC<SessionTypeSummaryProps> = React.memo(
   ({ type, stats }) => {
-    const { sessionTextColor, stroke } = getTypeColors(type);
+    const { sessionTextColor, stroke, backgroundColor } = getTypeColors(type);
+    const { sessions } = useSessionsContext();
+    const currentSession = findCurrentSession(sessions);
+    const isActive = currentSession?.type === type;
+
     const Icon = sessionIcons[type];
 
     // Determine the correct session label
@@ -53,7 +61,8 @@ export const SessionTypeSummary: React.FC<SessionTypeSummaryProps> = React.memo(
           <Progress
             value={stats.percentagePassed}
             className={`h-2 ${sessionTextColor}`}
-            isActive={true}
+            isActive={isActive}
+            backgroundColor={backgroundColor}
           />
         </div>
       </div>

@@ -8,14 +8,16 @@ import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 
 // Helper function to determine grid class based on session count
-const getGridClass = (count: number) => {
+const getGridClass = (count: number, grid: "row" | "column") => {
   switch (count) {
     case 1:
-      return "grid-cols-1";
+      return grid === "row" ? "grid-cols-1" : "grid-rows-1";
     case 2:
-      return "sm:grid-cols-2";
+      return grid === "row" ? "sm:grid-cols-2" : "sm:grid-rows-2";
     default:
-      return "sm:grid-cols-2 lg:grid-cols-3";
+      return grid === "row"
+        ? "sm:grid-cols-2 lg:grid-cols-3"
+        : "sm:grid-rows-2 lg:grid-rows-3";
   }
 };
 
@@ -33,10 +35,18 @@ export const WorkSessionSummary: React.FC<{
     return () => clearInterval(intervalId);
   }, []);
 
-  // Find the existing session types
+  // Find the existing session types and sort them in desired order
   const existingSessionTypes = Array.from(
     new Set(sessions.map((session) => session.type)),
-  ) as SessionType[];
+  ).sort((a, b) => {
+    // Define the order: work -> pause -> break
+    const order: Record<SessionType, number> = {
+      Work: 0,
+      Pause: 1,
+      Break: 2,
+    };
+    return order[a] - order[b];
+  }) as SessionType[];
 
   // Calculate stats for each session type for every render
   const sessionStats = existingSessionTypes.reduce(
@@ -48,7 +58,7 @@ export const WorkSessionSummary: React.FC<{
   );
 
   // Determine the grid layout based on the number of session types
-  const gridClass = getGridClass(Object.keys(sessionStats).length);
+  const gridClass = getGridClass(Object.keys(sessionStats).length, "column");
 
   // If there are no sessions for today, display a message
   if (Object.keys(sessionStats).length === 0) {

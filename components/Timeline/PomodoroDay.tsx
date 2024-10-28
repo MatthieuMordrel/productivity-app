@@ -1,37 +1,29 @@
 "use client";
 
 import { useSessionsContext } from "@/contexts/SessionsContext";
-import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
 import { useSessionFilters } from "@/hooks/useSessionFilters";
 import { useViewControls } from "@/hooks/useViewControls";
-import { timeslots } from "@/lib/constants";
 import "@styles/calendar-agenda.css";
 import "@styles/calendar-event.css";
 import "@styles/calendar-header.css";
 import "@styles/calendar-override.css";
 import "@styles/calendar-scrollbar.css";
-import { AnimatePresence, motion } from "framer-motion";
-import moment from "moment";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { Calendar, EventPropGetter, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { SheetSettings } from "../settings/SheetSettings";
 import { Card } from "../ui/card";
 import CalendarButtons from "./CalendarButtons";
 import CalendarZoom from "./CalendarZoom";
-import { EventComponent } from "./EventComponent";
 import NoSession from "./NoSession";
-import { CustomToolbar } from "./Toolbar";
 import ViewSwitch from "./ViewSwitch";
+import { CalendarComponent } from "./Calendar";
 
 // Dynamic import for Time component to avoid hydration errors
 const Time = dynamic(() => import("./Time").then((mod) => mod.Time), {
   ssr: false,
 });
-
-const localizer = momentLocalizer(moment);
 
 export default function PomodoroDay() {
   const { sessions } = useSessionsContext();
@@ -53,15 +45,6 @@ export default function PomodoroDay() {
     setShowBreaks,
     filteredEvents,
   } = useSessionFilters(sessions);
-
-  const {
-    getCurrentScrollTime,
-    eventPropGetter,
-    timeRange,
-    currentDate,
-    handleDateChange,
-    shouldShowToolbar,
-  } = useCalendarHelpers();
 
   return (
     <div className="container mx-auto">
@@ -94,51 +77,11 @@ export default function PomodoroDay() {
                   />
                 </div>
               </div>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={view}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.2 }}
-                  className="calendarHeight"
-                >
-                  <Calendar
-                    localizer={localizer}
-                    events={filteredEvents}
-                    view={view as "day" | "agenda"}
-                    views={["day", "agenda"]}
-                    toolbar={true}
-                    dayLayoutAlgorithm="no-overlap"
-                    step={calculatedStepSize}
-                    timeslots={timeslots}
-                    min={timeRange.calendarStartTime}
-                    max={timeRange.calendarEndTime}
-                    eventPropGetter={eventPropGetter as EventPropGetter<object>}
-                    className="h-full rounded-lg border shadow-sm"
-                    scrollToTime={getCurrentScrollTime()}
-                    showMultiDayTimes={true}
-                    date={currentDate}
-                    components={{
-                      event: (props) =>
-                        view === "day" ? (
-                          <EventComponent event={props.event} view={view} />
-                        ) : (
-                          <div>{props.event.taskTitle}</div>
-                        ),
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      toolbar: (toolbarProps: any) => {
-                        return shouldShowToolbar ? (
-                          <CustomToolbar
-                            {...toolbarProps}
-                            onDateChange={handleDateChange}
-                          />
-                        ) : null;
-                      },
-                    }}
-                  />
-                </motion.div>
-              </AnimatePresence>
+              <CalendarComponent
+                view={view as "day" | "agenda"}
+                filteredEvents={filteredEvents}
+                calculatedStepSize={calculatedStepSize}
+              />
             </div>
           )}
         </div>

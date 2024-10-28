@@ -17,7 +17,18 @@ export const updateSingleSession = (
   });
 };
 
-// Separate function to find the current session
+/**
+ * Finds the currently active session based on the current time
+ * @param sessions - Array of all sessions to search through
+ * @returns The currently active session if one exists, null otherwise
+ * @example
+ * const currentSession = findCurrentSession(sessions);
+ * if (currentSession) {
+ *   // Handle active session
+ * } else {
+ *   // No active session
+ * }
+ */
 export const findCurrentSession = (sessions: Session[]): Session | null => {
   const now = new Date();
   return (
@@ -33,16 +44,19 @@ export const getTypeColors = (type: SessionType) => {
       return {
         stroke: "var(--work)",
         sessionTextColor: "text-slate-700 dark:text-stone-200",
+        backgroundColor: "bg-slate-700 dark:bg-stone-200",
       };
     case "Pause":
       return {
         stroke: "var(--pause)",
         sessionTextColor: "text-yellow-500 dark:text-yellow-400",
+        backgroundColor: "bg-yellow-500 dark:bg-yellow-400",
       };
     case "Break":
       return {
         stroke: "var(--break)",
         sessionTextColor: "text-green-500 dark:text-green-400",
+        backgroundColor: "bg-green-500 dark:bg-green-400",
       };
   }
 };

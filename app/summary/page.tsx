@@ -6,7 +6,7 @@ import { useSessionsContext } from "@/contexts/SessionsContext";
 export default function Page() {
   const { sessions } = useSessionsContext();
   return (
-    <div className="hScreenWithoutNavbar">
+    <div className="m-4 hScreenWithoutNavbar">
       <WorkSessionSummary sessions={sessions} />
     </div>
   );
