@@ -4,6 +4,7 @@ import { useSessionsContext } from "@/contexts/SessionsContext";
 import { useSettingsContext } from "@/contexts/SettingsContext";
 import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
 import { possibleStepSizes, timeslots } from "@/lib/constants";
+import { getTimeRangeForDate } from "@/lib/functions/calendar";
 import "@styles/calendar-agenda.css";
 import "@styles/calendar-event.css";
 import "@styles/calendar-header.css";
@@ -36,46 +37,6 @@ const Time = dynamic(() => import("./Time").then((mod) => mod.Time), {
 });
 
 const localizer = momentLocalizer(moment);
-
-// Add this helper function at the top of the file
-const getTimeRangeForDate = (
-  date: Date,
-  startTime: Date,
-  endTime: Date,
-): { calendarStartTime: Date; calendarEndTime: Date } => {
-  const selectedDate = moment(date).startOf("day");
-  const startDate = moment(startTime).startOf("day");
-  const endDate = moment(endTime).startOf("day");
-
-  // If start and end are on the same day, use exact times
-  if (startDate.isSame(endDate, "day")) {
-    return {
-      calendarStartTime: startTime,
-      calendarEndTime: endTime,
-    };
-  }
-
-  // Multi-day handling
-  if (selectedDate.isSame(startDate, "day")) {
-    // If it's the first day, use the actual start time and end at 23:59
-    return {
-      calendarStartTime: startTime,
-      calendarEndTime: moment(date).endOf("day").toDate(),
-    };
-  } else if (selectedDate.isSame(endDate, "day")) {
-    // If it's the last day, start at 00:00 and use the actual end time
-    return {
-      calendarStartTime: moment(date).startOf("day").toDate(),
-      calendarEndTime: endTime,
-    };
-  } else {
-    // For any day in between, show full day
-    return {
-      calendarStartTime: moment(date).startOf("day").toDate(),
-      calendarEndTime: moment(date).endOf("day").toDate(),
-    };
-  }
-};
 
 export default function PomodoroDay() {
   console.log("PomodoroDay component rendered");
@@ -194,6 +155,7 @@ export default function PomodoroDay() {
                           state.startTime.getDate() !== state.endTime.getDate()
                         ) {
                           return (
+                            // @ts-expect-error - TODO: Fix this
                             <CustomToolbar
                               {...toolbarProps}
                               onDateChange={handleDateChange}

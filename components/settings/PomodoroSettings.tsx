@@ -1,11 +1,11 @@
 "use client";
 
-import { TimePicker } from "@/components/settings/TimePicker";
 import { useSettingsContext } from "@/contexts/SettingsContext";
 import React from "react";
 import BreakManager from "./BreakManager";
 import { NumberSetting } from "./NumberSetting";
 import { SettingsTooltipReset } from "./SettingsTooltipReset";
+import { TimePickerDate } from "./TimePickerDate";
 
 const PomodoroSettings: React.FC = () => {
   const { state, dispatch } = useSettingsContext();
@@ -67,7 +67,7 @@ const PomodoroSettings: React.FC = () => {
         <div>
           <label className="mb-2 block text-lg font-medium">Start of Day</label>
 
-          <TimePicker
+          <TimePickerDate
             value={state.startTime}
             onChange={handleStartTimeChange}
             showSetNowButton={true}
@@ -78,7 +78,7 @@ const PomodoroSettings: React.FC = () => {
         <div>
           <label className="mb-2 block text-lg font-medium">End of Day</label>
 
-          <TimePicker
+          <TimePickerDate
             value={state.endTime}
             onChange={handleEndTimeChange}
             minTime={state.startTime}
