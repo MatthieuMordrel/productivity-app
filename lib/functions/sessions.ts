@@ -5,8 +5,8 @@ export function createPomodoroDaySessions(
   state: PomodoroState,
   previousSessions?: Session[],
 ): Session[] {
-  console.log("createPomodoroDaySessions called");
-  console.log("state", state);
+  // console.log("createPomodoroDaySessions called");
+  // console.log("state", state);
 
   if (state.startTime >= state.endTime) {
     console.warn("Start time is not before end time. No sessions created.");
@@ -18,7 +18,7 @@ export function createPomodoroDaySessions(
 
   // Remap titles to the correct sessions
   const sessionsWithTitles = remapSessionTitles(sessions, previousSessions);
-  console.log("sessionsWithTitles", sessionsWithTitles);
+  // console.log("sessionsWithTitles", sessionsWithTitles);
 
   return sessionsWithTitles;
 }

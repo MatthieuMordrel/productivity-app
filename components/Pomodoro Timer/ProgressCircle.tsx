@@ -1,17 +1,15 @@
+import { useCurrentSession } from "@/hooks/useCurrentSession";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
 
 interface ProgressCircleProps {
-  progress: number;
   colors: {
     stroke: string;
   };
 }
 
-export const ProgressCircle: React.FC<ProgressCircleProps> = ({
-  progress,
-  colors,
-}) => {
+export const ProgressCircle: React.FC<ProgressCircleProps> = ({ colors }) => {
+  const { progress } = useCurrentSession();
   const controls = useAnimation();
 
   useEffect(() => {

@@ -11,11 +11,16 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { Calendar, Home, Target } from "lucide-react";
+import { Calendar, ChartBar, Home, LucideIcon, Target } from "lucide-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// Define navigation items
-const items = [
+// Define navigation items with typed URL
+const items: Array<{
+  title: string;
+  url: string; // Change to string type
+  icon: LucideIcon;
+}> = [
   {
     title: "Home",
     url: "/",
@@ -25,6 +30,11 @@ const items = [
     title: "Calendar",
     url: "/calendar",
     icon: Calendar,
+  },
+  {
+    title: "Summary",
+    url: "/summary",
+    icon: ChartBar,
   },
   {
     title: "Focus",
@@ -47,7 +57,8 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={pathname === item.url}>
-                    <a href={item.url}>
+                    {/*Use link to avoid page refresh and losing states*/}
+                    <Link href={item.url}>
                       <item.icon
                         className={cn(
                           "h-4 w-4",
@@ -55,7 +66,7 @@ export function AppSidebar() {
                         )}
                       />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

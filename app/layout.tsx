@@ -1,13 +1,11 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { PomodoroCalendarProvider } from "@/contexts/SessionsContext";
-import { PomodoroProvider } from "@/contexts/SettingsContext";
-import { TaskProvider } from "@/contexts/TaskContext";
+import { AppProviders } from "@/contexts/AppProviders";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import Footer from "./footer";
 import Navbar from "./navbar";
 import { AppSidebar } from "./sidebar";
+import { TitleUpdater } from "./TitleUpdater";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,20 +22,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, "bg-background text-foreground")}>
-        <SidebarProvider>
+        <AppProviders>
           <AppSidebar />
+          <TitleUpdater />
           <main className="flex-1">
-            <PomodoroProvider>
-              <TaskProvider>
-                <PomodoroCalendarProvider>
-                  <Navbar />
-                  {children}
-                  <Footer />
-                </PomodoroCalendarProvider>
-              </TaskProvider>
-            </PomodoroProvider>
+            <Navbar />
+            <main className="container min-h-screen">{children}</main>
+            <Footer />
           </main>
-        </SidebarProvider>
+        </AppProviders>
       </body>
     </html>
   );

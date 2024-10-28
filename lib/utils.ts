@@ -14,7 +14,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Helper function to format time
 /**
  * Formats a given number of minutes into a string representation of hours and minutes.
  *
@@ -22,12 +21,12 @@ export function cn(...inputs: ClassValue[]) {
  * @returns {string} A formatted string in the format "Xh Ym" where X is hours and Y is minutes.
  *
  * @example
- * // returns "2h 30m"
  * formatTime(150);
+ * // returns "2h 30m"
  *
  * @example
- * // returns "0h 45m"
  * formatTime(45);
+ * // returns "0h 45m"
  */
 export const formatMinutesToHoursAndMinutes = (minutes: number): string => {
   const hours = Math.floor(minutes / 60);

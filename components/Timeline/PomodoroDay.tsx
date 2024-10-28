@@ -2,6 +2,8 @@
 
 import { useSessionsContext } from "@/contexts/SessionsContext";
 import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
+import { useSessionFilters } from "@/hooks/useSessionFilters";
+import { useViewControls } from "@/hooks/useViewControls";
 import { timeslots } from "@/lib/constants";
 import "@styles/calendar-agenda.css";
 import "@styles/calendar-event.css";
@@ -33,27 +35,33 @@ const localizer = momentLocalizer(moment);
 
 export default function PomodoroDay() {
   const { sessions } = useSessionsContext();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
   const {
-    filteredEvents,
-    getCurrentScrollTime,
-    showPauses,
-    showBreaks,
-    setShowPauses,
-    setShowBreaks,
-    eventPropGetter,
     view,
     setView,
     zoomLevel,
     handleZoomIn,
     handleZoomOut,
     calculatedStepSize,
+  } = useViewControls();
+
+  const {
+    showPauses,
+    setShowPauses,
+    showBreaks,
+    setShowBreaks,
+    filteredEvents,
+  } = useSessionFilters(sessions);
+
+  const {
+    getCurrentScrollTime,
+    eventPropGetter,
     timeRange,
     currentDate,
     handleDateChange,
     shouldShowToolbar,
-  } = useCalendarHelpers(sessions);
-
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  } = useCalendarHelpers();
 
   return (
     <div className="container mx-auto">

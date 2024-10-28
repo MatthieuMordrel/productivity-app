@@ -1,4 +1,7 @@
+"use client";
+
 import PomodoroTimer from "@/components/Pomodoro Timer/PomodoroTimer";
+import useSound from "use-sound";
 
 /**
  * Focus Page
@@ -7,13 +10,20 @@ import PomodoroTimer from "@/components/Pomodoro Timer/PomodoroTimer";
  * Perfect for distraction-free focus sessions
  */
 export default function FocusPage() {
+  // You can use any sound from the public folder
+  const [playComplete] = useSound("/sounds/complete.wav", {
+    volume: 0.1, // Adjust volume (0 to 1)
+  });
+
+  // Handler for when session completes
+  const handleComplete = () => {
+    playComplete(); // Play completion sound
+  };
+
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background p-4">
-      <div className="scale-150">
-        {" "}
-        {/* Scale up the timer by 50% */}
-        <PomodoroTimer />
-      </div>
-    </main>
+    <div className="flex items-center justify-center bg-background p-4 hScreenWithoutNavbar">
+      {/* Scale up the timer by 50% */}
+      <PomodoroTimer onComplete={handleComplete} />
+    </div>
   );
 }

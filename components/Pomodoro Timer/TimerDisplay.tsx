@@ -1,3 +1,4 @@
+import { useCurrentSession } from "@/hooks/useCurrentSession";
 import { sessionIcons } from "@/lib/logos";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -6,20 +7,19 @@ interface TimerDisplayProps {
   colors: {
     sessionTextColor: string;
   };
-  minutes: number;
-  seconds: number;
   taskTitle: string;
 }
 
 export const TimerDisplay: React.FC<TimerDisplayProps> = ({
   type,
   colors,
-  minutes,
-  seconds,
   taskTitle,
 }) => {
-  // Use type assertion to ensure type is a valid key of sessionIcons
+  const { remainingTime } = useCurrentSession();
   const IconComponent = sessionIcons[type as keyof typeof sessionIcons];
+
+  // Add default handling for when remainingTime is undefined
+  const [minutes, seconds] = remainingTime?.split(":").map(Number) || [0, 0];
 
   return (
     <div className="absolute inset-4 flex flex-col items-center justify-center rounded-full text-center">
@@ -41,8 +41,8 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
         </motion.div>
       </AnimatePresence>
       <p className="mt-2 text-3xl font-bold text-gray-800 dark:text-gray-100">
-        {minutes.toString().padStart(2, "0")}:
-        {seconds.toString().padStart(2, "0")}
+        {minutes?.toString().padStart(2, "0") ?? "00"}:
+        {seconds?.toString().padStart(2, "0") ?? "00"}
       </p>
       <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
         {taskTitle}

@@ -15,7 +15,7 @@ const Card = React.forwardRef<
     // Use the cn utility to combine CSS classes
     className={cn(
       // Base styles for the card
-      "bg-card text-card-foreground rounded-lg border shadow-md",
+      "text-card-foreground rounded-lg border bg-card shadow-md",
       // Allow additional classes to be passed in and merged
       className,
     )}

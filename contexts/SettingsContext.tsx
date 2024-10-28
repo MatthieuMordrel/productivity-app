@@ -76,6 +76,7 @@ function pomodoroReducer(
 
 export function PomodoroProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(pomodoroReducer, initialState);
+  console.log(state);
 
   return (
     <PomodoroContext.Provider value={{ state, dispatch }}>

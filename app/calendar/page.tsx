@@ -10,7 +10,7 @@ export default function CalendarPage() {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <main className="px-6">
+      <div className="px-6">
         {/* Responsive grid container with custom column widths and gaps */}
         <div className="lg:h-screen-without-navbar grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2">
           {/* PomodoroDay component */}
@@ -18,9 +18,11 @@ export default function CalendarPage() {
             <PomodoroDay />
           </div>
           {/* TaskList component and PomodoroTimer component */}
-          <TaskList className="w-full" />
+          <div className="flex flex-col gap-y-12">
+            <TaskList className="" />
+          </div>
         </div>
-      </main>
+      </div>
     </DragDropContext>
   );
 }

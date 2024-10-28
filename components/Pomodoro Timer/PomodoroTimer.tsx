@@ -1,13 +1,14 @@
 "use client";
 
 import { useCurrentSession } from "@/hooks/useCurrentSession";
+import { getTypeColors } from "@/lib/functions/sessionsUtils";
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { CompletionOverlay } from "./CompletionOverlay";
+import { HoverState } from "./HoverState";
 import { ProgressCircle } from "./ProgressCircle";
 import { TimerDisplay } from "./TimerDisplay";
-import { getTypeColors } from "@/lib/functions/sessionsUtils";
 
 interface PomodoroTimerProps {
   onComplete?: () => void;
@@ -27,15 +28,16 @@ export default function PomodoroTimer({
   onComplete,
   className,
 }: PomodoroTimerProps) {
-  const { currentSession, remainingTime, progress } = useCurrentSession();
+  const { currentSession, isComplete } = useCurrentSession();
   const [isHovered, setIsHovered] = useState(false);
+  console.log("isComplete", isComplete);
 
   // Fire the callback when the timer completes
   useEffect(() => {
-    if (currentSession && progress === 1) {
+    if (isComplete) {
       onComplete?.();
     }
-  }, [currentSession, progress, onComplete]);
+  }, [isComplete, onComplete]);
 
   // Render a placeholder if there's no active session
   if (!currentSession) {
@@ -48,11 +50,10 @@ export default function PomodoroTimer({
 
   const { type, taskTitle } = currentSession;
   const colors = getTypeColors(type);
-  const [minutes, seconds] = remainingTime.split(":").map(Number);
 
   return (
     <div
-      className={cn("relative h-64 w-64 cursor-pointer", className)}
+      className={cn("relative h-96 w-96 cursor-pointer", className)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -65,33 +66,11 @@ export default function PomodoroTimer({
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       />
-      <ProgressCircle progress={progress} colors={colors} />
-      <TimerDisplay
-        type={type}
-        colors={colors}
-        minutes={minutes}
-        seconds={seconds}
-        taskTitle={taskTitle}
-      />
+      <ProgressCircle colors={colors} />
+      <TimerDisplay type={type} colors={colors} taskTitle={taskTitle} />
       {/* Hover overlay for progress percentage */}
-      <AnimatePresence>
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="absolute inset-0 flex items-center justify-center rounded-full bg-black/70 text-white"
-          >
-            <div className="text-center">
-              <p className="text-lg font-semibold">Progress</p>
-              <p className="text-3xl font-bold">
-                {Math.round(progress * 100)}%
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <CompletionOverlay isComplete={progress === 1} />
+      <HoverState isHovered={isHovered} />
+      <CompletionOverlay />
     </div>
   );
 }

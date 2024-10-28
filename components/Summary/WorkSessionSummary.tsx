@@ -2,9 +2,9 @@
 
 import { SessionTypeSummary } from "@/components/Summary/SessionTypeSummary";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useSessionsContext } from "@/contexts/SessionsContext";
 import { getSessionTypeStats } from "@/lib/functions/sessionsUtils";
-import { SessionType } from "@/lib/types";
+import { Session, SessionType } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 
 // Helper function to determine grid class based on session count
@@ -19,13 +19,12 @@ const getGridClass = (count: number) => {
   }
 };
 
-export const WorkSessionSummary: React.FC = () => {
-  const { sessions } = useSessionsContext();
-  //Find the current sessions to check the active session and send the info to the progress bar
-  // const currentSession = findCurrentSession(sessions);
+export const WorkSessionSummary: React.FC<{
+  className?: string;
+  sessions: Session[];
+}> = ({ className, sessions }) => {
   const [, setTriggerRerender] = useState(0);
 
-  // Update every second to trigger rerender
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTriggerRerender((prev) => prev + 1);
@@ -34,11 +33,12 @@ export const WorkSessionSummary: React.FC = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Calculate stats on each render
+  // Find the existing session types
   const existingSessionTypes = Array.from(
     new Set(sessions.map((session) => session.type)),
   ) as SessionType[];
 
+  // Calculate stats for each session type for every render
   const sessionStats = existingSessionTypes.reduce(
     (acc, type) => {
       acc[type] = getSessionTypeStats(sessions, type);
@@ -47,12 +47,13 @@ export const WorkSessionSummary: React.FC = () => {
     {} as Record<SessionType, ReturnType<typeof getSessionTypeStats>>,
   );
 
+  // Determine the grid layout based on the number of session types
   const gridClass = getGridClass(Object.keys(sessionStats).length);
 
   // If there are no sessions for today, display a message
   if (Object.keys(sessionStats).length === 0) {
     return (
-      <Card className="w-full overflow-hidden bg-white shadow-lg">
+      <Card className={cn("w-full overflow-hidden shadow-lg", className)}>
         <CardHeader className="pb-2">
           <CardTitle className="text-2xl font-bold text-gray-800">
             Daily Summary
@@ -68,7 +69,7 @@ export const WorkSessionSummary: React.FC = () => {
   }
 
   return (
-    <Card className="w-full overflow-hidden bg-white shadow-lg">
+    <Card className={cn("w-full overflow-hidden shadow-lg", className)}>
       <CardHeader className="pb-2">
         <CardTitle className="text-2xl font-bold text-gray-800">
           Sessions Summary

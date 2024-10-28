@@ -1,5 +1,4 @@
 import { useSessionsContext } from "@/contexts/SessionsContext";
-import { useTitle } from "@/hooks/useTitle";
 import { findCurrentSession } from "@/lib/functions/sessionsUtils";
 import { Session } from "@/lib/types";
 import { useCallback, useEffect, useState } from "react";
@@ -9,6 +8,7 @@ type CurrentSessionInfo = {
   currentSession: Session | null;
   remainingTime: string;
   progress: number;
+  isComplete: boolean;
 };
 
 export const useCurrentSession = (): CurrentSessionInfo => {
@@ -17,16 +17,20 @@ export const useCurrentSession = (): CurrentSessionInfo => {
     currentSession: null,
     remainingTime: "",
     progress: 0,
+    isComplete: false,
   });
-  const setTitle = useTitle();
 
   // Function to calculate remaining time and progress
   const calculateTimeAndProgress = useCallback(
     (
       current: Session | null,
       now: Date,
-    ): Pick<CurrentSessionInfo, "remainingTime" | "progress"> => {
-      if (!current) return { remainingTime: "", progress: 0 };
+    ): Pick<
+      CurrentSessionInfo,
+      "remainingTime" | "progress" | "isComplete"
+    > => {
+      if (!current)
+        return { remainingTime: "", progress: 0, isComplete: false };
 
       const remainingMs = current.end.getTime() - now.getTime();
       const totalDuration = current.end.getTime() - current.start.getTime();
@@ -36,8 +40,9 @@ export const useCurrentSession = (): CurrentSessionInfo => {
       const remainingSeconds = Math.floor((remainingMs % 60000) / 1000);
       const remainingTime = `${remainingMinutes}:${remainingSeconds.toString().padStart(2, "0")}`;
       const progress = Math.min(elapsedDuration / totalDuration, 1);
+      const isComplete = remainingMs <= 1000;
 
-      return { remainingTime, progress };
+      return { remainingTime, progress, isComplete };
     },
     [],
   );
@@ -46,9 +51,17 @@ export const useCurrentSession = (): CurrentSessionInfo => {
   const updateSessionAndTime = useCallback(() => {
     const now = new Date();
     const current = findCurrentSession(sessions);
-    const { remainingTime, progress } = calculateTimeAndProgress(current, now);
+    const { remainingTime, progress, isComplete } = calculateTimeAndProgress(
+      current,
+      now,
+    );
 
-    setSessionInfo({ currentSession: current, remainingTime, progress });
+    setSessionInfo({
+      currentSession: current,
+      remainingTime,
+      progress,
+      isComplete,
+    });
   }, [sessions, calculateTimeAndProgress]);
 
   // Update the current session and time to display in the timer
@@ -57,16 +70,6 @@ export const useCurrentSession = (): CurrentSessionInfo => {
     const interval = setInterval(updateSessionAndTime, 1000);
     return () => clearInterval(interval);
   }, [updateSessionAndTime]);
-
-  // Update title when the current session changes
-  useEffect(() => {
-    const { currentSession, remainingTime } = sessionInfo;
-    setTitle(
-      currentSession
-        ? `${remainingTime} - ${currentSession.taskTitle}`
-        : "No active session",
-    );
-  }, [sessionInfo, setTitle]);
 
   return sessionInfo;
 };

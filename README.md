@@ -2,13 +2,10 @@ TO DO:
 
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
 - Add a way to center on the current time
-- Make the calendar either work on two days, or limit end day settings to 23h59
 - Add a placeholder when you drag task into the calendar
-- add a settings to add sound with the sonner and end of session + start of session
+- Add a settings to add sound with the sonner and end of session + start of session
 - Add custom sound options
 - Add a settings to set the start time to now visible on the main page
-- Ensure that the tooltip works on click too
-- Create a page describing the most productive rythm to follow (52/17 rule, pomodoro technique, ultradian cycles)
 
 Design
 
@@ -33,6 +30,8 @@ To go further:
 
 Done:
 
+- Create a page describing the most productive rythm to follow (52/17 rule, pomodoro technique, ultradian cycles)
+- Make the calendar either work on two days, or limit end day settings to 23h59
 - Add a way to zoom and dezoom the timeline
 - Limit task name to 25 characters
 - Make the calendar look better on long days
@@ -85,3 +84,44 @@ End time
 
 % of time as work during the day
 % of time as break or pauses during the day
+
+OLD NAV BAR
+// import {
+// NavigationMenu,
+// NavigationMenuItem,
+// NavigationMenuLink,
+// NavigationMenuList,
+// navigationMenuTriggerStyle,
+// } from "@/components/ui/navigation-menu";
+// import Link from "next/link";
+
+// export default function Navbar() {
+// return (
+// <nav className="border-b bg-background">
+// <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+// <div className="flex h-16 items-center justify-between">
+// {/_ Logo/Brand section _/}
+// <div className="flex items-center">
+// <Link href="/" className="text-2xl font-bold text-foreground">
+// Pomodoro Calendar
+// </Link>
+// </div>
+
+// {/_ Navigation section _/}
+// <NavigationMenu>
+// <NavigationMenuList>
+// <NavigationMenuItem>
+// <NavigationMenuLink
+// href="/productivity"
+// className={navigationMenuTriggerStyle()}
+// >
+// Productivity Rhythms
+// </NavigationMenuLink>
+// </NavigationMenuItem>
+// </NavigationMenuList>
+// </NavigationMenu>
+// </div>
+// </div>
+// </nav>
+// );
+// }
