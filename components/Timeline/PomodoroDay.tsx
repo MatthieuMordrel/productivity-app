@@ -1,10 +1,8 @@
 "use client";
 
 import { useSessionsContext } from "@/contexts/SessionsContext";
-import { useSettingsContext } from "@/contexts/SettingsContext";
 import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
-import { possibleStepSizes, timeslots } from "@/lib/constants";
-import { getTimeRangeForDate } from "@/lib/functions/calendar";
+import { timeslots } from "@/lib/constants";
 import "@styles/calendar-agenda.css";
 import "@styles/calendar-event.css";
 import "@styles/calendar-header.css";
@@ -14,12 +12,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import moment from "moment";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import {
-  Calendar,
-  EventPropGetter,
-  momentLocalizer,
-  View,
-} from "react-big-calendar";
+import { Calendar, EventPropGetter, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { SheetSettings } from "../settings/SheetSettings";
@@ -39,8 +32,6 @@ const Time = dynamic(() => import("./Time").then((mod) => mod.Time), {
 const localizer = momentLocalizer(moment);
 
 export default function PomodoroDay() {
-  console.log("PomodoroDay component rendered");
-  const { state } = useSettingsContext();
   const { sessions } = useSessionsContext();
   const {
     filteredEvents,
@@ -50,37 +41,19 @@ export default function PomodoroDay() {
     setShowPauses,
     setShowBreaks,
     eventPropGetter,
-  } = useCalendarHelpers(sessions);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
-  const [view, setView] = useState<View>("day");
-  const [zoomLevel, setZoomLevel] = useState<number>(1);
-
-  // Zoom in function
-  const handleZoomIn = () => {
-    setZoomLevel((prevZoom) => prevZoom + 1);
-  };
-
-  // Zoom out function
-  const handleZoomOut = () => {
-    setZoomLevel((prevZoom) => prevZoom - 1);
-  };
-
-  const calculatedStepSize = possibleStepSizes[zoomLevel - 1];
-
-  const [currentDate, setCurrentDate] = useState(new Date());
-
-  // Calculate time range based on current date
-  const { calendarStartTime, calendarEndTime } = getTimeRangeForDate(
+    view,
+    setView,
+    zoomLevel,
+    handleZoomIn,
+    handleZoomOut,
+    calculatedStepSize,
+    timeRange,
     currentDate,
-    state.startTime,
-    state.endTime,
-  );
+    handleDateChange,
+    shouldShowToolbar,
+  } = useCalendarHelpers(sessions);
 
-  // Add this function to handle date changes
-  const handleDateChange = (newDate: Date) => {
-    setCurrentDate(newDate);
-  };
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   return (
     <div className="container mx-auto">
@@ -94,8 +67,6 @@ export default function PomodoroDay() {
               <div className="flex flex-col space-y-4">
                 <div className="flex items-center justify-between space-x-4">
                   <ViewSwitch view={view} setView={setView} />
-                  {/* Add CalendarZoom component */}
-
                   <SheetSettings
                     isSettingsOpen={isSettingsOpen}
                     setIsSettingsOpen={setIsSettingsOpen}
@@ -115,7 +86,6 @@ export default function PomodoroDay() {
                   />
                 </div>
               </div>
-
               <AnimatePresence mode="wait">
                 <motion.div
                   key={view}
@@ -130,13 +100,12 @@ export default function PomodoroDay() {
                     events={filteredEvents}
                     view={view as "day" | "agenda"}
                     views={["day", "agenda"]}
-                    //Disbale view toolbar
                     toolbar={true}
                     dayLayoutAlgorithm="no-overlap"
                     step={calculatedStepSize}
                     timeslots={timeslots}
-                    min={calendarStartTime}
-                    max={calendarEndTime}
+                    min={timeRange.calendarStartTime}
+                    max={timeRange.calendarEndTime}
                     eventPropGetter={eventPropGetter as EventPropGetter<object>}
                     className="h-full rounded-lg border shadow-sm"
                     scrollToTime={getCurrentScrollTime()}
@@ -149,21 +118,14 @@ export default function PomodoroDay() {
                         ) : (
                           <div>{props.event.taskTitle}</div>
                         ),
-                      toolbar: (toolbarProps) => {
-                        // Only show toolbar if start and end times are on different days
-                        if (
-                          state.startTime.getDate() !== state.endTime.getDate()
-                        ) {
-                          return (
-                            // @ts-expect-error - TODO: Fix this
-                            <CustomToolbar
-                              {...toolbarProps}
-                              onDateChange={handleDateChange}
-                            />
-                          );
-                        }
-                        // Return null to hide toolbar when on same day
-                        return null;
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      toolbar: (toolbarProps: any) => {
+                        return shouldShowToolbar ? (
+                          <CustomToolbar
+                            {...toolbarProps}
+                            onDateChange={handleDateChange}
+                          />
+                        ) : null;
                       },
                     }}
                   />

@@ -12,39 +12,46 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        primary: "var(--primary)",
-        secondary: "var(--secondary)",
-        accent: "var(--accent)",
-        work: "var(--work)",
-        pause: "var(--pause)",
-        break: "var(--break)",
-        card: "var(--card)",
-        // Add these new color definitions
-        popover: {
-          DEFAULT: "var(--popover)",
-          foreground: "var(--popover-foreground)",
-        },
-        // Add other color schemes as needed
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      fontFamily: {
-        "geist-sans": ["var(--font-geist-sans)", ...fontFamily.sans],
-      },
-      containers: {
-        "h-sm": "50px",
-        "h-md": "100px",
-        "h-lg": "200px",
-        // Add more height-based breakpoints as needed
-      },
-    },
+  	extend: {
+  		colors: {
+  			background: 'var(--background)',
+  			foreground: 'var(--foreground)',
+  			primary: 'var(--primary)',
+  			secondary: 'var(--secondary)',
+  			accent: 'var(--accent)',
+  			work: 'var(--work)',
+  			pause: 'var(--pause)',
+  			break: 'var(--break)',
+  			card: 'var(--card)',
+  			popover: {
+  				DEFAULT: 'var(--popover)',
+  				foreground: 'var(--popover-foreground)'
+  			},
+  			sidebar: {
+  				DEFAULT: 'hsl(var(--sidebar-background))',
+  				foreground: 'hsl(var(--sidebar-foreground))',
+  				primary: 'hsl(var(--sidebar-primary))',
+  				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+  				accent: 'hsl(var(--sidebar-accent))',
+  				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+  				border: 'hsl(var(--sidebar-border))',
+  				ring: 'hsl(var(--sidebar-ring))'
+  			}
+  		},
+  		borderRadius: {
+  			lg: 'var(--radius)',
+  			md: 'calc(var(--radius) - 2px)',
+  			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		fontFamily: {
+  			'geist-sans': ["var(--font-geist-sans)", ...fontFamily.sans]
+  		},
+  		containers: {
+  			'h-sm': '50px',
+  			'h-md': '100px',
+  			'h-lg': '200px'
+  		}
+  	}
   },
   plugins: [
     plugin(({ theme, addBase, addUtilities }) => {
