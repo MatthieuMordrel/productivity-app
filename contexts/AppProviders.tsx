@@ -1,5 +1,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ReactNode } from "react";
+import { CompletionProvider } from "./CompletionContext";
 import { PomodoroCalendarProvider } from "./SessionsContext";
 import { PomodoroProvider } from "./SettingsContext";
 import { TaskProvider } from "./TaskContext";
@@ -15,12 +16,11 @@ interface AppProvidersProps {
 export function AppProviders({ children }: AppProvidersProps) {
   return (
     <SidebarProvider>
-      {/* Settings provider first since sessions depend on settings */}
       <PomodoroProvider>
-        {/* Task provider before sessions since sessions use task data */}
         <TaskProvider>
-          {/* Calendar provider last since it depends on both settings and tasks */}
-          <PomodoroCalendarProvider>{children}</PomodoroCalendarProvider>
+          <PomodoroCalendarProvider>
+            <CompletionProvider>{children}</CompletionProvider>
+          </PomodoroCalendarProvider>
         </TaskProvider>
       </PomodoroProvider>
     </SidebarProvider>

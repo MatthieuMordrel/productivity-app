@@ -21,7 +21,7 @@ const Progress = React.forwardRef<
       ref={ref}
       className={cn(
         "relative h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700",
-        className,
+        isActive && className,
       )}
       {...props}
     >
@@ -29,7 +29,7 @@ const Progress = React.forwardRef<
         className={cn(
           "h-full w-full flex-1 bg-slate-900 transition-all dark:bg-slate-50",
           isActive && "animate-pulse-light",
-          backgroundColor, //bg-green-500
+          isActive && backgroundColor, //bg-green-500
         )}
         style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
       />

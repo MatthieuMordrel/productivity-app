@@ -4,14 +4,13 @@ import { useCurrentSession } from "@/hooks/useCurrentSession";
 import { getTypeColors } from "@/lib/functions/sessionsUtils";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CompletionOverlay } from "./CompletionOverlay";
 import { HoverState } from "./HoverState";
 import { ProgressCircle } from "./ProgressCircle";
 import { TimerDisplay } from "./TimerDisplay";
 
 interface PomodoroTimerProps {
-  onComplete?: () => void;
   className?: string;
 }
 
@@ -21,23 +20,11 @@ interface PomodoroTimerProps {
  * A visual timer component that displays the current Pomodoro session
  * with animated progress indication.
  *
- * @param onComplete - Callback fired when the timer completes
  * @param className - Additional CSS classes
  */
-export default function PomodoroTimer({
-  onComplete,
-  className,
-}: PomodoroTimerProps) {
-  const { currentSession, isComplete } = useCurrentSession();
+export default function PomodoroTimer({ className }: PomodoroTimerProps) {
+  const { currentSession } = useCurrentSession();
   const [isHovered, setIsHovered] = useState(false);
-  console.log("isComplete", isComplete);
-
-  // Fire the callback when the timer completes
-  useEffect(() => {
-    if (isComplete) {
-      onComplete?.();
-    }
-  }, [isComplete, onComplete]);
 
   // Render a placeholder if there's no active session
   if (!currentSession) {

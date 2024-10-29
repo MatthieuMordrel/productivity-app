@@ -1,3 +1,4 @@
+import { useCompletion } from "@/contexts/CompletionContext";
 import { useSessionsContext } from "@/contexts/SessionsContext";
 import { findCurrentSession } from "@/lib/functions/sessionsUtils";
 import { Session } from "@/lib/types";
@@ -13,6 +14,7 @@ type CurrentSessionInfo = {
 
 export const useCurrentSession = (): CurrentSessionInfo => {
   const { sessions } = useSessionsContext();
+  const { handleCompletion } = useCompletion();
   const [sessionInfo, setSessionInfo] = useState<CurrentSessionInfo>({
     currentSession: null,
     remainingTime: "",
@@ -22,13 +24,7 @@ export const useCurrentSession = (): CurrentSessionInfo => {
 
   // Function to calculate remaining time and progress
   const calculateTimeAndProgress = useCallback(
-    (
-      current: Session | null,
-      now: Date,
-    ): Pick<
-      CurrentSessionInfo,
-      "remainingTime" | "progress" | "isComplete"
-    > => {
+    (current: Session | null, now: Date) => {
       if (!current)
         return { remainingTime: "", progress: 0, isComplete: false };
 
@@ -47,7 +43,7 @@ export const useCurrentSession = (): CurrentSessionInfo => {
     [],
   );
 
-  // Function to update the current session and time to display in the timer
+  // Function to update the current session and time
   const updateSessionAndTime = useCallback(() => {
     const now = new Date();
     const current = findCurrentSession(sessions);
@@ -56,15 +52,25 @@ export const useCurrentSession = (): CurrentSessionInfo => {
       now,
     );
 
+    // Check if the session is newly completed
+    if (isComplete && !sessionInfo.isComplete && current) {
+      handleCompletion();
+    }
+
     setSessionInfo({
       currentSession: current,
       remainingTime,
       progress,
       isComplete,
     });
-  }, [sessions, calculateTimeAndProgress]);
+  }, [
+    sessions,
+    calculateTimeAndProgress,
+    handleCompletion,
+    sessionInfo.isComplete,
+  ]);
 
-  // Update the current session and time to display in the timer
+  // Update the current session and time
   useEffect(() => {
     updateSessionAndTime();
     const interval = setInterval(updateSessionAndTime, 1000);

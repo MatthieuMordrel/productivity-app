@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getSessionTypeStats } from "@/lib/functions/sessionsUtils";
 import { Session, SessionType } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 
 // Helper function to determine grid class based on session count
 const getGridClass = (count: number, grid: "row" | "column") => {
@@ -21,49 +21,54 @@ const getGridClass = (count: number, grid: "row" | "column") => {
   }
 };
 
+interface StaticSessionStats {
+  sessionCount: number;
+  totalDuration: number;
+  percentageOfAllSessionsType: number;
+}
+
 export const WorkSessionSummary: React.FC<{
   className?: string;
   sessions: Session[];
 }> = ({ className, sessions }) => {
-  const [, setTriggerRerender] = useState(0);
+  // Memoize the static stats calculation
+  const staticSessionStats = useMemo(() => {
+    // Find the existing session types and sort them in desired order
+    const existingTypes = Array.from(
+      new Set(sessions.map((session) => session.type)),
+    ).sort((a, b) => {
+      const order: Record<SessionType, number> = {
+        Work: 0,
+        Pause: 1,
+        Break: 2,
+      };
+      return order[a] - order[b];
+    }) as SessionType[];
 
-  // Trigger a re-render every second
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTriggerRerender((prev) => prev + 1);
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  // Find the existing session types and sort them in desired order
-  const existingSessionTypes = Array.from(
-    new Set(sessions.map((session) => session.type)),
-  ).sort((a, b) => {
-    // Define the order: work -> pause -> break
-    const order: Record<SessionType, number> = {
-      Work: 0,
-      Pause: 1,
-      Break: 2,
-    };
-    return order[a] - order[b];
-  }) as SessionType[];
-
-  // Calculate stats for each session type for every render
-  const sessionStats = existingSessionTypes.reduce(
-    (acc, type) => {
-      acc[type] = getSessionTypeStats(sessions, type);
-      return acc;
-    },
-    {} as Record<SessionType, ReturnType<typeof getSessionTypeStats>>,
-  );
+    // Only calculate static stats when the sessions array changes
+    return existingTypes.reduce(
+      (acc, type) => {
+        const stats = getSessionTypeStats(sessions, type);
+        acc[type] = {
+          sessionCount: stats.sessionCount,
+          totalDuration: stats.totalDuration,
+          percentageOfAllSessionsType: stats.percentageOfAllSessionsType,
+        };
+        return acc;
+      },
+      {} as Record<SessionType, StaticSessionStats>,
+    );
+  }, [sessions]);
 
   // Determine the grid layout based on the number of session types
-  const gridClass = getGridClass(Object.keys(sessionStats).length, "column");
+  const gridClass = getGridClass(
+    Object.keys(staticSessionStats).length,
+    "column",
+  );
 
-  console.log(sessionStats);
+  console.log(staticSessionStats);
   // If there are no sessions for today, display a message
-  if (Object.keys(sessionStats).length === 0) {
+  if (Object.keys(staticSessionStats).length === 0) {
     return (
       <Card className={cn("w-full overflow-hidden shadow-lg", className)}>
         <CardHeader className="pb-2">
@@ -82,24 +87,19 @@ export const WorkSessionSummary: React.FC<{
 
   return (
     <Card className={cn("w-full overflow-hidden shadow-lg", className)}>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-2xl font-bold text-gray-800">
+      <CardHeader className="p-0 pb-4">
+        {/* <CardTitle className="text-2xl font-bold text-gray-800">
           Sessions Summary
-        </CardTitle>
+        </CardTitle> */}
       </CardHeader>
       <CardContent>
         <div className={`grid gap-6 ${gridClass}`}>
-          {existingSessionTypes.map((type) => (
+          {Object.entries(staticSessionStats).map(([type, stats]) => (
             <SessionTypeSummary
               key={type}
-              type={type}
-              stats={{
-                sessionCount: sessionStats[type].sessionCount,
-                totalDuration: sessionStats[type].totalDuration,
-                percentagePassed: sessionStats[type].percentagePassed,
-                percentageOfAllSessionsType:
-                  sessionStats[type].percentageOfAllSessionsType,
-              }}
+              type={type as SessionType}
+              staticStats={stats}
+              sessions={sessions} // Pass the sessions array to calculate dynamic stats
             />
           ))}
         </div>
