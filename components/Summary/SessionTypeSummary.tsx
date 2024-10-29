@@ -21,6 +21,7 @@ interface SessionTypeSummaryProps {
 
 export const SessionTypeSummary: React.FC<SessionTypeSummaryProps> = React.memo(
   ({ type, stats }) => {
+    // console.log(type);
     const { sessionTextColor, stroke, backgroundColor } = getTypeColors(type);
     const { sessions } = useSessionsContext();
     const currentSession = findCurrentSession(sessions);
@@ -30,6 +31,8 @@ export const SessionTypeSummary: React.FC<SessionTypeSummaryProps> = React.memo(
 
     // Determine the correct session label
     const sessionLabel = stats.sessionCount === 1 ? "session" : "sessions";
+
+    // console.log(stats);
 
     return (
       <div className={`rounded-lg p-4 ${sessionTextColor}`}>

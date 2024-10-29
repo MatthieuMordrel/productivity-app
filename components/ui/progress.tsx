@@ -14,24 +14,28 @@ interface ProgressProps
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps
->(({ className, value, isActive, backgroundColor, ...props }, ref) => (
-  <ProgressPrimitive.Root
-    ref={ref}
-    className={cn(
-      "relative h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700",
-      className,
-    )}
-    {...props}
-  >
-    <ProgressPrimitive.Indicator
+>(({ className, value, isActive, backgroundColor, ...props }, ref) => {
+  // console.log(backgroundColor);
+  return (
+    <ProgressPrimitive.Root
+      ref={ref}
       className={cn(
-        "h-full w-full flex-1 bg-slate-900 transition-all dark:bg-slate-50",
-        isActive && `animate-pulse-light ${backgroundColor}`,
+        "relative h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700",
+        className,
       )}
-      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-    />
-  </ProgressPrimitive.Root>
-));
+      {...props}
+    >
+      <ProgressPrimitive.Indicator
+        className={cn(
+          "h-full w-full flex-1 bg-slate-900 transition-all dark:bg-slate-50",
+          isActive && "animate-pulse-light",
+          backgroundColor, //bg-green-500
+        )}
+        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+      />
+    </ProgressPrimitive.Root>
+  );
+});
 Progress.displayName = ProgressPrimitive.Root.displayName;
 
 export { Progress };

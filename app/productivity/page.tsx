@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function ProductivityRhythms() {
@@ -7,12 +8,11 @@ export default function ProductivityRhythms() {
         Productivity Rhythms: Science-Backed Techniques
       </h1>
 
-      <Link
-        href="/"
-        className="mb-6 inline-block text-primary hover:text-secondary"
-      >
-        ← Back to Home
-      </Link>
+      <Button variant="link" asChild>
+        <Link href="/" className="mb-6 inline-block text-primary">
+          ← Back to Home
+        </Link>
+      </Button>
 
       <section className="mb-8">
         <h2 className="mb-4 text-2xl font-semibold">The Pomodoro Technique</h2>

@@ -27,6 +27,7 @@ export const WorkSessionSummary: React.FC<{
 }> = ({ className, sessions }) => {
   const [, setTriggerRerender] = useState(0);
 
+  // Trigger a re-render every second
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTriggerRerender((prev) => prev + 1);
@@ -60,6 +61,7 @@ export const WorkSessionSummary: React.FC<{
   // Determine the grid layout based on the number of session types
   const gridClass = getGridClass(Object.keys(sessionStats).length, "column");
 
+  console.log(sessionStats);
   // If there are no sessions for today, display a message
   if (Object.keys(sessionStats).length === 0) {
     return (

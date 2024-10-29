@@ -5,13 +5,13 @@ TO DO:
 - Add a placeholder when you drag task into the calendar
 - Add a settings to add sound with the sonner and end of session + start of session
 - Add custom sound options
-- Add a settings to set the start time to now visible on the main page
+- Add a way to tick a task when done
+- Add a way to hide ticked tasks
 
 Design
 
 - Decide on the color palette (both light and dark modes)
 - Imagine global design of the page (think mobile first)
-- Show a hand moving to display the drag and drop possibilty
 - Add a nice shadcn popup when a session is over (no sound, just a popup)
 - Animate when changing the duration only
 - Create tooltip for day/agenda view and settings

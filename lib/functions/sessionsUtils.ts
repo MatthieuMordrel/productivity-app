@@ -44,7 +44,7 @@ export const getTypeColors = (type: SessionType) => {
       return {
         stroke: "var(--work)",
         sessionTextColor: "text-slate-700 dark:text-stone-200",
-        backgroundColor: "bg-slate-700 dark:bg-stone-200",
+        backgroundColor: "bg-green-700 dark:bg-green-200",
       };
     case "Pause":
       return {

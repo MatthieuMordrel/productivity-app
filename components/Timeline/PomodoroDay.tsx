@@ -14,11 +14,11 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { SheetSettings } from "../settings/SheetSettings";
 import { Card } from "../ui/card";
+import { CalendarComponent } from "./Calendar";
 import CalendarButtons from "./CalendarButtons";
 import CalendarZoom from "./CalendarZoom";
 import NoSession from "./NoSession";
 import ViewSwitch from "./ViewSwitch";
-import { CalendarComponent } from "./Calendar";
 
 // Dynamic import for Time component to avoid hydration errors
 const Time = dynamic(() => import("./Time").then((mod) => mod.Time), {
