@@ -1,14 +1,14 @@
 "use client";
 
+import { useCompletion } from "@/contexts/CompletionContext";
 import { useSettingsContext } from "@/contexts/SettingsContext";
-import { useCurrentSession } from "@/hooks/useCurrentSession";
 import { formatDateToTime } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 export function TitleUpdater() {
   const { state } = useSettingsContext();
-  const { currentSession, remainingTime } = useCurrentSession();
+  const { currentSession, remainingTime } = useCompletion();
   const pathname = usePathname();
 
   const startTime = state.startTime;

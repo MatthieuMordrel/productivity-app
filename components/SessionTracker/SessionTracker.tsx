@@ -1,6 +1,6 @@
 "use client";
 
-import { useCurrentSession } from "@/hooks/useCurrentSession";
+import { useCompletion } from "@/contexts/CompletionContext";
 import { getTypeColors } from "@/lib/functions/sessionsUtils";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -17,7 +17,7 @@ interface SessionTrackerProps {
  * to provide constant visibility of the current session.
  */
 const SessionTracker = ({ className }: SessionTrackerProps) => {
-  const { currentSession } = useCurrentSession();
+  const { currentSession } = useCompletion();
 
   // Render a placeholder if there's no active session
   if (!currentSession) {

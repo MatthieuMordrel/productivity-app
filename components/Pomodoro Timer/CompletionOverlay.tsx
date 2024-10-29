@@ -1,9 +1,9 @@
-import { useCurrentSession } from "@/hooks/useCurrentSession";
+import { useCompletion } from "@/contexts/CompletionContext";
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 
 export const CompletionOverlay: React.FC = ({}) => {
-  const { isComplete } = useCurrentSession();
+  const { isComplete } = useCompletion();
 
   if (!isComplete) return null;
 

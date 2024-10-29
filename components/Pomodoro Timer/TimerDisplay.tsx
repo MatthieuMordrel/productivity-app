@@ -1,4 +1,4 @@
-import { useCurrentSession } from "@/hooks/useCurrentSession";
+import { useCompletion } from "@/contexts/CompletionContext";
 import { sessionIcons } from "@/lib/logos";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -15,7 +15,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
   colors,
   taskTitle,
 }) => {
-  const { remainingTime } = useCurrentSession();
+  const { remainingTime } = useCompletion();
   const IconComponent = sessionIcons[type as keyof typeof sessionIcons];
 
   // Add default handling for when remainingTime is undefined

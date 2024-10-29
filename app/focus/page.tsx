@@ -13,6 +13,7 @@ export default function FocusPage() {
     <div className="flex items-center justify-center bg-background p-4 hScreenWithoutNavbar">
       {/* Scale up the timer by 50% */}
       <PomodoroTimer />
+      {/* <SonnerEndSession currentSession={currentSession} /> */}
     </div>
   );
 }

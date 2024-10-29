@@ -1,8 +1,8 @@
+import { Toaster } from "@/components/ui/sonner";
 import { AppProviders } from "@/contexts/AppProviders";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
-import { Toaster } from "sonner";
 import Footer from "./footer";
 import Navbar from "./navbar";
 import { AppSidebar } from "./sidebar";

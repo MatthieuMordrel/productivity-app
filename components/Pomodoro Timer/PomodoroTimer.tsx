@@ -1,6 +1,6 @@
 "use client";
 
-import { useCurrentSession } from "@/hooks/useCurrentSession";
+import { useCompletion } from "@/contexts/CompletionContext";
 import { getTypeColors } from "@/lib/functions/sessionsUtils";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -23,7 +23,7 @@ interface PomodoroTimerProps {
  * @param className - Additional CSS classes
  */
 export default function PomodoroTimer({ className }: PomodoroTimerProps) {
-  const { currentSession } = useCurrentSession();
+  const { currentSession } = useCompletion();
   const [isHovered, setIsHovered] = useState(false);
 
   // Render a placeholder if there's no active session

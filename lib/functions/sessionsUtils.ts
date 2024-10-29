@@ -136,3 +136,26 @@ export const getSessionTypeStats = (
     percentageOfAllSessionsType,
   };
 };
+
+/**
+ * Calculates the progress and remaining time for a session
+ *
+ * @param current - The current active session
+ * @param now - The current timestamp
+ * @returns Object containing:
+ *   - remainingTime: Formatted string of remaining minutes:seconds
+ *   - progress: Number between 0-1 representing completion percentage
+ *   - isComplete: Boolean indicating if session is complete
+ */
+export const calculateSessionProgress = (current: Session, now: Date) => {
+  const remainingMs = current.end.getTime() - now.getTime();
+  const totalDuration = current.end.getTime() - current.start.getTime();
+  const elapsedDuration = now.getTime() - current.start.getTime();
+  const remainingMinutes = Math.floor(remainingMs / 60000);
+  const remainingSeconds = Math.floor((remainingMs % 60000) / 1000);
+  const remainingTime = `${remainingMinutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  const progress = Math.min(elapsedDuration / totalDuration, 1);
+  const isComplete = remainingMs <= 1000;
+
+  return { remainingTime, progress, isComplete };
+};

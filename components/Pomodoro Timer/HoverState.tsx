@@ -1,4 +1,4 @@
-import { useCurrentSession } from "@/hooks/useCurrentSession";
+import { useCompletion } from "@/contexts/CompletionContext";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface HoverStateProps {
@@ -6,7 +6,7 @@ interface HoverStateProps {
 }
 
 export const HoverState: React.FC<HoverStateProps> = ({ isHovered }) => {
-  const { progress } = useCurrentSession();
+  const { progress } = useCompletion();
   return (
     <AnimatePresence>
       {isHovered && (
