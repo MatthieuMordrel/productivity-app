@@ -2,6 +2,11 @@
 
 import { useSessionsContext } from "@/contexts/SessionsContext";
 import {
+  playCompletionSound,
+  showSystemNotificationOnCompletion,
+  showToastOnCompletion,
+} from "@/lib/functions/completion";
+import {
   calculateSessionProgress,
   findCurrentSession,
 } from "@/lib/functions/sessionsUtils";
@@ -14,7 +19,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { toast } from "sonner";
 
 interface CompletionContextType {
   handleCompletion: () => void;
@@ -29,9 +33,7 @@ const CompletionContext = createContext<CompletionContextType | undefined>(
 );
 
 export function CompletionProvider({ children }: { children: ReactNode }) {
-  //Get sessions from context
   const { sessions } = useSessionsContext();
-  //Create state to hold session info
   const [sessionInfo, setSessionInfo] = useState({
     currentSession: null as Session | null,
     remainingTime: "",
@@ -39,27 +41,12 @@ export function CompletionProvider({ children }: { children: ReactNode }) {
     isComplete: false,
   });
 
-  // Function to play the completion sound at lower volume
-  const playCompletionSound = useCallback(() => {
-    const audio = new Audio("/sounds/complete.wav");
-    audio.volume = 0.3;
-    audio.play().catch((error) => {
-      console.error("Error playing completion sound:", error);
-    });
-  }, []);
-
-  // Main completion handler
+  // Trigger when a session is completed
   const handleCompletion = useCallback(() => {
     playCompletionSound();
-    toast("Session finished", {
-      description:
-        sessionInfo.currentSession?.type === "Pause"
-          ? "Break completed! Back to work!"
-          : `${sessionInfo.currentSession?.taskTitle} completed! Good Job!`,
-    });
-
-    // TODO: Add other completion logic here
-  }, [playCompletionSound, sessionInfo.currentSession]);
+    showToastOnCompletion(sessionInfo.currentSession ?? null);
+    showSystemNotificationOnCompletion(sessionInfo.currentSession ?? null);
+  }, [sessionInfo.currentSession]);
 
   // Calculate time and progress
   const calculateTimeAndProgress = useCallback(
@@ -72,7 +59,7 @@ export function CompletionProvider({ children }: { children: ReactNode }) {
     [],
   );
 
-  // Update session and time
+  // Set up an interval to update the session and time every second
   useEffect(() => {
     const updateSessionAndTime = () => {
       const now = new Date();
@@ -82,7 +69,7 @@ export function CompletionProvider({ children }: { children: ReactNode }) {
         now,
       );
 
-      // Check if the session is newly completed
+      // If se
       if (isComplete && !sessionInfo.isComplete && current) {
         handleCompletion();
       }
@@ -107,6 +94,7 @@ export function CompletionProvider({ children }: { children: ReactNode }) {
     calculateTimeAndProgress,
     handleCompletion,
     sessionInfo.isComplete,
+    sessionInfo.currentSession,
   ]);
 
   return (

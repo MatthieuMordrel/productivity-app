@@ -1,10 +1,10 @@
 "use client";
 
-import { useCompletion } from "@/contexts/CompletionContext";
 import { getTypeColors } from "@/lib/functions/sessionsUtils";
-import { cn } from "@/lib/utils";
+import { cn, formatDateToTime } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { TimerDisplay } from "../Pomodoro Timer/TimerDisplay";
+import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 
 interface SessionTrackerProps {
   className?: string;
@@ -17,7 +17,7 @@ interface SessionTrackerProps {
  * to provide constant visibility of the current session.
  */
 const SessionTracker = ({ className }: SessionTrackerProps) => {
-  const { currentSession } = useCompletion();
+  const { currentSession } = useCurrentSession();
 
   // Render a placeholder if there's no active session
   if (!currentSession) {
@@ -33,10 +33,8 @@ const SessionTracker = ({ className }: SessionTrackerProps) => {
 
   return (
     <div className={cn("relative mx-4 h-28", className)}>
-      {/* Gradient background */}
+      {/* Decorative layers - need absolute positioning */}
       <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-400/30 to-purple-500/30 shadow-md backdrop-blur-sm dark:from-blue-600/30 dark:to-purple-700/30" />
-
-      {/* Inner square */}
       <motion.div
         className="absolute inset-0.5 rounded-lg bg-white/90 dark:bg-gray-800/90"
         initial={{ scale: 0.9, opacity: 0 }}
@@ -44,9 +42,19 @@ const SessionTracker = ({ className }: SessionTrackerProps) => {
         transition={{ duration: 0.5, ease: "easeOut" }}
       />
 
-      {/* Reuse TimerDisplay with adjusted styling */}
-      <div className="absolute inset-0 scale-75">
-        <TimerDisplay type={type} colors={colors} taskTitle={taskTitle} />
+      {/* Timer display - can use regular flow */}
+      <div className="flex h-full scale-75 flex-col items-center justify-start">
+        <div className="flex-none text-xs text-gray-500 dark:text-gray-400">
+          {formatDateToTime(currentSession.start)} -{" "}
+          {formatDateToTime(currentSession.end)}
+        </div>
+        <TimerDisplay
+          type={type}
+          colors={colors}
+          taskTitle={taskTitle}
+          displaytitle={false}
+          className="flex-1"
+        />
       </div>
     </div>
   );

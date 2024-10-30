@@ -59,7 +59,7 @@ export const EventComponent = ({
             parentRef.current = element;
           }}
           {...provided.droppableProps}
-          className={`relative h-full rounded-md shadow-sm ${colorSchemes[event.type]}`}
+          className={`relative h-full cursor-default rounded-md shadow-sm ${colorSchemes[event.type]}`}
         >
           {componentHeight > 55 && view === "day" ? (
             <div className="flex h-full flex-col justify-between p-2">

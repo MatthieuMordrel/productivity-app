@@ -79,6 +79,9 @@ const config: Config = {
         ".dark": {
           "--background": theme("colors.gray.900"),
           "--foreground": theme("colors.gray.100"),
+          "--primary": theme("colors.gray.100"),
+          "--secondary": theme("colors.gray.900"),
+          "--card": theme("colors.gray.800"),
           // Add dark mode versions if needed
           "--popover": "hsl(224 71% 4%)",
           "--popover-foreground": "hsl(215 20.2% 65.1%)",

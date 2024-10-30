@@ -23,6 +23,9 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     return value.getDate() === tomorrow.getDate();
   });
 
+  // Add ref for the dropdown container to handle focus
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   // Convert Date to HH:mm string because input type="time" only accepts strings
   const timeString = value.toLocaleTimeString([], {
     hour: "2-digit",
@@ -39,6 +42,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     newDate.setDate(today.getDate() + (isTomorrow ? 1 : 0));
     newDate.setHours(hours, minutes);
 
+    // If the new time is before the minTime, set it to 30 minutes after minTime
     if (minTime && newDate <= minTime) {
       newDate.setTime(minTime.getTime() + 30 * 60000);
     }
@@ -47,9 +51,13 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   };
 
   const setToNow = () => {
+    console.log("setToNow");
     const now = new Date();
-    setIsTomorrow(false); // Reset to today when setting to now
-
+    // Just zero out seconds and milliseconds while keeping the current minute
+    now.setSeconds(0, 0); // Setting both seconds and milliseconds in one call
+    console.log(now);
+    setIsTomorrow(false);
+    // If the new time is before the minTime, set it to 30 minutes after minTime
     if (minTime && now <= minTime) {
       now.setTime(minTime.getTime() + 30 * 60000);
     }
@@ -72,10 +80,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 
   const [isOpen, setIsOpen] = React.useState(false);
 
-  // Add ref for the dropdown container
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // Add click outside handler
+  // Add click outside handler to manage focus
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

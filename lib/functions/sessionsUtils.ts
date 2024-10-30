@@ -43,20 +43,20 @@ export const getTypeColors = (type: SessionType) => {
     case "Work":
       return {
         stroke: "var(--work)",
-        sessionTextColor: "text-slate-700 dark:text-stone-200",
-        backgroundColor: "bg-green-600 dark:bg-green-500",
+        sessionTextColor: "text-work",
+        backgroundColor: "bg-work",
       };
     case "Pause":
       return {
         stroke: "var(--pause)",
-        sessionTextColor: "text-yellow-500 dark:text-yellow-400",
-        backgroundColor: "bg-yellow-500 dark:bg-yellow-400",
+        sessionTextColor: "text-pause",
+        backgroundColor: "bg-pause",
       };
     case "Break":
       return {
         stroke: "var(--break)",
-        sessionTextColor: "text-green-500 dark:text-green-400",
-        backgroundColor: "bg-green-500 dark:bg-green-400",
+        sessionTextColor: "text-break",
+        backgroundColor: "bg-break",
       };
   }
 };

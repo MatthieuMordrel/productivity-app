@@ -1,22 +1,33 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+
 import Link from "next/link";
+
 import { useEffect, useState } from "react";
+
+import { NotificationRequest } from "../components/Notification/NotificationRequest";
+
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navItems = [
   { label: "Home", href: "/" },
+
   { label: "Productivity", href: "/productivity" },
 ];
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const [scrollPosition, setScrollPosition] = useState(0);
 
   // Effect to update scroll position
+
   useEffect(() => {
     const handleScroll = () => setScrollPosition(window.scrollY);
+
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -31,6 +42,13 @@ export default function Navbar() {
               ProductivityApp
             </Link>
           </div>
+
+          <div className="hidden items-center gap-4 md:flex">
+            <NotificationRequest />
+
+            <ThemeToggle />
+          </div>
+
           <div className="md:hidden">
             <Button
               variant="ghost"
@@ -56,7 +74,9 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
       {/* Mobile menu */}
+
       {isMobileMenuOpen && (
         <div className="md:hidden">
           <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
@@ -69,6 +89,14 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+
+            <div className="px-3 py-2">
+              <NotificationRequest />
+            </div>
+
+            <div className="px-3 py-2">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       )}

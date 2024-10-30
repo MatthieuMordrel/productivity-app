@@ -1,3 +1,4 @@
+import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 import { useSettingsContext } from "@/contexts/SettingsContext";
 import { getTimeRangeForDate } from "@/lib/functions/calendar";
 import { Session } from "@/lib/types";
@@ -7,6 +8,7 @@ import { EventPropGetter } from "react-big-calendar";
 export const useCalendarHelpers = () => {
   const { state } = useSettingsContext();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const { currentSession } = useCurrentSession();
 
   // Calculate time range based on current date
   const timeRange = useMemo(
@@ -29,6 +31,7 @@ export const useCalendarHelpers = () => {
         cursor: "default",
         outline: "none",
         color: "white",
+        opacity: currentSession?.id === event.id ? 1 : 0.7,
         backgroundColor:
           event?.type === "Work"
             ? "var(--work)"
@@ -37,7 +40,7 @@ export const useCalendarHelpers = () => {
               : "var(--pause)",
       },
     }),
-    [],
+    [currentSession],
   );
 
   // Check if toolbar should be shown

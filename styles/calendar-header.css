@@ -1,3 +1,12 @@
+/* Classes
+rbc-time-header
+rbc-overflowing
+rbc-time-header-gutter
+rbc-time-header-content
+rbc-allday-cell
+*/
+
+/* All Day Cell */
 .rbc-allday-cell {
   display: none !important;
 }

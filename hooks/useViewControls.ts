@@ -4,7 +4,7 @@ import { View } from "react-big-calendar";
 
 export const useViewControls = () => {
   const [view, setView] = useState<View>("day");
-  const [zoomLevel, setZoomLevel] = useState<number>(1);
+  const [zoomLevel, setZoomLevel] = useState<number>(2);
 
   // Zoom handlers
   const handleZoomIn = useCallback(() => {

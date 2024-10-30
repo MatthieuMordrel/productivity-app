@@ -1,0 +1,31 @@
+/* Classes
+rbc-time-gutter rbc-time-column
+rbc-timeslot-group
+rbc-time-slot
+rbc-label
+*/
+
+/* Time Axis*/
+.rbc-time-gutter {
+  border-bottom: none;
+}
+
+/* Time Slots group i.e. timeslot prop of calendar */
+.rbc-timeslot-group {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Time Slot i.e. each step */
+.rbc-time-slot {
+  /* color: #4b5563;
+  font-size: 0.75rem;
+  font-weight: 500; */
+}
+
+/* Time Slot Label */
+.rbc-time-slot .rbc-label {
+  padding: 0.25rem 0.5rem;
+  color: #4b5563;
+  font-size: 0.75rem;
+  font-weight: 500;
+}

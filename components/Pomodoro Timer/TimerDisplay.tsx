@@ -1,6 +1,7 @@
-import { useCompletion } from "@/contexts/CompletionContext";
 import { sessionIcons } from "@/lib/logos";
+import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
+import TimeSession from "../SessionTracker/TimeSession";
 
 interface TimerDisplayProps {
   type: string;
@@ -8,21 +9,25 @@ interface TimerDisplayProps {
     sessionTextColor: string;
   };
   taskTitle: string;
+  displaytitle?: boolean;
+  className?: string;
 }
 
 export const TimerDisplay: React.FC<TimerDisplayProps> = ({
   type,
   colors,
   taskTitle,
+  displaytitle = true,
+  className,
 }) => {
-  const { remainingTime } = useCompletion();
   const IconComponent = sessionIcons[type as keyof typeof sessionIcons];
-
-  // Add default handling for when remainingTime is undefined
-  const [minutes, seconds] = remainingTime?.split(":").map(Number) || [0, 0];
-
   return (
-    <div className="absolute inset-4 flex flex-col items-center justify-center rounded-full text-center">
+    <div
+      className={cn(
+        "absolute inset-4 flex flex-col items-center justify-center rounded-full text-center",
+        className,
+      )}
+    >
       <AnimatePresence mode="wait">
         <motion.div
           key={type}
@@ -41,12 +46,13 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
         </motion.div>
       </AnimatePresence>
       <p className="mt-2 text-2xl font-bold text-gray-800 dark:text-gray-100">
-        {minutes?.toString().padStart(2, "0") ?? "00"}:
-        {seconds?.toString().padStart(2, "0") ?? "00"}
+        <TimeSession />
       </p>
-      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-        {taskTitle}
-      </p>
+      {displaytitle && (
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          {taskTitle}
+        </p>
+      )}
     </div>
   );
 };

@@ -31,6 +31,8 @@ export function CalendarComponent({
     shouldShowToolbar,
   } = useCalendarHelpers();
 
+  console.log("Calendar re-rendered");
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -45,6 +47,9 @@ export function CalendarComponent({
           localizer={localizer}
           events={filteredEvents}
           view={view}
+          formats={{
+            timeGutterFormat: (date: Date) => moment(date).format("h:mm a"),
+          }}
           views={["day", "agenda"]}
           toolbar={true}
           dayLayoutAlgorithm="no-overlap"

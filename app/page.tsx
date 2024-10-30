@@ -56,7 +56,11 @@ export default function HomePage() {
                   breaks for peak efficiency.
                 </p>
                 <div className="mt-10 flex justify-center gap-4">
-                  <Button asChild size="lg" className="animate-pulse">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="animate-pulse text-secondary"
+                  >
                     <Link href="/calendar">Try It Now</Link>
                   </Button>
                   <Button asChild variant="outline" size="lg">
@@ -98,7 +102,7 @@ export default function HomePage() {
           </section>
 
           {/* CTA Section */}
-          <section className="bg-primary py-20 text-white sm:py-32">
+          <section className="bg-primary py-20 text-secondary sm:py-32">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center">
                 <h2 className="mb-6 text-3xl font-extrabold">

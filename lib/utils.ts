@@ -59,3 +59,34 @@ export const formatDateToTime = (date: Date): string => {
   const minutesStr = minutes < 10 ? "0" + minutes : minutes;
   return `${hours}:${minutesStr} ${ampm}`;
 };
+
+/**
+ * Shows a system notification if permissions are granted
+ * @param title - Notification title
+ * @param options - Notification options
+ * @returns Promise<boolean> - Whether the notification was shown
+ */
+export const showNotification = async (
+  title: string,
+  options?: NotificationOptions,
+): Promise<boolean> => {
+  // Check if notifications are supported and permitted
+  if (!("Notification" in window)) {
+    return false;
+  }
+
+  if (Notification.permission !== "granted") {
+    return false;
+  }
+
+  try {
+    new Notification(title, {
+      icon: "/favicon.ico",
+      ...options,
+    });
+    return true;
+  } catch (error) {
+    console.error("Error showing notification:", error);
+    return false;
+  }
+};

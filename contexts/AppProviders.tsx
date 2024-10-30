@@ -1,9 +1,11 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { ThemeProvider } from "next-themes";
 import { ReactNode } from "react";
+import { CompletionProvider } from "./CompletionContext";
 import { PomodoroCalendarProvider } from "./SessionsContext";
 import { PomodoroProvider } from "./SettingsContext";
 import { TaskProvider } from "./TaskContext";
-import { CompletionProvider } from "./CompletionContext";
+import { CurrentSessionProvider } from "./CurrentSessionContext";
 
 interface AppProvidersProps {
   children: ReactNode;
@@ -15,17 +17,18 @@ interface AppProvidersProps {
  */
 export function AppProviders({ children }: AppProvidersProps) {
   return (
-    <SidebarProvider>
-      {/* Settings provider first since sessions depend on settings */}
-      <PomodoroProvider>
-        {/* Task provider before sessions since sessions use task data */}
-        <TaskProvider>
-          {/* Calendar provider last since it depends on both settings and tasks */}
-          <PomodoroCalendarProvider>
-            <CompletionProvider>{children}</CompletionProvider>
-          </PomodoroCalendarProvider>
-        </TaskProvider>
-      </PomodoroProvider>
-    </SidebarProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <SidebarProvider>
+        <PomodoroProvider>
+          <TaskProvider>
+            <PomodoroCalendarProvider>
+              <CurrentSessionProvider>
+                <CompletionProvider>{children}</CompletionProvider>
+              </CurrentSessionProvider>
+            </PomodoroCalendarProvider>
+          </TaskProvider>
+        </PomodoroProvider>
+      </SidebarProvider>
+    </ThemeProvider>
   );
 }

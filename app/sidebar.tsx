@@ -76,7 +76,7 @@ export function AppSidebar() {
         </SidebarGroup>
         {/* Only show SessionTracker when not on focus page */}
         {pathname !== "/focus" && (
-          <div className="mb-4 mt-auto pt-4">
+          <div className="mb-4 mt-auto">
             <SessionTracker />
           </div>
         )}
