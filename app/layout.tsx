@@ -27,9 +27,9 @@ export default function RootLayout({
           <AppSidebar />
           {/* TitleUpdater is used to update the title of the page, and handle session completion events */}
           <TitleUpdater />
-          <main className="flex-1">
+          <main className="container mx-auto min-h-screen flex-1">
             <Navbar />
-            <main className="container min-h-screen">{children}</main>
+            {children}
             <Toaster />
             <Footer />
           </main>

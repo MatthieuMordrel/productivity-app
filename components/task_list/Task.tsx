@@ -48,7 +48,7 @@ export default function Task({
                 onChange={handleEditInputChange}
                 onBlur={handleEditSave}
                 onKeyDown={handleEditKeyPress}
-                className="w-full flex-grow bg-secondary p-1 text-foreground"
+                className="w-full flex-grow bg-secondary p-1"
                 aria-label="Edit task"
               />
             ) : (
@@ -57,14 +57,14 @@ export default function Task({
             <div className="flex flex-shrink-0 space-x-2">
               <button
                 onClick={() => handleEditClick()}
-                className="text-foreground opacity-50 transition-opacity hover:opacity-100"
+                className="opacity-50 transition-opacity hover:opacity-100"
                 aria-label="Edit task"
               >
                 <Edit2 size={18} />
               </button>
               <button
                 onClick={() => deleteTask(task.id)}
-                className="text-foreground opacity-50 transition-opacity hover:opacity-100"
+                className="opacity-50 transition-opacity hover:opacity-100"
                 aria-label="Delete task"
               >
                 <Trash2 size={18} />

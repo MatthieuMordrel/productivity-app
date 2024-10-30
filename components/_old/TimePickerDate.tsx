@@ -91,7 +91,7 @@ export const TimePickerDate: React.FC<TimePickerProps> = ({
         type="time"
         value={timeString}
         onChange={handleTimeChange}
-        className="rounded-md bg-secondary p-2 text-foreground"
+        className="rounded-md bg-secondary p-2"
       />
 
       {showDateToggle && (
@@ -103,7 +103,7 @@ export const TimePickerDate: React.FC<TimePickerProps> = ({
             type="date"
             value={dateString}
             onChange={handleDateChange}
-            className="rounded-md bg-secondary p-2 text-foreground"
+            className="rounded-md bg-secondary p-2"
           />
         </>
       )}

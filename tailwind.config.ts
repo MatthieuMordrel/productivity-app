@@ -11,6 +11,7 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: ["animate-pulse-light"],
   theme: {
     extend: {
       colors: {
@@ -37,6 +38,13 @@ const config: Config = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        muted: {
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
+        },
+        ring: {
+          DEFAULT: "var(--ring)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -45,6 +53,9 @@ const config: Config = {
       },
       fontFamily: {
         "geist-sans": ["var(--font-geist-sans)", ...fontFamily.sans],
+      },
+      height: {
+        hScreenWithoutNavbar: "calc(100vh-80px)",
       },
       containers: {
         "h-sm": "50px",
@@ -62,29 +73,39 @@ const config: Config = {
       // console.log(theme);
       addBase({
         ":root": {
-          "--background": "#F8F9FA",
-          "--foreground": "#1C1F2E",
-          "--primary": "#1C1F2E",
-          "--secondary": "#F8F9FA",
-          "--accent": theme("colors.gray.200"),
-          "--work": theme("colors.slate.700"),
-          "--pause": "#F59E0B",
-          "--break": "#10B981",
-          "--card": "hsl(0 0% 100%)",
-          // Add these new CSS variables
-          "--popover": "hsl(0 0% 100%)",
-          "--popover-foreground": "hsl(222.2 84% 4.9%)",
-          // Add other variables as needed
+          "--primary": theme("colors.blue.500"),
+          "--secondary": theme("colors.yellow.500"),
+          "--accent": theme("colors.cyan.100"),
+          "--muted": "hsl(210 40% 96.1%)",
+          "--muted-foreground": "hsl(215.4 16.3% 46.9%)",
+          "--ring": "hsl(215 20.2% 65.1%)",
         },
+        //Light mode
+        ".light": {
+          "--background": theme("colors.gray.100"),
+          "--foreground": theme("colors.gray.900"),
+          "--card": theme("colors.gray.200"),
+          "--work": theme("colors.sky.800"),
+          "--pause": theme("colors.amber.500"),
+          "--break": theme("colors.emerald.500"),
+          "--popover": theme("colors.gray.200"),
+          "--popover-foreground": theme("colors.gray.800"),
+        },
+        //Dark mode
         ".dark": {
           "--background": theme("colors.gray.900"),
           "--foreground": theme("colors.gray.100"),
-          "--primary": theme("colors.gray.100"),
-          "--secondary": theme("colors.gray.900"),
+          "--accent": theme("colors.cyan.900"),
           "--card": theme("colors.gray.800"),
-          // Add dark mode versions if needed
+          "--work": theme("colors.sky.950"),
+          "--pause": theme("colors.amber.950"),
+          "--break": theme("colors.emerald.600"),
+          //Popover should be slightly lighter than background
           "--popover": "hsl(224 71% 4%)",
           "--popover-foreground": "hsl(215 20.2% 65.1%)",
+          "--muted": "hsl(223 47% 11%)",
+          "--muted-foreground": "hsl(215.4 16.3% 56.9%)",
+          "--ring": "hsl(216 34% 17%)",
         },
       });
       // Add new utility class for 100vh - 40px

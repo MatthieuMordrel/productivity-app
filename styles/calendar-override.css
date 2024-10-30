@@ -5,12 +5,8 @@ rbc-time-content
 */
 
 /* Main Calendar Container */
-.rbc-calendar {
-  border: none !important;
-  box-shadow: none !important;
-  background-color: transparent !important;
-  outline: none !important;
-}
+/* .rbc-calendar {
+} */
 
 /* Time Grid */
 .rbc-time-view {
@@ -26,6 +22,11 @@ rbc-time-content
   box-shadow: none !important;
   background-color: transparent !important;
   outline: none !important;
+}
+
+.rbc-day-slot {
+  background-color: transparent !important;
+  border: none !important;
 }
 
 /* General Styles */

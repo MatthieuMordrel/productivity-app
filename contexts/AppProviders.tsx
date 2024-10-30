@@ -2,10 +2,11 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "next-themes";
 import { ReactNode } from "react";
 import { CompletionProvider } from "./CompletionContext";
+import { CurrentSessionProvider } from "./CurrentSessionContext";
+import { EventProvider } from "./EventContext";
 import { PomodoroCalendarProvider } from "./SessionsContext";
 import { PomodoroProvider } from "./SettingsContext";
 import { TaskProvider } from "./TaskContext";
-import { CurrentSessionProvider } from "./CurrentSessionContext";
 
 interface AppProvidersProps {
   children: ReactNode;
@@ -22,9 +23,11 @@ export function AppProviders({ children }: AppProvidersProps) {
         <PomodoroProvider>
           <TaskProvider>
             <PomodoroCalendarProvider>
-              <CurrentSessionProvider>
-                <CompletionProvider>{children}</CompletionProvider>
-              </CurrentSessionProvider>
+              <EventProvider>
+                <CurrentSessionProvider>
+                  <CompletionProvider>{children}</CompletionProvider>
+                </CurrentSessionProvider>
+              </EventProvider>
             </PomodoroCalendarProvider>
           </TaskProvider>
         </PomodoroProvider>

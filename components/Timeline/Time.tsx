@@ -14,9 +14,9 @@ export const Time = () => {
   }, []);
 
   return (
-    <div className="flex justify-between bg-primary p-2 text-lg font-semibold text-foreground text-white">
+    <div className="flex justify-between p-2 text-lg font-semibold">
       <span>{currentDateTime.format("dddd, MMMM D, YYYY")}</span>
-      <span>{currentDateTime.format("HH:mm:ss")}</span>
+      <span>{currentDateTime.format("h:mm:ss A")}</span>
     </div>
   );
 };

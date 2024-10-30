@@ -102,71 +102,127 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     };
   }, [isOpen]);
 
-  return (
-    <div className="relative flex items-center space-x-1">
-      <input
-        id="time-picker"
-        type="time"
-        value={timeString}
-        onChange={handleChange}
-        className="rounded-md bg-secondary p-2 text-foreground"
-        placeholder="HH:MM"
-      />
+  // Modified adjustHour function to handle day changes
+  const adjustHour = (increment: number) => {
+    const newDate = new Date(value);
+    newDate.setHours(newDate.getHours() + increment);
 
-      {showDateToggle && (
-        <div className="relative" ref={dropdownRef}>
+    // Check if we've crossed midnight
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    // Determine if the new time should be tomorrow
+    const shouldBeTomorrow =
+      // Case 1: We were today and crossed midnight forward
+      (!isTomorrow && increment > 0 && newDate.getDate() !== today.getDate()) ||
+      // Case 2: We were tomorrow but haven't crossed back to today
+      (isTomorrow && !(increment < 0 && newDate.getDate() === today.getDate()));
+
+    // Update the tomorrow state if it changed
+    if (shouldBeTomorrow !== isTomorrow) {
+      setIsTomorrow(shouldBeTomorrow);
+    }
+
+    // Check against minTime if it exists
+    if (minTime && newDate <= minTime) {
+      newDate.setTime(minTime.getTime() + 30 * 60000);
+    }
+
+    onChange(newDate);
+  };
+
+  return (
+    <div className="relative">
+      {/* Main row with time input and other controls */}
+      <div className="flex items-center space-x-1">
+        <input
+          id="time-picker"
+          type="time"
+          value={timeString}
+          onChange={handleChange}
+          className="rounded-md p-2"
+          placeholder="HH:MM"
+        />
+
+        {showDateToggle && (
+          <div className="relative" ref={dropdownRef}>
+            <Button
+              onClick={() => setIsOpen(!isOpen)}
+              variant="default"
+              size="sm"
+              className="w-[36px] text-[10px]"
+              title={isTomorrow ? "Tomorrow" : "Today"}
+            >
+              {isTomorrow ? "T+1" : "T"}
+            </Button>
+
+            {/* Dropdown menu */}
+            {isOpen && (
+              <div className="absolute right-0 top-full z-50 mt-1 w-24 rounded-md bg-secondary py-1 shadow-lg">
+                <Button
+                  onClick={() => {
+                    handleToggleDay(false);
+                    setIsOpen(false);
+                  }}
+                  variant="ghost"
+                  className={`h-auto w-full justify-start px-3 py-1.5 text-xs ${
+                    !isTomorrow ? "text-primary" : " "
+                  }`}
+                >
+                  Today
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleToggleDay(true);
+                    setIsOpen(false);
+                  }}
+                  variant="ghost"
+                  className={`h-auto w-full justify-start px-3 py-1.5 text-xs ${
+                    isTomorrow ? "text-primary" : " "
+                  }`}
+                >
+                  Tomorrow
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {showSetNowButton && (
           <Button
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={setToNow}
             variant="default"
             size="sm"
-            className="w-[36px] text-[10px]"
-            title={isTomorrow ? "Tomorrow" : "Today"}
+            title="Set to current time"
           >
-            {isTomorrow ? "T+1" : "T"}
+            Now
           </Button>
+        )}
+      </div>
 
-          {/* Dropdown menu */}
-          {isOpen && (
-            <div className="absolute right-0 top-full z-50 mt-1 w-24 rounded-md bg-secondary py-1 shadow-lg">
-              <Button
-                onClick={() => {
-                  handleToggleDay(false);
-                  setIsOpen(false);
-                }}
-                variant="ghost"
-                className={`h-auto w-full justify-start px-3 py-1.5 text-xs ${
-                  !isTomorrow ? "text-primary" : "text-foreground"
-                }`}
-              >
-                Today
-              </Button>
-              <Button
-                onClick={() => {
-                  handleToggleDay(true);
-                  setIsOpen(false);
-                }}
-                variant="ghost"
-                className={`h-auto w-full justify-start px-3 py-1.5 text-xs ${
-                  isTomorrow ? "text-primary" : "text-foreground"
-                }`}
-              >
-                Tomorrow
-              </Button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {showSetNowButton && (
-        <Button
-          onClick={setToNow}
-          variant="default"
-          size="sm"
-          title="Set to current time"
+      {/* Hour adjustment buttons below */}
+      <div className="mt-1 flex space-x-1">
+        <button
+          onClick={() => adjustHour(-1)}
+          className={`rounded px-1.5 py-0.5 text-xs transition-colors hover:bg-opacity-80 ${
+            minTime && value.getTime() - 3600000 <= minTime.getTime()
+              ? "opacity-50"
+              : "hover:bg-foreground hover:text-background"
+          }`}
+          disabled={minTime && value.getTime() - 3600000 <= minTime.getTime()}
+          title="Previous hour"
         >
-          Now
-        </Button>
-      )}
+          -1h
+        </button>
+        <button
+          onClick={() => adjustHour(1)}
+          className="rounded px-1.5 py-0.5 text-xs transition-colors hover:bg-foreground hover:text-background"
+          title="Next hour"
+        >
+          +1h
+        </button>
+      </div>
     </div>
   );
 };

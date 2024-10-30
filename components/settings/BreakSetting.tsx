@@ -56,7 +56,7 @@ export const BreakSetting: React.FC<BreakSettingProps> = ({
         {/* Delete Button - Aligned with inputs */}
         <button
           onClick={() => dispatch({ type: "REMOVE_BREAK", payload: index })}
-          className="hover:bg-secondary/10 mt-[22px] rounded-md p-2 text-foreground transition-colors"
+          className="hover:bg-secondary/10 mt-[22px] rounded-md p-2 transition-colors"
           aria-label="Remove break"
         >
           <Trash2 size={18} className="text-red-500 hover:text-red-700" />

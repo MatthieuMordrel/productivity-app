@@ -51,17 +51,15 @@ export default function HomePage() {
                 <h1 className="text-4xl font-extrabold tracking-tight text-primary sm:text-5xl md:text-6xl">
                   Master Your Day, Boost Your Productivity
                 </h1>
-                <p className="text-muted-foreground mx-auto mt-6 max-w-2xl text-xl">
+                <p className="mx-auto mt-6 max-w-2xl text-xl">
                   Plan your day with structured schedules. Balance work and
                   breaks for peak efficiency.
                 </p>
                 <div className="mt-10 flex justify-center gap-4">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="animate-pulse text-secondary"
-                  >
-                    <Link href="/calendar">Try It Now</Link>
+                  <Button variant="default" asChild size="lg">
+                    <Link href="/calendar" className="relative">
+                      <span className="">Try It Now</span>
+                    </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg">
                     <Link href="/productivity">
@@ -102,7 +100,7 @@ export default function HomePage() {
           </section>
 
           {/* CTA Section */}
-          <section className="bg-primary py-20 text-secondary sm:py-32">
+          <section className="bg-primary py-20 sm:py-32">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center">
                 <h2 className="mb-6 text-3xl font-extrabold">
@@ -112,11 +110,11 @@ export default function HomePage() {
                   Start planning your day with our intuitive calendar and
                   discover the power of structured schedules.
                 </p>
-                <div className="flex flex-col justify-center gap-4 text-foreground sm:flex-row">
+                <div className="flex flex-col justify-center gap-4 sm:flex-row">
                   <Button
                     asChild
                     size="lg"
-                    variant="secondary"
+                    variant="default"
                     className="w-full sm:w-auto"
                   >
                     <Link href="/calendar">Get Started</Link>

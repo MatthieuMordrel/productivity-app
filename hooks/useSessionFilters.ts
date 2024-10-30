@@ -5,6 +5,7 @@ export const useSessionFilters = (sessions: Session[]) => {
   const [showPauses, setShowPauses] = useState(false);
   const [showBreaks, setShowBreaks] = useState(true);
 
+  // Filter sessions based on the selected filters
   const filteredEvents = useMemo(() => {
     return sessions.filter((session) => {
       if (showPauses && showBreaks) return true;

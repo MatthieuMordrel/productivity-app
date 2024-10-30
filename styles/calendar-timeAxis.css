@@ -5,25 +5,54 @@ rbc-time-slot
 rbc-label
 */
 
-/* Time Axis*/
+/* Whole Time Axis*/
 .rbc-time-gutter {
-  border-bottom: none;
+  border: none !important;
+}
+
+/* timeslot within the time axis */
+.rbc-time-gutter .rbc-time-slot {
+  border: none !important;
+}
+
+/* Dark mode */
+.dark .rbc-time-gutter .rbc-time-slot {
+  border-right: 0.25px solid rgb(255, 255, 255, 0.1) !important;
+  border-bottom: 0.25px solid rgb(255, 255, 255, 0.1) !important;
+}
+
+/* Light mode */
+.light .rbc-time-gutter .rbc-time-slot {
+  border-right: 0.25px solid rgb(0, 0, 0, 0.1) !important;
+  border-bottom: 0.25px solid rgb(0, 0, 0, 0.1) !important;
 }
 
 /* Time Slots group i.e. timeslot prop of calendar */
 .rbc-timeslot-group {
-  border-bottom: 1px solid #e5e7eb;
+  border: none !important;
+  position: relative;
 }
 
-/* Time Slot i.e. each step */
-.rbc-time-slot {
-  /* color: #4b5563;
-  font-size: 0.75rem;
-  font-weight: 500; */
+/* Create bottom border using pseudo-element */
+/* .rbc-timeslot-group::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.25px;
+  background-color: rgb(255, 255, 255, 0.1);
+  z-index: -1000;
+} */
+
+/* Time Slot within the time column */
+.rbc-day-slot .rbc-time-slot {
+  border: none !important;
 }
 
 /* Time Slot Label */
 .rbc-time-slot .rbc-label {
+  border: none !important;
   padding: 0.25rem 0.5rem;
   color: #4b5563;
   font-size: 0.75rem;

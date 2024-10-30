@@ -1,28 +1,21 @@
 import { Switch } from "@/components/ui/switch";
+import { useEventContext } from "@/contexts/EventContext";
 
-export default function CalendarButtons({
-  showPauses,
-  setShowPauses,
-  showBreaks,
-  setShowBreaks,
-}: {
-  showPauses: boolean;
-  setShowPauses: (value: boolean) => void;
-  showBreaks: boolean;
-  setShowBreaks: (value: boolean) => void;
-}) {
+export default function CalendarButtons() {
+  const { showBreaks, setShowBreaks } = useEventContext();
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-4">
         <div className="flex items-center space-x-2">
-          <Switch
+          {/* <Switch
             id="show-pauses"
             checked={showPauses}
             onCheckedChange={setShowPauses}
           />
           <label htmlFor="show-pauses" className="text-sm font-medium">
             Show Pauses
-          </label>
+          </label> */}
         </div>
         <div className="flex items-center space-x-2">
           <Switch

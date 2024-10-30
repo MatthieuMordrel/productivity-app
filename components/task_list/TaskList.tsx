@@ -5,6 +5,7 @@ import { useTaskContext } from "@/contexts/TaskContext";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
+import { Button } from "../ui/button";
 import Task from "./Task";
 import TaskTooltipInfo from "./TaskTooltipInfo";
 
@@ -34,7 +35,7 @@ const TaskList: React.FC<{ className?: string }> = ({ className }) => {
   };
 
   return (
-    <Card className={cn("max-w-full", className)}>
+    <Card className={cn("max-w-full bg-transparent shadow-none", className)}>
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg">
           Tasks
@@ -51,20 +52,21 @@ const TaskList: React.FC<{ className?: string }> = ({ className }) => {
               onChange={handleInputChange}
               placeholder="Enter a new task"
               className={cn(
-                "w-full rounded border bg-secondary p-2 text-foreground",
-                error ? "border-red-500" : "border-gray-200",
+                "w-full rounded border p-2",
+                error ? "border-red-500" : "border-transparent",
               )}
             />
             <div className="h-6">
               {error && <p className="text-sm text-red-500">{error}</p>}
             </div>
           </div>
-          <button
+          <Button
             type="submit"
-            className="mt-2 w-full rounded bg-primary p-2 text-white transition-colors hover:bg-opacity-90"
+            variant="default"
+            className="mt-2 w-full rounded p-2 transition-colors hover:bg-opacity-90"
           >
             Add Task
-          </button>
+          </Button>
         </form>
 
         <Droppable

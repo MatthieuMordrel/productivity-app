@@ -1,71 +1,75 @@
+import { cn } from "@/lib/utils";
 import moment from "moment";
-import { ToolbarProps } from "react-big-calendar";
+import { ToolbarProps, View } from "react-big-calendar";
+import { Button } from "../ui/button";
 
 interface CustomToolbarProps extends ToolbarProps {
   onDateChange?: (date: Date) => void;
+  view: View;
 }
 
 export const CustomToolbar: React.FC<CustomToolbarProps> = (props) => {
   const { onNavigate, date, onDateChange } = props;
 
-  // Navigation button styling - more subtle design
-  const navButtonClass =
-    "px-3 py-1.5 text-sm font-medium rounded-md transition-all text-foreground/70 hover:bg-secondary/50 hover:text-foreground";
+  // Check if the current date matches today or tomorrow
+  const isToday = moment(date).isSame(moment(), "day");
+  const isTomorrow = moment(date).isSame(moment().add(1, "day"), "day");
 
-  const handleNavigate = (action: "PREV" | "NEXT" | "TODAY") => {
-    onNavigate(action);
-
-    // Calculate the new date based on the navigation action
-    let newDate = new Date(date);
-    if (action === "PREV") {
-      newDate = moment(date).subtract(1, "day").toDate();
-    } else if (action === "NEXT") {
-      newDate = moment(date).add(1, "day").toDate();
-    } else if (action === "TODAY") {
-      newDate = new Date();
-    }
-
-    // Notify parent component about the date change
+  // Simplified navigation handler for just Today and Tomorrow
+  const handleNavigate = (target: "TODAY" | "TOMORROW") => {
+    const newDate =
+      target === "TODAY" ? new Date() : moment().add(1, "day").toDate();
+    onNavigate(target === "TODAY" ? "TODAY" : "NEXT");
     onDateChange?.(newDate);
   };
 
   return (
-    <div className="bg-background/50 border-secondary/20 flex items-center justify-between border-b p-3">
-      {/* Navigation buttons and date display */}
-      <div className="flex items-center space-x-4">
-        <span className="rbc-btn-group flex items-center space-x-2">
-          <button
-            type="button"
-            onClick={() => handleNavigate("TODAY")}
-            className={navButtonClass}
-          >
-            Today
-          </button>
-          <button
-            type="button"
-            onClick={() => handleNavigate("PREV")}
-            className={navButtonClass}
-          >
-            <span className="sr-only">Previous</span>←
-          </button>
-          <button
-            type="button"
-            onClick={() => handleNavigate("NEXT")}
-            className={navButtonClass}
-          >
-            <span className="sr-only">Next</span>→
-          </button>
-        </span>
-
-        {/* Current date display */}
-        <span className="text-foreground/70 text-sm font-medium">
-          {date.toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </span>
+    <div className="flex items-center justify-end pb-3">
+      {/* Navigation buttons on the left, wrapped in a container that doesn't affect the date positioning */}
+      <div className="flex-1">
+        {props.view === "day" && (
+          <div className="flex items-center space-x-2">
+            <Button
+              type="button"
+              variant={isToday ? "default" : "ghost"}
+              size="sm"
+              onClick={() => handleNavigate("TODAY")}
+              className={cn(
+                "w-24 border border-transparent",
+                isToday
+                  ? ""
+                  : "border-accent hover:bg-foreground hover:opacity-80",
+              )}
+            >
+              Today
+            </Button>
+            <Button
+              type="button"
+              variant={isTomorrow ? "default" : "ghost"}
+              size="sm"
+              onClick={() => handleNavigate("TOMORROW")}
+              className={cn(
+                "w-24 border border-transparent",
+                isTomorrow
+                  ? ""
+                  : "border-accent hover:bg-foreground hover:opacity-80",
+              )}
+            >
+              Tomorrow
+            </Button>
+          </div>
+        )}
       </div>
+
+      {/* Date display always aligned to the right */}
+      <span className="ml-auto text-sm font-medium">
+        {date.toLocaleDateString("en-US", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })}
+      </span>
     </div>
   );
 };

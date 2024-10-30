@@ -18,7 +18,7 @@ const CalendarZoom: React.FC<CalendarZoomProps> = ({
       <Button
         onClick={onZoomOut}
         disabled={zoomLevel <= 1}
-        variant="outline"
+        variant="ghost"
         size="icon"
         className="h-8 w-8"
       >
@@ -27,7 +27,7 @@ const CalendarZoom: React.FC<CalendarZoomProps> = ({
       <Button
         onClick={onZoomIn}
         disabled={zoomLevel >= 5}
-        variant="outline"
+        variant="ghost"
         size="icon"
         className="h-8 w-8"
       >

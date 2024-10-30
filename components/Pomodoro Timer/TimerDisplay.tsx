@@ -6,7 +6,7 @@ import TimeSession from "../SessionTracker/TimeSession";
 interface TimerDisplayProps {
   type: string;
   colors: {
-    sessionTextColor: string;
+    textColor: string;
   };
   taskTitle: string;
   displaytitle?: boolean;
@@ -37,9 +37,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
           transition={{ duration: 0.3 }}
           className="flex flex-col items-center"
         >
-          <IconComponent
-            className={`mb-2 h-6 w-6 ${colors.sessionTextColor}`}
-          />
+          <IconComponent className={`mb-2 h-6 w-6 ${colors.textColor}`} />
           <h2 className="text-sm font-semibold text-gray-600 dark:text-gray-300">
             {type} Session
           </h2>

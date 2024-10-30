@@ -35,7 +35,7 @@ const PomodoroSettings: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto max-w-md rounded-lg bg-secondary p-6 shadow-lg">
+    <div className="mx-auto max-w-md rounded-lg bg-card p-6 shadow-lg">
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <NumberSetting

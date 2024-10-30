@@ -1,8 +1,10 @@
 "use client";
 
+import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
 import { timeslots } from "@/lib/constants";
 import { Session } from "@/lib/types";
+import { timeFormat } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import moment from "moment";
 import { Calendar, EventPropGetter, momentLocalizer } from "react-big-calendar";
@@ -31,6 +33,8 @@ export function CalendarComponent({
     shouldShowToolbar,
   } = useCalendarHelpers();
 
+  const { currentSession } = useCurrentSession();
+
   console.log("Calendar re-rendered");
 
   return (
@@ -41,14 +45,14 @@ export function CalendarComponent({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.2 }}
-        className="calendarHeight"
+        className="h-full"
       >
         <Calendar
           localizer={localizer}
           events={filteredEvents}
           view={view}
           formats={{
-            timeGutterFormat: (date: Date) => moment(date).format("h:mm a"),
+            timeGutterFormat: timeFormat,
           }}
           views={["day", "agenda"]}
           toolbar={true}
@@ -58,14 +62,20 @@ export function CalendarComponent({
           min={timeRange.calendarStartTime}
           max={timeRange.calendarEndTime}
           eventPropGetter={eventPropGetter as EventPropGetter<object>}
-          className="h-full rounded-lg border shadow-sm"
+          className="rounded-lg"
           scrollToTime={getCurrentScrollTime()}
           showMultiDayTimes={true}
           date={currentDate}
           components={{
             event: (props) =>
               view === "day" ? (
-                <EventComponent event={props.event} view={view} />
+                <EventComponent
+                  event={props.event}
+                  view={view}
+                  currentSession={
+                    props.event.id === currentSession?.id ? true : false
+                  }
+                />
               ) : (
                 <div>{props.event.taskTitle}</div>
               ),

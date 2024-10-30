@@ -3,7 +3,7 @@
 import { useCompletion } from "@/contexts/CompletionContext";
 import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 import { useSettingsContext } from "@/contexts/SettingsContext";
-import { formatDateToTime } from "@/lib/utils";
+import { timeFormat } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
@@ -14,7 +14,7 @@ export function TitleUpdater() {
   const pathname = usePathname();
 
   const startTime = state.startTime;
-  const startTimeFormatted = formatDateToTime(startTime);
+  const startTimeFormatted = timeFormat(startTime);
 
   useEffect(() => {
     // Update document title directly for client-side changes

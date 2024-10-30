@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import moment from "moment";
 import { twMerge } from "tailwind-merge";
 
 /**
@@ -35,32 +36,6 @@ export const formatMinutesToHoursAndMinutes = (minutes: number): string => {
 };
 
 /**
- * Formats a given Date object into a string representation of hours and minutes in AM/PM format.
- *
- * @param {Date} date - The Date object to format.
- * @returns {string} A formatted string in the format "hh:MM AM/PM".
- *
- * @example
- * const date = new Date('2023-08-19T14:30:00');
- * formatDateToTime(date);
- * // returns "02:30 PM"
- *
- * @example
- * const date = new Date('2023-08-19T09:05:00');
- * formatDateToTime(date);
- * // returns "09:05 AM"
- */
-export const formatDateToTime = (date: Date): string => {
-  let hours = date.getHours();
-  const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  const minutesStr = minutes < 10 ? "0" + minutes : minutes;
-  return `${hours}:${minutesStr} ${ampm}`;
-};
-
-/**
  * Shows a system notification if permissions are granted
  * @param title - Notification title
  * @param options - Notification options
@@ -90,3 +65,17 @@ export const showNotification = async (
     return false;
   }
 };
+
+/**
+ * Formats a date object into a time string in 12-hour format with AM/PM
+ * @param date - The date object to format
+ * @returns A string representing the time in "h:mm A" format (e.g. "2:30 PM")
+ *
+ * @example
+ * const date = new Date('2023-08-19T14:30:00');
+ * timeFormat(date);
+ * // returns "2:30 PM"
+ */
+export function timeFormat(date: Date) {
+  return moment(date).format("h:mm A");
+}

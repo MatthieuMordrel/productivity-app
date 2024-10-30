@@ -4,7 +4,9 @@ import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 import { getTypeColors } from "@/lib/functions/sessionsUtils";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useState } from "react";
+import { Button } from "../ui/button";
 import { CompletionOverlay } from "./CompletionOverlay";
 import { HoverState } from "./HoverState";
 import { ProgressCircle } from "./ProgressCircle";
@@ -29,8 +31,11 @@ export default function PomodoroTimer({ className }: PomodoroTimerProps) {
   // Render a placeholder if there's no active session
   if (!currentSession) {
     return (
-      <div className="flex h-64 w-64 items-center justify-center rounded-full bg-gradient-to-br from-gray-100 to-gray-200 text-gray-400 shadow-lg backdrop-blur-sm dark:from-gray-800 dark:to-gray-900 dark:text-gray-500">
+      <div className="flex h-64 w-64 flex-col items-center justify-center gap-6 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 text-gray-400 shadow-lg backdrop-blur-sm dark:from-gray-800 dark:to-gray-900 dark:text-gray-500">
         <p className="text-lg font-semibold">No active session</p>
+        <Button variant="default" asChild size="sm">
+          <Link href="/calendar">Update settings </Link>
+        </Button>
       </div>
     );
   }

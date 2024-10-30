@@ -1,3 +1,4 @@
+import { cn, timeFormat } from "@/lib/utils";
 import { Session } from "@lib/types";
 import { Clock, Coffee, PauseCircle } from "lucide-react";
 import moment from "moment";
@@ -8,9 +9,11 @@ import { View } from "react-big-calendar";
 export const EventComponent = ({
   event,
   view,
+  currentSession,
 }: {
   event: Session;
   view: View;
+  currentSession: boolean;
 }) => {
   const [componentHeight, setComponentHeight] = useState<number>(0);
   const parentRef = useRef<HTMLDivElement | null>(null);
@@ -32,9 +35,9 @@ export const EventComponent = ({
 
   // Define color schemes for different event types
   const colorSchemes = {
-    Work: "bg-work ",
-    Pause: "bg-pause ",
-    Break: "bg-break ",
+    Work: "bg-[var(--work)] ",
+    Pause: "bg-[var(--pause)] ",
+    Break: "bg-[var(--break)] ",
   };
 
   // Determine the appropriate icon based on event type
@@ -52,14 +55,22 @@ export const EventComponent = ({
 
   return (
     <Droppable droppableId={`event_${event.id}`}>
-      {(provided) => (
+      {(provided, snapshot) => (
         <div
           ref={(element) => {
             provided.innerRef(element);
             parentRef.current = element;
           }}
           {...provided.droppableProps}
-          className={`relative h-full cursor-default rounded-md shadow-sm ${colorSchemes[event.type]}`}
+          className={cn(
+            colorSchemes[event.type],
+            snapshot.isDraggingOver
+              ? "bg-foreground text-background"
+              : "relative h-full cursor-default rounded-md shadow-sm",
+          )}
+          style={{
+            opacity: currentSession ? 1 : 0.7,
+          }}
         >
           {componentHeight > 55 && view === "day" ? (
             <div className="flex h-full flex-col justify-between p-2">
@@ -75,8 +86,7 @@ export const EventComponent = ({
                 <div className="text-xs opacity-75">{durationMinutes}m</div>
               </div>
               <div className="text-right text-xs opacity-75">
-                {moment(event.start).format("HH:mm")} -{" "}
-                {moment(event.end).format("HH:mm")}
+                {timeFormat(event.start)} - {timeFormat(event.end)}
               </div>
             </div>
           ) : componentHeight > 25 &&

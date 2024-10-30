@@ -6,8 +6,17 @@ rbc-agenda-date-cell
 rbc-agenda-time-cell 
 rbc-agenda-event-cell */
 
+.rbc-agenda-view {
+  min-height: 500px !important;
+}
+
+.rbc-agenda-table {
+  border: none !important;
+  border-image: none !important;
+}
+
 /* Hide the date header */
-.rbc-agenda-table thead th:first-child {
+.rbc-agenda-table thead {
   display: none !important;
 }
 
@@ -15,10 +24,22 @@ rbc-agenda-event-cell */
   display: none !important;
 }
 
-/* .rbc-agenda-time-cell {
-  color: white !important;
-} */
+.rbc-agenda-time-cell {
+  background-color: var(--card) !important;
+  padding: 0 !important;
+}
 
-/* .rbc-agenda-event-cell {
-  background-color: inherit !important;
-} */
+/* Manage event cells */
+.rbc-agenda-event-cell {
+  padding: 0 !important;
+}
+
+/* Manage columns */
+.rbc-agenda-table td {
+  border: none !important;
+}
+
+/* Manage rows */
+.rbc-agenda-table tr {
+  border: none !important;
+}

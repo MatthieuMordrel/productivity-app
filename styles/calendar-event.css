@@ -1,11 +1,23 @@
-.rbc-event-label {
-  display: none !important;
+/* Classes
+rbc-event-label
+rbc-event
+rbc-event-content
+*/
+
+.rbc-day-slot .rbc-events-container {
+  margin-right: 0 !important;
+}
+
+.rbc-events-container {
+  border: none !important;
+  background-color: transparent !important;
 }
 
 .rbc-event {
   min-height: unset !important;
   padding: 0 !important;
   border: none !important;
+  z-index: -1 !important;
 }
 
 .rbc-event-content {
@@ -13,4 +25,8 @@
   min-height: unset !important;
   padding: 0 !important;
   margin: 0 !important;
+}
+
+.rbc-event-label {
+  display: none !important;
 }

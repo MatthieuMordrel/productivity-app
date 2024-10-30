@@ -21,7 +21,7 @@ interface SessionTypeSummaryProps {
 
 export const SessionTypeSummary: React.FC<SessionTypeSummaryProps> = React.memo(
   ({ type, staticStats, sessions }) => {
-    const { sessionTextColor, stroke, backgroundColor } = getTypeColors(type);
+    const { textColor, stroke, backgroundColor } = getTypeColors(type);
     const currentSession = findCurrentSession(sessions);
     const isActive = currentSession?.type === type;
     const [percentagePassed, setPercentagePassed] = useState(0);
@@ -56,7 +56,7 @@ export const SessionTypeSummary: React.FC<SessionTypeSummaryProps> = React.memo(
     console.log(backgroundColor);
 
     return (
-      <div className={`rounded-lg p-4 ${sessionTextColor}`}>
+      <div className={`rounded-lg p-4 ${textColor}`}>
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Icon
@@ -70,7 +70,7 @@ export const SessionTypeSummary: React.FC<SessionTypeSummaryProps> = React.memo(
             {staticStats.sessionCount} {sessionLabel}
           </span>
         </div>
-        <p className="mb-2 text-2xl font-bold">
+        <p className={`mb-2 text-2xl font-bold ${textColor}`}>
           {formatMinutesToHoursAndMinutes(staticStats.totalDuration)}
         </p>
         <div className="relative pt-1">
@@ -85,7 +85,7 @@ export const SessionTypeSummary: React.FC<SessionTypeSummaryProps> = React.memo(
           </div>
           <Progress
             value={percentagePassed}
-            className={sessionTextColor}
+            className={textColor}
             isActive={isActive}
             backgroundColor={backgroundColor}
           />

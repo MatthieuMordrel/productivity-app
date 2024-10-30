@@ -1,10 +1,10 @@
 "use client";
 
+import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 import { getTypeColors } from "@/lib/functions/sessionsUtils";
-import { cn, formatDateToTime } from "@/lib/utils";
+import { cn, timeFormat } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { TimerDisplay } from "../Pomodoro Timer/TimerDisplay";
-import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 
 interface SessionTrackerProps {
   className?: string;
@@ -32,7 +32,7 @@ const SessionTracker = ({ className }: SessionTrackerProps) => {
   const colors = getTypeColors(type);
 
   return (
-    <div className={cn("relative mx-4 h-28", className)}>
+    <div className={cn("relative mx-4 h-32", className)}>
       {/* Decorative layers - need absolute positioning */}
       <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-400/30 to-purple-500/30 shadow-md backdrop-blur-sm dark:from-blue-600/30 dark:to-purple-700/30" />
       <motion.div
@@ -45,8 +45,7 @@ const SessionTracker = ({ className }: SessionTrackerProps) => {
       {/* Timer display - can use regular flow */}
       <div className="flex h-full scale-75 flex-col items-center justify-start">
         <div className="flex-none text-xs text-gray-500 dark:text-gray-400">
-          {formatDateToTime(currentSession.start)} -{" "}
-          {formatDateToTime(currentSession.end)}
+          {timeFormat(currentSession.start)} - {timeFormat(currentSession.end)}
         </div>
         <TimerDisplay
           type={type}

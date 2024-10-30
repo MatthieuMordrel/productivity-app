@@ -105,7 +105,7 @@ export default function CalendarTest() {
         date={startSecondDay}
         min={startSecondDay}
         max={endSecondDay}
-        className="rounded-lg bg-background p-4 text-foreground shadow-lg"
+        className="rounded-lg bg-background p-4 shadow-lg"
         toolbar={true}
         step={30}
         dayLayoutAlgorithm="no-overlap"

@@ -32,9 +32,11 @@ export const NumberSetting: React.FC<SettingsProps> = ({
           min={min}
           max={max}
           step={step}
-          className="w-16 rounded-l-md bg-secondary p-2 text-right text-foreground"
+          className="w-16 rounded-l-md p-2 text-right"
         />
-        <span className="rounded-r-md bg-primary p-2 text-background">min</span>
+        <span className="rounded-r-md bg-foreground p-2 text-background">
+          min
+        </span>
       </div>
 
       {presetValues && (
@@ -45,8 +47,8 @@ export const NumberSetting: React.FC<SettingsProps> = ({
               onClick={() => onChange(preset)}
               className={`rounded px-1.5 py-0.5 text-xs transition-colors ${
                 value === preset
-                  ? "bg-primary text-background"
-                  : "bg-secondary text-foreground hover:bg-opacity-80"
+                  ? "bg-foreground text-background"
+                  : "hover:bg-opacity-80"
               }`}
             >
               {preset}

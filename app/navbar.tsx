@@ -89,14 +89,6 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
-
-            <div className="px-3 py-2">
-              <NotificationRequest />
-            </div>
-
-            <div className="px-3 py-2">
-              <ThemeToggle />
-            </div>
           </div>
         </div>
       )}
