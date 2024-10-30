@@ -6,6 +6,17 @@ rbc-time-header-content
 rbc-allday-cell
 */
 
+/* Time Header */
+.rbc-time-header {
+  height: 100;
+  display: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  background-color: transparent !important;
+  margin: 0 !important;
+}
+
 /* All Day Cell */
 .rbc-allday-cell {
   display: none !important;
