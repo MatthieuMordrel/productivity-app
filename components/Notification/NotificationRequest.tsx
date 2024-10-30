@@ -38,7 +38,7 @@ export function NotificationRequest() {
 
     if (isChrome || isEdge) {
       guidance +=
-        "1. Click the lock icon 🔒 or in the address bar\n" +
+        "1. Click the lock icon 🔒 in the address bar\n" +
         "2. Click 'Notifications' in the dropdown\n" +
         "3. Toggle according to your preference";
     } else if (isFirefox) {

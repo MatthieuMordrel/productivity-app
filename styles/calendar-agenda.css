@@ -6,32 +6,47 @@ rbc-agenda-date-cell
 rbc-agenda-time-cell 
 rbc-agenda-event-cell */
 
+/* Manage the whole agenda view including the two tables*/
 .rbc-agenda-view {
   min-height: 500px !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
 }
-
-.rbc-agenda-table {
-  border: none !important;
-  border-image: none !important;
-}
-
 /* Hide the date header */
 .rbc-agenda-table thead {
   display: none !important;
 }
 
+/* Manage the main table */
+.rbc-agenda-table {
+  border: none !important;
+  border-image: none !important;
+}
+
+/* Manage rows */
+.rbc-agenda-table tr {
+  border-bottom: 1px solid rgb(255, 255, 255, 0.1) !important;
+}
+
+.dark .rbc-agenda-table tr {
+  border-bottom: 1px solid rgb(255, 255, 255, 0.1) !important;
+}
+
+/* Manage the date cells (first column) */
 .rbc-agenda-date-cell {
   display: none !important;
 }
 
+/* Manage the time cell (second column) */
 .rbc-agenda-time-cell {
   background-color: var(--card) !important;
-  padding: 0 !important;
+  padding: 1rem !important;
+  color: var(--foreground) !important;
 }
 
-/* Manage event cells */
+/* Manage event cells (third column) */
 .rbc-agenda-event-cell {
-  padding: 0 !important;
+  padding: 1rem !important;
 }
 
 /* Manage columns */
@@ -39,7 +54,9 @@ rbc-agenda-event-cell */
   border: none !important;
 }
 
-/* Manage rows */
-.rbc-agenda-table tr {
-  border: none !important;
+/* Add this new rule to manage cell content */
+.rbc-agenda-event-cell > * {
+  max-width: 100% !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
 }

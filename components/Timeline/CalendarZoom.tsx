@@ -1,19 +1,21 @@
 import { ZoomIn, ZoomOut } from "lucide-react";
 import React from "react";
+import { View } from "react-big-calendar";
 import { Button } from "../ui/button";
-
 interface CalendarZoomProps {
   zoomLevel: number;
   onZoomIn: () => void;
   onZoomOut: () => void;
+  view: View;
 }
 
 const CalendarZoom: React.FC<CalendarZoomProps> = ({
   zoomLevel,
   onZoomIn,
   onZoomOut,
+  view,
 }) => {
-  return (
+  return view === "day" ? (
     <div className="flex items-center space-x-2">
       <Button
         onClick={onZoomOut}
@@ -35,6 +37,8 @@ const CalendarZoom: React.FC<CalendarZoomProps> = ({
       </Button>
       {/* Set a fixed width to prevent layout shift when zoomLevel changes */}
     </div>
+  ) : (
+    <></>
   );
 };
 

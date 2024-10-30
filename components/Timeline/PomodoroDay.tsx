@@ -11,6 +11,7 @@ import "@styles/calendar-override.css";
 import "@styles/calendar-scrollbar.css";
 import "@styles/calendar-timeAxis.css";
 import { useState } from "react";
+import { View } from "react-big-calendar";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { SheetSettings } from "../settings/SheetSettings";
@@ -53,6 +54,7 @@ export default function PomodoroDay() {
                 <ViewSwitch view={view} setView={setView} />
                 <div className="flex items-center space-x-4">
                   <CalendarZoom
+                    view={view as View}
                     zoomLevel={zoomLevel}
                     onZoomIn={handleZoomIn}
                     onZoomOut={handleZoomOut}

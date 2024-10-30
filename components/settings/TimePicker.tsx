@@ -102,10 +102,23 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     };
   }, [isOpen]);
 
-  // Modified adjustHour function to handle day changes
+  // Modified adjustHour function to round to nearest hour
   const adjustHour = (increment: number) => {
     const newDate = new Date(value);
-    newDate.setHours(newDate.getHours() + increment);
+
+    // Round to the next or previous hour based on increment
+    if (increment > 0) {
+      // Round up to the next hour
+      newDate.setHours(newDate.getHours() + 1, 0, 0, 0);
+    } else {
+      // If we're exactly on the hour, go to previous hour
+      if (newDate.getMinutes() === 0) {
+        newDate.setHours(newDate.getHours() - 1, 0, 0, 0);
+      } else {
+        // Otherwise, round down to current hour
+        newDate.setMinutes(0, 0, 0);
+      }
+    }
 
     // Check if we've crossed midnight
     const today = new Date();
@@ -114,9 +127,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 
     // Determine if the new time should be tomorrow
     const shouldBeTomorrow =
-      // Case 1: We were today and crossed midnight forward
       (!isTomorrow && increment > 0 && newDate.getDate() !== today.getDate()) ||
-      // Case 2: We were tomorrow but haven't crossed back to today
       (isTomorrow && !(increment < 0 && newDate.getDate() === today.getDate()));
 
     // Update the tomorrow state if it changed
