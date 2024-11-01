@@ -9,6 +9,7 @@ export const useCalendarHelpers = () => {
   const { state } = useSettingsContext();
   const [currentDate, setCurrentDate] = useState(new Date());
   const { currentSession } = useCurrentSession();
+  console.log(currentSession);
 
   // Calculate time range based on current date
   const timeRange = useMemo(
