@@ -4,18 +4,6 @@ import { showNotification } from "../utils";
 // Function to check if the page is visible
 const isPageVisible = () => document.visibilityState === "visible";
 
-// Function to play the completion sound at lower volume
-export const playCompletionSound = (isSoundEnabled: boolean) => {
-  // Only play sound if the page is visible
-  if (isPageVisible() && isSoundEnabled) {
-    const audio = new Audio("/sounds/complete.wav");
-    audio.volume = 0.3;
-    audio.play().catch((error) => {
-      console.error("Error playing completion sound:", error);
-    });
-  }
-};
-
 // Show toast notification
 export const showToastOnCompletion = (currentSession: Session | null) => {
   toast("Session finished", {

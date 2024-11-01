@@ -18,6 +18,8 @@ import { useSoundContext } from "@/contexts/SoundContext";
 
 import { Volume2, VolumeX } from "lucide-react";
 
+import { SoundSettingsPanel } from "@/components/SoundSettings/SoundSettingsPanel";
+
 const navItems = [
   { label: "Home", href: "/" },
 
@@ -73,7 +75,7 @@ export default function Navbar({ className }: { className?: string }) {
                 <VolumeX className="h-5 w-5" />
               )}
             </Button>
-
+            <SoundSettingsPanel />
             <ThemeToggle />
           </div>
 
@@ -135,6 +137,14 @@ export default function Navbar({ className }: { className?: string }) {
                 </>
               )}
             </Button>
+
+            <div className="flex items-center justify-between px-3 py-2">
+              <span className="text-base font-medium text-muted-foreground">
+                Sound Settings
+              </span>
+
+              <SoundSettingsPanel />
+            </div>
           </div>
         </div>
       )}
