@@ -33,7 +33,7 @@ const SessionTracker = ({ className }: SessionTrackerProps) => {
   const IconComponent = sessionIcons[type as keyof typeof sessionIcons];
 
   return (
-    <div className={cn("relative mx-2 h-[6rem]", className)}>
+    <div className={cn("relative mx-4 h-[6rem]", className)}>
       {/* Dynamic gradient background based on session type */}
       <div
         className={cn(

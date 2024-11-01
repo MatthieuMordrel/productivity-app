@@ -1,14 +1,13 @@
 import { toast } from "sonner";
 import { Session } from "../types";
 import { showNotification } from "../utils";
-
 // Function to check if the page is visible
 const isPageVisible = () => document.visibilityState === "visible";
 
 // Function to play the completion sound at lower volume
-export const playCompletionSound = () => {
+export const playCompletionSound = (isSoundEnabled: boolean) => {
   // Only play sound if the page is visible
-  if (isPageVisible()) {
+  if (isPageVisible() && isSoundEnabled) {
     const audio = new Audio("/sounds/complete.wav");
     audio.volume = 0.3;
     audio.play().catch((error) => {

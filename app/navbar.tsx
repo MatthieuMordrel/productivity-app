@@ -9,7 +9,14 @@ import { useEffect, useState } from "react";
 import { NotificationRequest } from "../components/Notification/NotificationRequest";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
+
 import { cn } from "@/lib/utils";
+
+import { useSoundContext } from "@/contexts/SoundContext";
+
+// Import sound icons from lucide-react
+
+import { Volume2, VolumeX } from "lucide-react";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -19,12 +26,18 @@ const navItems = [
 
 export default function Navbar({ className }: { className?: string }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const [scrollPosition, setScrollPosition] = useState(0);
 
+  const { isSoundEnabled, toggleSound } = useSoundContext();
+
   // Effect to update scroll position
+
   useEffect(() => {
     const handleScroll = () => setScrollPosition(window.scrollY);
+
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -32,6 +45,7 @@ export default function Navbar({ className }: { className?: string }) {
     <header
       className={cn(
         `sticky top-0 z-50 transition-all duration-300 ${scrollPosition > 0 ? "bg-background/80 shadow-sm backdrop-blur-md" : ""}`,
+
         className,
       )}
     >
@@ -45,6 +59,20 @@ export default function Navbar({ className }: { className?: string }) {
 
           <div className="hidden items-center gap-4 md:flex">
             <NotificationRequest />
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleSound}
+              className="hover:bg-muted"
+              aria-label={isSoundEnabled ? "Disable sound" : "Enable sound"}
+            >
+              {isSoundEnabled ? (
+                <Volume2 className="h-5 w-5" />
+              ) : (
+                <VolumeX className="h-5 w-5" />
+              )}
+            </Button>
 
             <ThemeToggle />
           </div>
@@ -76,6 +104,7 @@ export default function Navbar({ className }: { className?: string }) {
       </div>
 
       {/* Mobile menu */}
+
       {isMobileMenuOpen && (
         <div className="md:hidden">
           <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
@@ -88,6 +117,24 @@ export default function Navbar({ className }: { className?: string }) {
                 {item.label}
               </Link>
             ))}
+
+            <Button
+              variant="ghost"
+              onClick={toggleSound}
+              className="flex w-full items-center px-3 py-2 text-base font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              {isSoundEnabled ? (
+                <>
+                  <Volume2 className="mr-2 h-5 w-5" />
+                  Disable Sound
+                </>
+              ) : (
+                <>
+                  <VolumeX className="mr-2 h-5 w-5" />
+                  Enable Sound
+                </>
+              )}
+            </Button>
           </div>
         </div>
       )}
