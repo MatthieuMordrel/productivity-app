@@ -1,3 +1,4 @@
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { AppProviders } from "@/contexts/AppProviders";
 import { cn } from "@/lib/utils";
@@ -22,17 +23,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "bg-background text-foreground")}>
+      <body
+        className={cn(
+          inter.className,
+          "min-h-screen bg-background text-foreground",
+        )}
+      >
         <AppProviders>
           <AppSidebar />
           {/* TitleUpdater is used to update the title of the page, and handle session completion events */}
           <TitleUpdater />
-          <main className="container mx-auto min-h-screen flex-1">
-            <Navbar />
-            {children}
+          <div className="w-full flex-1">
+            <div className="flex">
+              <SidebarTrigger />
+              <Navbar className="mb-2 flex-1" />
+            </div>
+
+            <main className="container mx-auto">{children}</main>
             <Toaster />
             <Footer />
-          </main>
+          </div>
         </AppProviders>
       </body>
     </html>

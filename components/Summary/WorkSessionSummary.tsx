@@ -86,7 +86,7 @@ export const WorkSessionSummary: React.FC<{
   }
 
   return (
-    <Card className={cn("w-full overflow-hidden", className)}>
+    <Card variant="outline" className={cn("w-full overflow-hidden", className)}>
       <CardHeader className="p-0 pb-4">
         {/* <CardTitle className="text-2xl font-bold text-gray-800">
           Sessions Summary

@@ -35,7 +35,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="border-muted-foreground/10 text-muted-foreground mt-8 border-t pt-8 text-center">
+        <div className="mt-8 border-t border-muted-foreground pt-8 text-center text-muted-foreground">
           <p>
             &copy; {new Date().getFullYear()} ProductivityApp. All rights
             reserved.

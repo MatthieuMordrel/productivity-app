@@ -1,12 +1,15 @@
 TO DO:
 
-- Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
-- Add a way to center on the current time
-- Add a placeholder when you drag task into the calendar
 - Add a settings to add sound with the sonner and end of session + start of session
-- Add custom sound options
 - Add a way to tick a task when done
 - Add a way to hide ticked tasks
+
+Sound
+
+- Add sound when dropping a task into timeline
+- Add nice sound when session ends
+- Add sound when toggling dark mode
+- Add custom sound options in the nav bar
 
 Design
 
@@ -30,6 +33,8 @@ To go further:
 
 Done:
 
+- Add a placeholder when you drag task into the calendar
+- Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
 - Create a page describing the most productive rythm to follow (52/17 rule, pomodoro technique, ultradian cycles)
 - Make the calendar either work on two days, or limit end day settings to 23h59
 - Add a way to zoom and dezoom the timeline

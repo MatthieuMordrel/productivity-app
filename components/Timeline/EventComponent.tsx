@@ -67,10 +67,8 @@ export const EventComponent = ({
             snapshot.isDraggingOver
               ? "bg-foreground text-background"
               : "relative h-full cursor-default rounded-md shadow-sm",
+            currentSession && "brightness-110",
           )}
-          style={{
-            opacity: currentSession ? 1 : 0.7,
-          }}
         >
           {componentHeight > 55 && view === "day" ? (
             <div className="flex h-full flex-col justify-between p-2">

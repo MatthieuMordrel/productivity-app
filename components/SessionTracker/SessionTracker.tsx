@@ -2,9 +2,10 @@
 
 import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 import { getTypeColors } from "@/lib/functions/sessionsUtils";
+import { sessionIcons } from "@/lib/logos";
 import { cn, timeFormat } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { TimerDisplay } from "../Pomodoro Timer/TimerDisplay";
+import TimeSession from "./TimeSession";
 
 interface SessionTrackerProps {
   className?: string;
@@ -19,22 +20,27 @@ interface SessionTrackerProps {
 const SessionTracker = ({ className }: SessionTrackerProps) => {
   const { currentSession } = useCurrentSession();
 
-  // Render a placeholder if there's no active session
   if (!currentSession) {
     return (
-      <div className="mx-4 flex items-center justify-center rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 text-gray-400 shadow-md dark:from-gray-800 dark:to-gray-900 dark:text-gray-500">
-        <p className="text-sm font-semibold">No active session</p>
+      <div className="mx-2 flex min-h-[5rem] items-center justify-center rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 p-2 text-center text-gray-400 shadow-md dark:from-gray-800 dark:to-gray-900 dark:text-gray-500">
+        <p className="text-xs font-semibold">No active session</p>
       </div>
     );
   }
 
   const { type, taskTitle } = currentSession;
   const colors = getTypeColors(type);
+  const IconComponent = sessionIcons[type as keyof typeof sessionIcons];
 
   return (
-    <div className={cn("relative mx-4 h-32", className)}>
-      {/* Decorative layers - need absolute positioning */}
-      <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-400/30 to-purple-500/30 shadow-md backdrop-blur-sm dark:from-blue-600/30 dark:to-purple-700/30" />
+    <div className={cn("relative mx-2 h-[6rem]", className)}>
+      {/* Dynamic gradient background based on session type */}
+      <div
+        className={cn(
+          "absolute inset-0 rounded-lg bg-gradient-to-br shadow-md backdrop-blur-sm",
+          `from-[${colors.stroke}] to-[${colors.stroke}] `,
+        )}
+      />
       <motion.div
         className="absolute inset-0.5 rounded-lg bg-white/90 dark:bg-gray-800/90"
         initial={{ scale: 0.9, opacity: 0 }}
@@ -42,18 +48,20 @@ const SessionTracker = ({ className }: SessionTrackerProps) => {
         transition={{ duration: 0.5, ease: "easeOut" }}
       />
 
-      {/* Timer display - can use regular flow */}
-      <div className="flex h-full scale-75 flex-col items-center justify-start">
-        <div className="flex-none text-xs text-gray-500 dark:text-gray-400">
+      {/* Content layout optimized for narrow widths */}
+      <div className="relative z-10 flex h-full flex-col items-center justify-between px-2">
+        <IconComponent
+          className={`absolute left-2 top-2 h-5 w-5 ${colors.textColor}`}
+        />
+        <div className="flex w-full items-center justify-center pt-2 text-xs">
+          <TimeSession />
+        </div>
+        <div className="max-w-full truncate text-center text-xs">
+          {taskTitle}
+        </div>
+        <div className="self-end pb-1 text-center text-[0.65rem] text-gray-500 dark:text-gray-400">
           {timeFormat(currentSession.start)} - {timeFormat(currentSession.end)}
         </div>
-        <TimerDisplay
-          type={type}
-          colors={colors}
-          taskTitle={taskTitle}
-          displaytitle={false}
-          className="flex-1"
-        />
       </div>
     </div>
   );

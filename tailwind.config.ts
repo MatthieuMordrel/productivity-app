@@ -11,7 +11,18 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  safelist: ["animate-pulse-light"],
+  safelist: [
+    "animate-pulse-light",
+    "shadow-md",
+    "brightness-110",
+    "saturate-[1.2]",
+    "from-[var(--work)]",
+    "to-[var(--work)]",
+    "from-[var(--pause)]",
+    "to-[var(--pause)]",
+    "from-[var(--break)]",
+    "to-[var(--break)]",
+  ],
   theme: {
     extend: {
       colors: {
@@ -90,6 +101,7 @@ const config: Config = {
           "--break": theme("colors.emerald.500"),
           "--popover": theme("colors.gray.200"),
           "--popover-foreground": theme("colors.gray.800"),
+          "--border": theme("colors.gray.300"),
         },
         //Dark mode
         ".dark": {
@@ -97,8 +109,8 @@ const config: Config = {
           "--foreground": theme("colors.gray.100"),
           "--accent": theme("colors.cyan.900"),
           "--card": theme("colors.gray.800"),
-          "--work": theme("colors.sky.950"),
-          "--pause": theme("colors.amber.950"),
+          "--work": theme("colors.sky.800"),
+          "--pause": theme("colors.amber.800"),
           "--break": theme("colors.emerald.600"),
           //Popover should be slightly lighter than background
           "--popover": "hsl(224 71% 4%)",
@@ -106,12 +118,13 @@ const config: Config = {
           "--muted": "hsl(223 47% 11%)",
           "--muted-foreground": "hsl(215.4 16.3% 56.9%)",
           "--ring": "hsl(216 34% 17%)",
+          "--border": "rgb(255, 255, 255, 0.1)",
         },
       });
       // Add new utility class for 100vh - 40px
       addUtilities({
         ".hScreenWithoutNavbar": {
-          height: "calc(100vh - 80px)",
+          height: "calc(100vh - 88px)",
         },
         ".calendarHeight": {
           height: "32rem",

@@ -48,7 +48,7 @@ export default function Task({
                 onChange={handleEditInputChange}
                 onBlur={handleEditSave}
                 onKeyDown={handleEditKeyPress}
-                className="w-full flex-grow bg-secondary p-1"
+                className="w-full flex-grow bg-card p-1"
                 aria-label="Edit task"
               />
             ) : (

@@ -43,7 +43,10 @@ export default function PomodoroDay() {
 
   return (
     <div className="mx-auto">
-      <Card className="flex min-h-[calc(100vh-80px)] flex-col space-y-4 overflow-hidden p-6">
+      <Card
+        variant="outline"
+        className="flex min-h-[calc(100vh-80px)] flex-col space-y-4 overflow-hidden p-6"
+      >
         {sessions.length === 0 ? (
           <NoSession />
         ) : (

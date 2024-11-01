@@ -49,7 +49,10 @@ export function AppSidebar() {
   // Get current pathname for active state
   const pathname = usePathname();
   return (
-    <Sidebar>
+    //3 variants: sidebar, floating, inset
+    //2side: left, right
+    //3collapsible: offcanvas, icon, none
+    <Sidebar side="left" variant="sidebar">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -57,7 +60,13 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    variant="default"
+                    size="sm"
+                    asChild
+                    isActive={pathname === item.url}
+                  >
                     {/*Use link to avoid page refresh and losing states*/}
                     <Link href={item.url}>
                       <item.icon

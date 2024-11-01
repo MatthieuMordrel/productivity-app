@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { NotificationRequest } from "../components/Notification/NotificationRequest";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -16,24 +17,23 @@ const navItems = [
   { label: "Productivity", href: "/productivity" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ className }: { className?: string }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   const [scrollPosition, setScrollPosition] = useState(0);
 
   // Effect to update scroll position
-
   useEffect(() => {
     const handleScroll = () => setScrollPosition(window.scrollY);
-
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${scrollPosition > 0 ? "bg-background/80 shadow-sm backdrop-blur-md" : ""}`}
+      className={cn(
+        `sticky top-0 z-50 transition-all duration-300 ${scrollPosition > 0 ? "bg-background/80 shadow-sm backdrop-blur-md" : ""}`,
+        className,
+      )}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
@@ -76,7 +76,6 @@ export default function Navbar() {
       </div>
 
       {/* Mobile menu */}
-
       {isMobileMenuOpen && (
         <div className="md:hidden">
           <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
@@ -84,7 +83,7 @@ export default function Navbar() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-muted-foreground block px-3 py-2 text-base font-medium transition-colors hover:text-primary"
+                className="block px-3 py-2 text-base font-medium text-muted-foreground transition-colors hover:text-primary"
               >
                 {item.label}
               </Link>
