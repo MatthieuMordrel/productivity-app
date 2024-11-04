@@ -42,6 +42,7 @@ const config: Config = {
         pause: "hsl(var(--pause))",
         break: "hsl(var(--break))",
         card: "hsl(var(--card))",
+        //We use hsla because we want to use the opacity value
         border: "hsla(var(--border))",
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -114,7 +115,9 @@ const config: Config = {
           "--popover": "220, 13%, 91%",
           //Gray 800
           "--popover-foreground": "215, 28%, 17%",
-          "--border": "216, 12%, 84%",
+          //theme("colors.gray.300")
+          "--border": "216deg, 12%, 84%, 0.4",
+          // "--border-opacity": "0.2",
         },
         //Dark mode
         ".dark": {
@@ -132,7 +135,9 @@ const config: Config = {
           "--muted": "223 47% 11%",
           "--muted-foreground": "215.4 16.3% 56.9%",
           "--ring": "216 34% 17%",
-          "--border": "255 255 255 0.1",
+          //rgb(255, 255, 255, 0.1)
+          "--border": "0deg, 0%, 100%, 0.1",
+          // "--border-opacity": "0.1",
         },
       });
       // Add new utility class for 100vh - 40px

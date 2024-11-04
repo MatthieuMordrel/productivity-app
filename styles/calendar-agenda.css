@@ -25,11 +25,11 @@ rbc-agenda-event-cell */
 
 /* Manage rows */
 .rbc-agenda-table tr {
-  border-bottom: 1px solid var(--border) !important;
+  border-bottom: 1px solid hsla(var(--border)) !important;
 }
 
 .dark .rbc-agenda-table tr {
-  border-bottom: 1px solid var(--border) !important;
+  border-bottom: 1px solid hsla(var(--border)) !important;
 }
 
 /* Manage the date cells (first column) */
@@ -39,9 +39,9 @@ rbc-agenda-event-cell */
 
 /* Manage the time cell (second column) */
 .rbc-agenda-time-cell {
-  background-color: var(--card) !important;
+  background-color: hsl(var(--card)) !important;
   padding: 1rem !important;
-  color: var(--foreground) !important;
+  color: hsl(var(--foreground)) !important;
 }
 
 /* Manage event cells (third column) */

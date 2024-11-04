@@ -17,14 +17,14 @@ rbc-label
 
 /* Dark mode */
 .dark .rbc-time-gutter .rbc-time-slot {
-  border-right: 0.25px solid var(--border) !important;
-  border-bottom: 0.25px solid var(--border) !important;
+  border-right: 0.25px solid hsla(var(--border)) !important;
+  border-bottom: 0.25px solid hsla(var(--border)) !important;
 }
 
 /* Light mode */
 .light .rbc-time-gutter .rbc-time-slot {
-  border-right: 0.25px solid var(--border) !important;
-  border-bottom: 0.25px solid var(--border) !important;
+  border-right: 0.25px solid hsla(var(--border)) !important;
+  border-bottom: 0.25px solid hsla(var(--border)) !important;
 }
 
 /* Time Slots group i.e. timeslot prop of calendar */
@@ -32,18 +32,6 @@ rbc-label
   border: none !important;
   position: relative;
 }
-
-/* Create bottom border using pseudo-element */
-/* .rbc-timeslot-group::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 0.25px;
-  background-color: rgb(255, 255, 255, 0.1);
-  z-index: -1000;
-} */
 
 /* Time Slot within the time column */
 .rbc-day-slot .rbc-time-slot {
@@ -58,3 +46,15 @@ rbc-label
   font-size: 0.75rem;
   font-weight: 500;
 }
+
+/* Create bottom border using pseudo-element */
+/* .rbc-timeslot-group::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.25px;
+  background-color: rgb(255, 255, 255, 0.1);
+  z-index: -1000;
+} */
