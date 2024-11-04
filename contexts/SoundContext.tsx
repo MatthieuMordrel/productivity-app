@@ -15,6 +15,8 @@ interface SoundContextType {
   isSoundEnabled: boolean;
   toggleSound: () => void;
   sounds: SessionSounds;
+  volume: number;
+  setVolume: (volume: number) => void;
   setSessionSound: (
     sessionType: SessionType,
     //keyof gets all the keys of the AVAILABLE_SOUNDS object as a union type
@@ -34,6 +36,7 @@ const SoundContext = createContext<SoundContextType | undefined>(undefined);
 export function SoundProvider({ children }: { children: ReactNode }) {
   const [isSoundEnabled, setIsSoundEnabled] = useState(true);
   const [sounds, setSounds] = useState<SessionSounds>(DEFAULT_SOUNDS);
+  const [volume, setVolume] = useState(0.5);
 
   //Manage if the sound is enabled or disabled
   const toggleSound = () => {
@@ -58,6 +61,8 @@ export function SoundProvider({ children }: { children: ReactNode }) {
         toggleSound,
         sounds,
         setSessionSound,
+        volume,
+        setVolume,
       }}
     >
       {children}

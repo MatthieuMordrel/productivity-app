@@ -9,7 +9,7 @@ import { useSoundContext } from "@/contexts/SoundContext";
  * playSound("notifications", "complete.wav");
  */
 export const usePlaySound = () => {
-  const { isSoundEnabled } = useSoundContext();
+  const { isSoundEnabled, volume } = useSoundContext();
 
   // Return a function that accepts folder, soundFile, and optional override parameters
   const play = (
@@ -20,6 +20,7 @@ export const usePlaySound = () => {
     // Play sound if sound is enabled OR if override is true
     if (!isSoundEnabled && !override) return;
     const audio = new Audio(`/sounds/${folder}/${soundFile}`);
+    audio.volume = volume;
     audio.play();
   };
 
