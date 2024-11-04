@@ -1,8 +1,7 @@
 "use client";
 
 import { useCurrentSession } from "@/contexts/CurrentSessionContext";
-import { getTypeColors } from "@/lib/functions/sessionsUtils";
-import { sessionIcons } from "@/lib/logos";
+import { getTypeColors, sessionIcons } from "@/lib/logos";
 import { cn, timeFormat } from "@/lib/utils";
 import { motion } from "framer-motion";
 import TimeSession from "./TimeSession";
@@ -30,7 +29,7 @@ const SessionTracker = ({ className }: SessionTrackerProps) => {
 
   const { type, taskTitle } = currentSession;
   const colors = getTypeColors(type);
-  const IconComponent = sessionIcons[type as keyof typeof sessionIcons];
+  const IconComponent = sessionIcons[type];
 
   return (
     <div className={cn("relative mx-4 h-[6rem]", className)}>

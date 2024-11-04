@@ -4,20 +4,22 @@
 }
 
 .rbc-time-content::-webkit-scrollbar-track {
-  background: var(--background); /* Using theme variable for consistency */
+  background: hsl(var(--background)); /* Using theme variable for consistency */
 }
 
 .rbc-time-content::-webkit-scrollbar-thumb {
-  background: var(--work); /* Using theme variable for better integration */
+  background: hsl(
+    var(--work)
+  ); /* Using theme variable for better integration */
   border-radius: 2px; /* Adjusted for thinner scrollbar */
   scroll-behavior: smooth;
   opacity: 0.1;
 }
 
 .rbc-time-content::-webkit-scrollbar-thumb:hover {
-  background: var(--primary); /* Using primary color for hover state */
+  background: hsl(var(--primary)); /* Using primary color for hover state */
 }
 
 .rbc-time-content::-webkit-scrollbar-thumb:active {
-  background: var(--primary); /* Using primary color for hover state */
+  background: hsl(var(--primary)); /* Using primary color for hover state */
 }

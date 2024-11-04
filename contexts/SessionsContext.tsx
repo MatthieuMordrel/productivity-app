@@ -61,6 +61,7 @@ export const PomodoroCalendarProvider: React.FC<{
     );
   }, [tasks]);
 
+  // Delete single session
   const handleDeleteSession = (sessionId: string) => {
     setSessions((prevSessions) =>
       prevSessions.filter((session) => session.id !== sessionId),
@@ -94,6 +95,8 @@ export const PomodoroCalendarProvider: React.FC<{
       }
     }
   };
+
+  console.log(sessions);
 
   return (
     <PomodoroCalendarContext.Provider

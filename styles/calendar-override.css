@@ -12,7 +12,7 @@ rbc-time-content
 .rbc-time-view {
   border: none !important;
   box-shadow: none !important;
-  background-color: transparent !important;
+  /* background-color: transparent !important; */
   outline: none !important;
 }
 
@@ -20,7 +20,7 @@ rbc-time-content
 .rbc-time-content {
   border: none !important;
   box-shadow: none !important;
-  background-color: transparent !important;
+  /* background-color: transparent !important; */
   outline: none !important;
 }
 

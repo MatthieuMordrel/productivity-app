@@ -1,6 +1,6 @@
+import { sessionIcons } from "@/lib/logos";
 import { cn, timeFormat } from "@/lib/utils";
 import { Session } from "@lib/types";
-import { Clock, Coffee, PauseCircle } from "lucide-react";
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
@@ -33,25 +33,8 @@ export const EventComponent = ({
     "minutes",
   );
 
-  // Define color schemes for different event types
-  const colorSchemes = {
-    Work: "bg-[var(--work)] ",
-    Pause: "bg-[var(--pause)] ",
-    Break: "bg-[var(--break)] ",
-  };
-
   // Determine the appropriate icon based on event type
-  const getEventIcon = (type: Event["type"]) => {
-    switch (type) {
-      case "Work":
-        return <Clock className="h-4 w-4" />;
-      case "Pause":
-        return <PauseCircle className="h-4 w-4" />;
-      case "Break":
-        return <Coffee className="h-4 w-4" />;
-    }
-  };
-  // console.log(colorSchemes[event.type]);
+  const IconComponent = sessionIcons[event.type];
 
   return (
     <Droppable droppableId={`event_${event.id}`}>
@@ -63,10 +46,8 @@ export const EventComponent = ({
           }}
           {...provided.droppableProps}
           className={cn(
-            colorSchemes[event.type],
-            snapshot.isDraggingOver
-              ? "bg-foreground text-background"
-              : "relative h-full cursor-default rounded-md shadow-sm",
+            "relative h-full cursor-default rounded-md shadow-sm",
+            snapshot.isDraggingOver && "bg-foreground text-background",
             currentSession && "brightness-110",
           )}
         >
@@ -75,7 +56,7 @@ export const EventComponent = ({
               <div className="mb-1 flex items-start justify-between">
                 <div className="flex flex-1 items-center space-x-2">
                   <span className="flex-shrink-0" aria-hidden="true">
-                    {getEventIcon(event.type)}
+                    <IconComponent className="h-4 w-4" />
                   </span>
                   <div className="w-3/4 overflow-hidden text-ellipsis text-sm font-medium">
                     {event.taskTitle || "No title"}
@@ -94,7 +75,7 @@ export const EventComponent = ({
               <div className="mb-1 flex h-full items-center justify-between">
                 <div className="flex flex-1 items-center space-x-2">
                   <span className="flex-shrink-0" aria-hidden="true">
-                    {getEventIcon(event.type)}
+                    <IconComponent className="h-4 w-4" />
                   </span>
                   <div className="w-3/4 overflow-hidden text-ellipsis text-sm font-medium">
                     {event.taskTitle || "No title"}
@@ -108,7 +89,7 @@ export const EventComponent = ({
             event.type !== "Work" ? (
             <div className="flex h-full w-full items-center justify-center">
               <span className="flex-shrink-0" aria-hidden="true">
-                {getEventIcon(event.type)}
+                <IconComponent className="h-4 w-4" />
               </span>
               <span className="sr-only">
                 {event.type} event: {event.taskTitle}

@@ -11,4 +11,5 @@ export const AVAILABLE_SOUNDS = {
   "Japanese Bell.wav": "Japanese Bell",
   "Level Up.wav": "Level Up",
   "Ta Da.wav": "Ta Da",
+  "Faint chime.wav": "Faint chime",
 };

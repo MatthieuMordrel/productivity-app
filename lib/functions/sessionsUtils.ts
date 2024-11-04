@@ -37,30 +37,6 @@ export const findCurrentSession = (sessions: Session[]): Session | null => {
   );
 };
 
-// Get stroke and icon colors based on the session type provided
-export const getTypeColors = (type: SessionType) => {
-  switch (type) {
-    case "Work":
-      return {
-        stroke: "var(--work)",
-        textColor: "text-[var(--work)]",
-        backgroundColor: "bg-[var(--work)]",
-      };
-    case "Pause":
-      return {
-        stroke: "var(--pause)",
-        textColor: "text-[var(--pause)]",
-        backgroundColor: "bg-[var(--pause)]",
-      };
-    case "Break":
-      return {
-        stroke: "var(--break)",
-        textColor: "text-[var(--break)]",
-        backgroundColor: "bg-[var(--break)]",
-      };
-  }
-};
-
 /**
  * Calculates the total duration, count of sessions, passed duration, remaining duration,
  * percentages for a specific type, and percentage of total duration.

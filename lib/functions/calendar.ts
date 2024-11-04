@@ -20,19 +20,23 @@ export const getTimeRangeForDate = (
   const startDate = moment(startTime).startOf("day");
   const endDate = moment(endTime).startOf("day");
 
+  // Helper function to round down to nearest hour
+  const roundToHour = (time: moment.Moment) =>
+    time.minutes(0).seconds(0).milliseconds(0);
+
   // If start and end are on the same day, use exact times
   if (startDate.isSame(endDate, "day")) {
     return {
-      calendarStartTime: startTime,
+      calendarStartTime: roundToHour(moment(startTime)).toDate(),
       calendarEndTime: endTime,
     };
   }
 
   // Multi-day handling
   if (selectedDate.isSame(startDate, "day")) {
-    // If it's the first day, use the actual start time and end at 23:59
+    // If it's the first day, use the actual start time (rounded) and end at 23:59
     return {
-      calendarStartTime: startTime,
+      calendarStartTime: roundToHour(moment(startTime)).toDate(),
       calendarEndTime: moment(date).endOf("day").toDate(),
     };
   } else if (selectedDate.isSame(endDate, "day")) {

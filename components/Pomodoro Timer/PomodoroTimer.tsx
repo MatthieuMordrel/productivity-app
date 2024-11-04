@@ -1,7 +1,7 @@
 "use client";
 
 import { useCurrentSession } from "@/contexts/CurrentSessionContext";
-import { getTypeColors } from "@/lib/functions/sessionsUtils";
+import { getTypeColors } from "@/lib/logos";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
