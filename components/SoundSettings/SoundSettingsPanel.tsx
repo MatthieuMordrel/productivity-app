@@ -17,10 +17,11 @@ import { useSoundContext } from "@/contexts/SoundContext";
 import { usePlaySound } from "@/hooks/useSound";
 import { AVAILABLE_SOUNDS } from "@/lib/constants";
 import { SessionType } from "@/lib/types";
-import { Settings } from "lucide-react";
+import { Settings, Volume2, VolumeX } from "lucide-react";
 export function SoundSettingsPanel() {
   const playSound = usePlaySound();
   const { sounds, setSessionSound } = useSoundContext();
+  const { isSoundEnabled, toggleSound } = useSoundContext();
   const sessionTypes: SessionType[] = ["Work", "Break", "Pause"];
 
   return (
@@ -37,7 +38,17 @@ export function SoundSettingsPanel() {
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="space-y-4">
-          <h4 className="font-medium leading-none">Sound Settings</h4>
+          <div className="flex items-center justify-between">
+            <h4 className="font-medium leading-none">Sound Settings</h4>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleSound}
+              className="hover:bg-muted"
+            >
+              {isSoundEnabled ? <Volume2 /> : <VolumeX />}
+            </Button>
+          </div>
           <div className="space-y-4">
             {sessionTypes.map((sessionType) => (
               <div
@@ -72,7 +83,7 @@ export function SoundSettingsPanel() {
                     variant="outline"
                     size="sm"
                     onClick={() =>
-                      playSound("session sounds", "complete.wav", true)
+                      playSound("session sounds", sounds[sessionType])
                     }
                   >
                     Test

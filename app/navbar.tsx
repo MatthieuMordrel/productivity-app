@@ -1,56 +1,26 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-
-import Link from "next/link";
-
-import { useEffect, useState } from "react";
-
-import { NotificationRequest } from "../components/Notification/NotificationRequest";
-
-import { ThemeToggle } from "@/components/ThemeToggle";
-
-import { cn } from "@/lib/utils";
-
-import { useSoundContext } from "@/contexts/SoundContext";
-
-// Import sound icons from lucide-react
-
-import { Volume2, VolumeX } from "lucide-react";
-
 import { SoundSettingsPanel } from "@/components/SoundSettings/SoundSettingsPanel";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
+import { useSoundContext } from "@/contexts/SoundContext";
+import { cn } from "@/lib/utils";
+import { Volume2, VolumeX } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { NotificationRequest } from "../components/Notification/NotificationRequest";
 
 const navItems = [
   { label: "Home", href: "/" },
-
   { label: "Productivity", href: "/productivity" },
 ];
 
 export default function Navbar({ className }: { className?: string }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const [scrollPosition, setScrollPosition] = useState(0);
-
   const { isSoundEnabled, toggleSound } = useSoundContext();
 
-  // Effect to update scroll position
-
-  useEffect(() => {
-    const handleScroll = () => setScrollPosition(window.scrollY);
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <header
-      className={cn(
-        `sticky top-0 z-50 transition-all duration-300 ${scrollPosition > 0 ? "bg-background/80 shadow-sm backdrop-blur-md" : ""}`,
-
-        className,
-      )}
-    >
+    <header className={cn("sticky top-0 z-50 backdrop-blur-sm", className)}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
@@ -59,24 +29,17 @@ export default function Navbar({ className }: { className?: string }) {
             </Link>
           </div>
 
-          <div className="hidden items-center gap-4 md:flex">
-            <NotificationRequest />
+          <div className="hidden items-center gap-4 md:flex md:min-w-[168px]">
+            <div className="h-10 w-10">
+              <NotificationRequest />
+            </div>
 
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleSound}
-              className="hover:bg-muted"
-              aria-label={isSoundEnabled ? "Disable sound" : "Enable sound"}
-            >
-              {isSoundEnabled ? (
-                <Volume2 className="h-5 w-5" />
-              ) : (
-                <VolumeX className="h-5 w-5" />
-              )}
-            </Button>
-            <SoundSettingsPanel />
-            <ThemeToggle />
+            <div className="h-10 w-10">
+              <SoundSettingsPanel />
+            </div>
+            <div className="h-10 w-10">
+              <ThemeToggle />
+            </div>
           </div>
 
           <div className="md:hidden">
@@ -106,7 +69,6 @@ export default function Navbar({ className }: { className?: string }) {
       </div>
 
       {/* Mobile menu */}
-
       {isMobileMenuOpen && (
         <div className="md:hidden">
           <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
@@ -137,12 +99,10 @@ export default function Navbar({ className }: { className?: string }) {
                 </>
               )}
             </Button>
-
             <div className="flex items-center justify-between px-3 py-2">
               <span className="text-base font-medium text-muted-foreground">
                 Sound Settings
               </span>
-
               <SoundSettingsPanel />
             </div>
           </div>

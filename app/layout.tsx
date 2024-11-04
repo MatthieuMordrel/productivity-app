@@ -34,7 +34,7 @@ export default function RootLayout({
           {/* TitleUpdater is used to update the title of the page, and handle session completion events */}
           <TitleUpdater />
           <div className="w-full flex-1">
-            <div className="flex">
+            <div className="sticky top-0 z-50 flex">
               <SidebarTrigger />
               <Navbar className="mb-2 flex-1" />
             </div>
