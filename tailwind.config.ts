@@ -33,19 +33,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         primary: "hsl(var(--primary))",
-        secondary: "var(--secondary)",
-        accent: "var(--accent)",
+        secondary: "hsl(var(--secondary))",
+        accent: "hsl(var(--accent))",
         work: "hsl(var(--work))",
         pause: "hsl(var(--pause))",
         break: "hsl(var(--break))",
-        card: "var(--card)",
-        border: "var(--border)",
+        card: "hsl(var(--card))",
+        border: "hsla(var(--border))",
         popover: {
-          DEFAULT: "var(--popover)",
-          foreground: "var(--popover-foreground)",
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
         },
         //Defined in globals.css
         sidebar: {
@@ -59,11 +59,11 @@ const config: Config = {
           ring: "hsl(var(--sidebar-ring))",
         },
         muted: {
-          DEFAULT: "var(--muted)",
-          foreground: "var(--muted-foreground)",
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
         ring: {
-          DEFAULT: "var(--ring)",
+          DEFAULT: "hsl(var(--ring))",
         },
       },
       borderRadius: {
@@ -88,46 +88,51 @@ const config: Config = {
     },
   },
   plugins: [
-    plugin(({ theme, addBase, addUtilities }) => {
+    plugin(({ addBase, addUtilities }) => {
       console.log("Tailwind plugin is running");
       // console.log(theme);
       addBase({
         ":root": {
+          //Blue 500
           "--primary": "217 91.2% 59.8%",
-          "--secondary": theme("colors.yellow.500"),
-          "--accent": theme("colors.cyan.100"),
-          "--muted": "hsl(210 40% 96.1%)",
-          "--muted-foreground": "hsl(215.4 16.3% 46.9%)",
-          "--ring": "hsl(215 20.2% 65.1%)",
+          "--secondary": "48 100% 50%",
+          "--accent": "185, 96%, 90%",
+          "--muted": "210 40% 96.1%",
+          "--muted-foreground": "215.4 16.3% 46.9%",
+          "--ring": "215 20.2% 65.1%",
         },
         //Light mode
         ".light": {
-          "--background": theme("colors.gray.100"),
-          "--foreground": theme("colors.gray.900"),
-          "--card": theme("colors.gray.200"),
+          //Gray 100
+          "--background": "220, 14%, 96%",
+          //Gray 900
+          "--foreground": "221, 39%, 11%",
+          "--card": "220, 13%, 91%",
           "--work": "200 75% 25%",
           "--pause": "38 92% 50%",
           "--break": "142 72% 29%",
-          "--popover": theme("colors.gray.200"),
-          "--popover-foreground": theme("colors.gray.800"),
-          "--border": theme("colors.gray.300"),
+          "--popover": "220, 13%, 91%",
+          //Gray 800
+          "--popover-foreground": "215, 28%, 17%",
+          "--border": "216, 12%, 84%",
         },
         //Dark mode
         ".dark": {
-          "--background": theme("colors.gray.900"),
-          "--foreground": theme("colors.gray.100"),
-          "--accent": theme("colors.cyan.900"),
-          "--card": theme("colors.gray.800"),
+          //gray900
+          "--background": "221, 39%, 11%",
+          "--foreground": "220, 14%, 96%",
+          "--accent": "196, 64%, 24%",
+          "--card": "215, 28%, 17%",
           "--work": "200 75% 25%",
           "--pause": "38 92% 35%",
           "--break": "142 72% 35%",
           //Popover should be slightly lighter than background
-          "--popover": "hsl(224 71% 4%)",
-          "--popover-foreground": "hsl(215 20.2% 65.1%)",
-          "--muted": "hsl(223 47% 11%)",
-          "--muted-foreground": "hsl(215.4 16.3% 56.9%)",
-          "--ring": "hsl(216 34% 17%)",
-          "--border": "rgb(255, 255, 255, 0.1)",
+          "--popover": "224 71% 4%",
+          "--popover-foreground": "215 20.2% 65.1%",
+          "--muted": "223 47% 11%",
+          "--muted-foreground": "215.4 16.3% 56.9%",
+          "--ring": "216 34% 17%",
+          "--border": "255 255 255 0.1",
         },
       });
       // Add new utility class for 100vh - 40px
