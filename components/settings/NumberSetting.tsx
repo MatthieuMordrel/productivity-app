@@ -32,7 +32,7 @@ export const NumberSetting: React.FC<SettingsProps> = ({
           min={min}
           max={max}
           step={step}
-          className="w-16 rounded-l-md p-2 text-right"
+          className="w-16 rounded-l-md bg-primary/10 p-2 text-right"
         />
         <span className="rounded-r-md bg-foreground p-2 text-background">
           min

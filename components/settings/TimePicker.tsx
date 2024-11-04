@@ -152,7 +152,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
           type="time"
           value={timeString}
           onChange={handleChange}
-          className="rounded-md p-2"
+          className="rounded-md bg-primary/10 p-2"
           placeholder="HH:MM"
         />
 
@@ -170,7 +170,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
 
             {/* Dropdown menu */}
             {isOpen && (
-              <div className="absolute right-0 top-full z-50 mt-1 w-24 rounded-md bg-secondary py-1 shadow-lg">
+              <div className="absolute right-0 top-full z-50 mt-1 w-24 rounded-md bg-background py-1 shadow-lg">
                 <Button
                   onClick={() => {
                     handleToggleDay(false);

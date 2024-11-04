@@ -13,8 +13,8 @@ const BreakManager: React.FC<BreakManagerProps> = ({ breaks }) => {
   const { dispatch } = useSettingsContext();
 
   return (
-    <div>
-      <div>
+    <>
+      <div className="">
         {breaks.map((breakItem, index) => (
           <BreakSetting key={index} break={breakItem} index={index} />
         ))}
@@ -36,7 +36,7 @@ const BreakManager: React.FC<BreakManagerProps> = ({ breaks }) => {
           <CalendarButtons />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
