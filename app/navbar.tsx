@@ -3,7 +3,6 @@
 import { SoundSettingsPanel } from "@/components/SoundSettings/SoundSettingsPanel";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
-import { useSoundContext } from "@/contexts/SoundContext";
 import { cn } from "@/lib/utils";
 import { Volume2, VolumeX } from "lucide-react";
 import Link from "next/link";
@@ -17,7 +16,6 @@ const navItems = [
 
 export default function Navbar({ className }: { className?: string }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isSoundEnabled, toggleSound } = useSoundContext();
 
   return (
     <header className={cn("sticky top-0 z-50 backdrop-blur-sm", className)}>

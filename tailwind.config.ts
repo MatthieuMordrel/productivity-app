@@ -35,6 +35,7 @@ const config: Config = {
         pause: "var(--pause)",
         break: "var(--break)",
         card: "var(--card)",
+        border: "var(--border)",
         popover: {
           DEFAULT: "var(--popover)",
           foreground: "var(--popover-foreground)",

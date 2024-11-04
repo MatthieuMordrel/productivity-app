@@ -42,7 +42,7 @@ const sheetVariants = cva(
   cn(
     "fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out", // Base styles
     "data-[state=closed]:duration-300 data-[state=open]:duration-500", // Transition durations
-    "data-[state=open]:animate-in data-[state=closed]:animate-out", // Animation states
+    "border-border data-[state=open]:animate-in data-[state=closed]:animate-out", // Animation states
   ),
   {
     variants: {
