@@ -1,3 +1,4 @@
+import { TryRhythmButton } from "@/components/TryRhythmButton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -7,12 +8,6 @@ export default function ProductivityRhythms() {
       <h1 className="mb-6 text-3xl font-bold">
         Productivity Rhythms: Science-Backed Techniques
       </h1>
-
-      <Button variant="link" asChild>
-        <Link href="/" className="mb-6 inline-block text-primary">
-          ← Back to Home
-        </Link>
-      </Button>
 
       <section className="mb-8">
         <h2 className="mb-4 text-2xl font-semibold">The Pomodoro Technique</h2>
@@ -29,6 +24,16 @@ export default function ProductivityRhythms() {
           Research has shown that this technique can improve focus and reduce
           mental fatigue.
         </p>
+        <div className="mt-4">
+          <TryRhythmButton
+            pomodoroDuration={25}
+            pauseDuration={5}
+            breakDuration={30}
+            sessionsBeforeBreak={4}
+            label="Try Pomodoro Rhythm!"
+            description="Start with 25-minute focus sessions, 5-minute breaks, and a longer break every 4 sessions"
+          />
+        </div>
       </section>
 
       <section className="mb-8">
@@ -45,6 +50,14 @@ export default function ProductivityRhythms() {
           This rhythm aligns well with the body&apos;s natural ultradian rhythm
           and has been shown to increase productivity.
         </p>
+        <div className="mt-4">
+          <TryRhythmButton
+            pomodoroDuration={52}
+            pauseDuration={17}
+            label="Try 52/17 Rhythm!"
+            description="Experience the optimal work-break ratio"
+          />
+        </div>
       </section>
 
       <section className="mb-8">
@@ -64,6 +77,14 @@ export default function ProductivityRhythms() {
           This method can be particularly effective for deep work and complex
           problem-solving tasks.
         </p>
+        <div className="mt-4">
+          <TryRhythmButton
+            pomodoroDuration={90}
+            pauseDuration={25}
+            label="Try Ultradian Rhythm!"
+            description="Align with your natural 90-minute focus cycles"
+          />
+        </div>
       </section>
 
       <section>
@@ -77,11 +98,17 @@ export default function ProductivityRhythms() {
           In our Pomodoro Calendar app, you can customize your work sessions and
           breaks to match your preferred rhythm:
         </p>
-        <ul className="list-inside list-disc">
+        <ul className="mb-4 list-inside list-disc">
           <li>pomodoroDuration: Set your ideal work session length</li>
           <li>pauseDuration: Adjust the duration of your short breaks</li>
           <li>breaks: Configure longer breaks between work sessions</li>
         </ul>
+        <Button asChild className="mt-4">
+          <Link href="/calendar" className="inline-flex items-center gap-2">
+            Customize Your Schedule
+            <span aria-hidden="true">→</span>
+          </Link>
+        </Button>
       </section>
     </div>
   );

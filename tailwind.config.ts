@@ -95,7 +95,7 @@ const config: Config = {
       addBase({
         ":root": {
           //Blue 500
-          "--primary": "217 91.2% 59.8%",
+          "--primary": "250 91.2% 59.8%",
           "--secondary": "48 100% 50%",
           "--accent": "185 96% 90%",
           "--muted": "210 40% 96.1%",

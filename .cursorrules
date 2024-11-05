@@ -2,10 +2,11 @@ Always ensure proper Typescript usage.
 Only use functional components and hooks.
 Only use Tailwind CSS for styling. Note the following variables are available:
 
-background: 'var(--background)',
-foreground: 'var(--foreground)',
-primary: 'var(--primary)',
-secondary: 'var(--secondary)'
+background
+foreground
+primary
+muted
+muted-foreground
 
 Use Next.js features when relevant.
 Use absolute import as per tsconfig files

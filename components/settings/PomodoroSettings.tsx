@@ -45,9 +45,9 @@ const PomodoroSettings: React.FC = () => {
               dispatch({ type: "SET_POMODORO_DURATION", payload: value })
             }
             min={1}
-            max={60}
+            max={270}
             step={1}
-            presetValues={[25, 45, 60]}
+            presetValues={[25, 45, 60, 90]}
           />
           <SettingsTooltipReset className="self-start" />
         </div>

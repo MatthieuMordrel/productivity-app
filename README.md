@@ -5,6 +5,11 @@ TO DO:
 - Implement MDX for the pomodoro technique description page
 - Create preset values for the settings that are linked from the description page
 - Add a way to organise tasks better with folderish structure
+- Use duration instead of end time for the breaks
+- Add a second pause option to a real pomodoro pattern
+- Add a toggle from 12/24 hours format
+- Add custom colors for each task that map to session in the timeline
+- Add a coding guy when it's time to work and a happy guy when it's time to rest
 
 Sound
 

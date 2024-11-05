@@ -12,7 +12,14 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { Calendar, ChartBar, Home, LucideIcon, Target } from "lucide-react";
+import {
+  Calendar,
+  ChartBar,
+  Home,
+  List,
+  LucideIcon,
+  Target,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -27,7 +34,11 @@ const items: Array<{
     url: "/",
     icon: Home,
   },
-
+  {
+    title: "Task manager",
+    url: "/task-manager",
+    icon: List,
+  },
   {
     title: "Calendar",
     url: "/calendar",
@@ -72,7 +83,7 @@ export function AppSidebar() {
                       <item.icon
                         className={cn(
                           "h-4 w-4",
-                          pathname === item.url && "text-sidebar-primary",
+                          pathname === item.url && "text-primary",
                         )}
                       />
                       <span>{item.title}</span>

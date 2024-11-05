@@ -65,7 +65,7 @@ const TaskList: React.FC<{ className?: string }> = ({ className }) => {
           </div>
           <Button
             type="submit"
-            variant="default"
+            variant="primary"
             className="mt-2 w-full rounded p-2 transition-colors hover:bg-opacity-90"
           >
             Add Task

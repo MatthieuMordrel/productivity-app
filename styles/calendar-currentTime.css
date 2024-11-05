@@ -1,7 +1,8 @@
 /* Current Time Indicator */
 .rbc-current-time-indicator {
   border: none !important;
-  background-color: darkred !important;
+  background-color: rgb(216, 178, 178) !important;
+  height: 2px !important;
 }
 
 .dark .rbc-current-time-indicator {
