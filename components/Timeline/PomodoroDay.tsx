@@ -48,7 +48,15 @@ export default function PomodoroDay() {
         className="flex min-h-[calc(100vh-88px)] flex-col space-y-4 overflow-hidden p-6"
       >
         {sessions.length === 0 ? (
-          <NoSession />
+          <div className="flex flex-col space-y-4">
+            <div className="flex justify-end">
+              <SheetSettings
+                isSettingsOpen={isSettingsOpen}
+                setIsSettingsOpen={setIsSettingsOpen}
+              />
+            </div>
+            <NoSession />
+          </div>
         ) : (
           <>
             {/* <Time /> */}

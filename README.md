@@ -2,27 +2,22 @@ TO DO:
 
 - Add a way to tick a task when done
 - Add a way to hide ticked tasks
+- Implement MDX for the pomodoro technique description page
+- Create preset values for the settings that are linked from the description page
+- Add a way to organise tasks better with folderish structure
 
 Sound
 
 - Add sound when dropping a task into timeline
-- Add nice sound when session ends
-- Add sound when toggling dark mode
-- Add custom sound options in the nav bar
 
 Design
 
 - Decide on the color palette (both light and dark modes)
 - Imagine global design of the page (think mobile first)
-- Add a nice shadcn popup when a session is over (no sound, just a popup)
 - Animate when changing the duration only
 - Create tooltip for day/agenda view and settings
-- Try changing the color when hovering over a session with a task
 - Try changing the color when the session has a task associated
-- Add a sonner to click on the task and see which sessions it's linked to
-- Add an effect to the current session on the event timeline
 - Ensure that it's visible which current sessions we are in from the summary
-- consider tranforming the pomodoro timer into a progress bar that is sticky on top of the screenn or bottom of the screen
 
 To go further:
 
@@ -32,6 +27,13 @@ To go further:
 
 Done:
 
+- Consider tranforming the pomodoro timer into a progress bar that is sticky on top of the screenn or bottom of the screen
+- Add an effect to the current session on the event timeline
+- Try changing the color when hovering over a session with a task
+- Add a nice shadcn popup when a session is over (no sound, just a popup)
+- Add custom sound options in the nav bar
+- Add sound when toggling dark mode
+- Add nice sound when session ends
 - Add a settings to add sound with the sonner and end of session + start of session
 - Add a placeholder when you drag task into the calendar
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
@@ -89,44 +91,3 @@ End time
 
 % of time as work during the day
 % of time as break or pauses during the day
-
-OLD NAV BAR
-// import {
-// NavigationMenu,
-// NavigationMenuItem,
-// NavigationMenuLink,
-// NavigationMenuList,
-// navigationMenuTriggerStyle,
-// } from "@/components/ui/navigation-menu";
-// import Link from "next/link";
-
-// export default function Navbar() {
-// return (
-// <nav className="border-b bg-background">
-// <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-// <div className="flex h-16 items-center justify-between">
-// {/_ Logo/Brand section _/}
-// <div className="flex items-center">
-// <Link href="/" className="text-2xl font-bold text-foreground">
-// Pomodoro Calendar
-// </Link>
-// </div>
-
-// {/_ Navigation section _/}
-// <NavigationMenu>
-// <NavigationMenuList>
-// <NavigationMenuItem>
-// <NavigationMenuLink
-// href="/productivity"
-// className={navigationMenuTriggerStyle()}
-// >
-// Productivity Rhythms
-// </NavigationMenuLink>
-// </NavigationMenuItem>
-// </NavigationMenuList>
-// </NavigationMenu>
-// </div>
-// </div>
-// </nav>
-// );
-// }

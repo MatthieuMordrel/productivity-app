@@ -96,8 +96,6 @@ export const PomodoroCalendarProvider: React.FC<{
     }
   };
 
-  console.log(sessions);
-
   return (
     <PomodoroCalendarContext.Provider
       value={{

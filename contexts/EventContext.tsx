@@ -16,8 +16,35 @@ const EventContext = createContext<EventContextType | undefined>(undefined);
 
 export function EventProvider({ children }: { children: React.ReactNode }) {
   const { sessions } = useSessionsContext();
-  const [showPauses, setShowPauses] = useState(false);
-  const [showBreaks, setShowBreaks] = useState(true);
+
+  // Initialize showPauses state from localStorage, falling back to false if not set
+  const [showPauses, setShowPauses] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      const savedShowPauses = localStorage.getItem("showPauses");
+      return savedShowPauses === "true" ? true : false;
+    }
+    return false;
+  });
+
+  // Initialize showBreaks state from localStorage, falling back to true if not set
+  const [showBreaks, setShowBreaks] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      const savedShowBreaks = localStorage.getItem("showBreaks");
+      return savedShowBreaks === "false" ? false : true;
+    }
+    return true;
+  });
+
+  // Wrap the original setters to also update localStorage
+  const handleSetShowPauses = () => {
+    setShowPauses((prev) => !prev);
+    localStorage.setItem("showPauses", String(!showPauses));
+  };
+
+  const handleSetShowBreaks = () => {
+    setShowBreaks((prev) => !prev);
+    localStorage.setItem("showBreaks", String(!showBreaks));
+  };
 
   // Filter sessions based on the selected filters
   const filteredEvents = useMemo(() => {
@@ -35,9 +62,9 @@ export function EventProvider({ children }: { children: React.ReactNode }) {
     <EventContext.Provider
       value={{
         showPauses,
-        setShowPauses,
+        setShowPauses: handleSetShowPauses,
         showBreaks,
-        setShowBreaks,
+        setShowBreaks: handleSetShowBreaks,
         filteredEvents,
       }}
     >

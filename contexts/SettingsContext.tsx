@@ -68,15 +68,42 @@ function pomodoroReducer(
       };
     case "RESET_SETTINGS":
       return initialState;
-
     default:
       return state;
   }
 }
 
+// Add function to load initial state from localStorage or use default
+const loadInitialState = (): PomodoroState => {
+  if (typeof window === "undefined") return initialState;
+
+  const savedState = localStorage.getItem("pomodoroSettings");
+  if (!savedState) return initialState;
+
+  // Parse the saved state
+  const parsedState = JSON.parse(savedState);
+
+  // Convert string dates back to Date objects
+  return {
+    ...parsedState,
+    startTime: new Date(parsedState.startTime),
+    endTime: new Date(parsedState.endTime),
+    breaks: parsedState.breaks.map((breakItem: Break) => ({
+      ...breakItem,
+      start: new Date(breakItem.start),
+      end: new Date(breakItem.end),
+    })),
+  };
+};
+
 export function PomodoroProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(pomodoroReducer, initialState);
-  console.log(state);
+  // Initialize with loaded state
+  const [state, dispatch] = useReducer(pomodoroReducer, null, loadInitialState);
+
+  // Save to localStorage whenever state changes
+  React.useEffect(() => {
+    localStorage.setItem("pomodoroSettings", JSON.stringify(state));
+  }, [state]);
 
   return (
     <PomodoroContext.Provider value={{ state, dispatch }}>
