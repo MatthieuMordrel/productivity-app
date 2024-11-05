@@ -1,6 +1,5 @@
 TO DO:
 
-- Add a settings to add sound with the sonner and end of session + start of session
 - Add a way to tick a task when done
 - Add a way to hide ticked tasks
 
@@ -33,6 +32,7 @@ To go further:
 
 Done:
 
+- Add a settings to add sound with the sonner and end of session + start of session
 - Add a placeholder when you drag task into the calendar
 - Make it easier to change time in the settings (add preset values and maybe +1 -1 hours buttons)
 - Create a page describing the most productive rythm to follow (52/17 rule, pomodoro technique, ultradian cycles)

@@ -97,7 +97,7 @@ const config: Config = {
           //Blue 500
           "--primary": "217 91.2% 59.8%",
           "--secondary": "48 100% 50%",
-          "--accent": "185, 96%, 90%",
+          "--accent": "185 96% 90%",
           "--muted": "210 40% 96.1%",
           "--muted-foreground": "215.4 16.3% 46.9%",
           "--ring": "215 20.2% 65.1%",
@@ -107,14 +107,14 @@ const config: Config = {
           //Gray 100
           "--background": "220, 14%, 96%",
           //Gray 900
-          "--foreground": "221, 39%, 11%",
-          "--card": "220, 13%, 91%",
+          "--foreground": "221 39% 11%",
+          "--card": "220 13% 91%",
           "--work": "200 75% 25%",
           "--pause": "38 92% 50%",
           "--break": "142 72% 29%",
-          "--popover": "220, 13%, 91%",
+          "--popover": "220 13% 91%",
           //Gray 800
-          "--popover-foreground": "215, 28%, 17%",
+          "--popover-foreground": "215 28% 17%",
           //theme("colors.gray.300")
           "--border": "216deg, 12%, 84%, 0.4",
           // "--border-opacity": "0.2",
@@ -123,9 +123,9 @@ const config: Config = {
         ".dark": {
           //gray900
           "--background": "221, 39%, 11%",
-          "--foreground": "220, 14%, 96%",
-          "--accent": "196, 64%, 24%",
-          "--card": "215, 28%, 17%",
+          "--foreground": "220 14% 96%",
+          "--accent": "196 64% 24%",
+          "--card": "215 28% 17%",
           "--work": "200 75% 25%",
           "--pause": "38 92% 35%",
           "--break": "142 72% 35%",

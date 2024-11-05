@@ -35,7 +35,10 @@ const TaskList: React.FC<{ className?: string }> = ({ className }) => {
   };
 
   return (
-    <Card variant="outline" className={cn("min-h-96 max-w-full", className)}>
+    <Card
+      variant="none"
+      className={cn("min-h-[calc(100vh-88px)] max-w-full", className)}
+    >
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-lg">
           Tasks

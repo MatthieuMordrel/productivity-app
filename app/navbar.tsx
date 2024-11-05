@@ -4,7 +4,6 @@ import { SoundSettingsPanel } from "@/components/SoundSettings/SoundSettingsPane
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Volume2, VolumeX } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { NotificationRequest } from "../components/Notification/NotificationRequest";
@@ -80,23 +79,6 @@ export default function Navbar({ className }: { className?: string }) {
               </Link>
             ))}
 
-            <Button
-              variant="ghost"
-              onClick={toggleSound}
-              className="flex w-full items-center px-3 py-2 text-base font-medium text-muted-foreground transition-colors hover:text-primary"
-            >
-              {isSoundEnabled ? (
-                <>
-                  <Volume2 className="mr-2 h-5 w-5" />
-                  Disable Sound
-                </>
-              ) : (
-                <>
-                  <VolumeX className="mr-2 h-5 w-5" />
-                  Enable Sound
-                </>
-              )}
-            </Button>
             <div className="flex items-center justify-between px-3 py-2">
               <span className="text-base font-medium text-muted-foreground">
                 Sound Settings

@@ -9,11 +9,13 @@ import { View } from "react-big-calendar";
 export const EventComponent = ({
   event,
   view,
+  //
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   currentSession,
 }: {
   event: Session;
   view: View;
-  currentSession: boolean;
+  currentSession?: boolean;
 }) => {
   const [componentHeight, setComponentHeight] = useState<number>(0);
   const parentRef = useRef<HTMLDivElement | null>(null);
@@ -47,8 +49,8 @@ export const EventComponent = ({
           {...provided.droppableProps}
           className={cn(
             "relative h-full cursor-default rounded-md shadow-sm",
-            snapshot.isDraggingOver && "bg-foreground text-background",
-            currentSession && "brightness-110",
+            snapshot.isDraggingOver &&
+              "bg-black text-white dark:bg-white dark:text-black",
           )}
         >
           {componentHeight > 55 && view === "day" ? (

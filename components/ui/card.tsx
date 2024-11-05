@@ -5,9 +5,10 @@ import * as React from "react";
 const cardVariants = cva("", {
   variants: {
     variant: {
-      default: "bg-card",
+      none: "",
+      default: "bg-card shadow",
       outline:
-        "border bg-gray-200/40 dark:border-gray-600/40 dark:bg-gray-800/40",
+        "border bg-gray-200/40 shadow dark:border-gray-600/40 dark:bg-gray-800/40",
     },
   },
 });
@@ -19,7 +20,7 @@ const Card = React.forwardRef<
   HTMLDivElement,
   // TypeScript interface extending React's HTMLAttributes for a div element
   React.HTMLAttributes<HTMLDivElement> & {
-    variant?: "outline" | "default";
+    variant?: "outline" | "default" | "none";
   }
 >(({ className, variant = "default", ...props }, ref) => (
   <div
@@ -28,7 +29,7 @@ const Card = React.forwardRef<
     // Use the cn utility to combine CSS classes
     className={cn(
       // Base styles for the card
-      "text-card-foreground rounded-xl shadow",
+      "text-card-foreground rounded-xl",
       // Allow additional classes to be passed in and merged
       className,
       cardVariants({ variant }),

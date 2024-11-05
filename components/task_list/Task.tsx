@@ -34,8 +34,8 @@ export default function Task({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           className={cn(
-            snapshot.isDragging ? "z-50 bg-background" : "z-0 bg-background",
-            "rounded p-3 shadow-sm transition-shadow hover:shadow-md",
+            snapshot.isDragging ? "z-50 bg-background" : "z-0 bg-card",
+            "min-h-14 rounded-md p-3 shadow-sm transition-shadow hover:shadow-md",
             "flex items-center justify-between",
           )}
         >
@@ -54,7 +54,7 @@ export default function Task({
             ) : (
               <span className="mr-2 flex-grow truncate">{task.content}</span>
             )}
-            <div className="flex flex-shrink-0 space-x-2">
+            <div className="flex flex-shrink-0 space-x-3">
               <button
                 onClick={() => handleEditClick()}
                 className="opacity-50 transition-opacity hover:opacity-100"

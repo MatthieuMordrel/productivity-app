@@ -29,7 +29,8 @@ rbc-time-content
   border: none !important;
 }
 
-/* General Styles */
+/* Transitions */
+/* This transition has a problem which is that when the sessions times don't change it still triggers while it should only applies when the times change */
 /* .rbc-time-view,
 .rbc-time-content,
 .rbc-time-column,

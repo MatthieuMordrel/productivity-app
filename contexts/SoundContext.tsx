@@ -2,15 +2,28 @@
 
 import { AVAILABLE_SOUNDS } from "@/lib/constants";
 import { SessionType } from "@/lib/types";
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-// Simple type for mapping session types to sound files
 type SessionSounds = {
   //K is a key of the SessionType union type and keyof typeof maps for each key the created types from the AVAILABLE_SOUNDS object
   //This creates a type where each session type is mapped to all sound files in the AVAILABLE_SOUNDS object
   [K in SessionType]: keyof typeof AVAILABLE_SOUNDS;
 };
 
+// Storage keys for localStorage
+const STORAGE_KEYS = {
+  SOUND_ENABLED: "sound-enabled",
+  SOUND_VOLUME: "sound-volume",
+  SOUND_PREFERENCES: "sound-preferences",
+} as const;
+
+// Interface for the SoundContext
 interface SoundContextType {
   isSoundEnabled: boolean;
   toggleSound: () => void;
@@ -25,34 +38,74 @@ interface SoundContextType {
   ) => void;
 }
 
+// Default sounds for each session type
 const DEFAULT_SOUNDS: SessionSounds = {
-  Work: "Ta Da.wav",
-  Break: "Gentle chime.wav",
-  Pause: "Ta Da.wav",
+  Work: "Faint chime.wav",
+  Break: "Faint chime.wav",
+  Pause: "Faint chime.wav",
 };
 
+// Create the context
 const SoundContext = createContext<SoundContextType | undefined>(undefined);
 
+// Provider component for the SoundContext
 export function SoundProvider({ children }: { children: ReactNode }) {
-  const [isSoundEnabled, setIsSoundEnabled] = useState(true);
+  // Initialize state with null to handle hydration properly
+  const [isSoundEnabled, setIsSoundEnabled] = useState<boolean | null>(null);
   const [sounds, setSounds] = useState<SessionSounds>(DEFAULT_SOUNDS);
-  const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useState<number | null>(null);
 
-  //Manage if the sound is enabled or disabled
+  // Load preferences from localStorage on mount
+  useEffect(() => {
+    const storedSoundEnabled = localStorage.getItem(STORAGE_KEYS.SOUND_ENABLED);
+    const storedVolume = localStorage.getItem(STORAGE_KEYS.SOUND_VOLUME);
+    const storedSounds = localStorage.getItem(STORAGE_KEYS.SOUND_PREFERENCES);
+
+    // Set the state with the stored values if they exist or the default values
+    setIsSoundEnabled(
+      storedSoundEnabled ? JSON.parse(storedSoundEnabled) : true,
+    );
+    setVolume(storedVolume ? JSON.parse(storedVolume) : 0.5);
+    setSounds(storedSounds ? JSON.parse(storedSounds) : DEFAULT_SOUNDS);
+  }, []);
+
+  // When the user clicks on the sound toggle button, we update the state and the localStorage
   const toggleSound = () => {
-    setIsSoundEnabled((prev) => !prev);
+    setIsSoundEnabled((prev) => {
+      const newValue = !prev;
+      localStorage.setItem(
+        STORAGE_KEYS.SOUND_ENABLED,
+        JSON.stringify(newValue),
+      );
+      return newValue;
+    });
   };
 
-  //Set the sound for a specific session type
-  const setSessionSound = (
+  // When the user changes the volume, we update the state and the localStorage
+  const handleVolumeChange = (newVolume: number) => {
+    setVolume(newVolume);
+    localStorage.setItem(STORAGE_KEYS.SOUND_VOLUME, JSON.stringify(newVolume));
+  };
+
+  // When the user changes the sound for a specific session type, we update the state and the localStorage
+  const handleSetSessionSound = (
     sessionType: SessionType,
     soundFile: keyof typeof AVAILABLE_SOUNDS,
   ) => {
-    setSounds((prev) => ({
-      ...prev,
-      [sessionType]: soundFile,
-    }));
+    setSounds((prev) => {
+      const newSounds = { ...prev, [sessionType]: soundFile };
+      localStorage.setItem(
+        STORAGE_KEYS.SOUND_PREFERENCES,
+        JSON.stringify(newSounds),
+      );
+      return newSounds;
+    });
   };
+
+  // Don't render until initial values are loaded to prevent hydration mismatch
+  if (isSoundEnabled === null || volume === null) {
+    return null;
+  }
 
   return (
     <SoundContext.Provider
@@ -60,9 +113,9 @@ export function SoundProvider({ children }: { children: ReactNode }) {
         isSoundEnabled,
         toggleSound,
         sounds,
-        setSessionSound,
+        setSessionSound: handleSetSessionSound,
         volume,
-        setVolume,
+        setVolume: handleVolumeChange,
       }}
     >
       {children}

@@ -45,7 +45,7 @@ export default function HomePage() {
 
         <div className="flex-grow">
           {/* Hero Section */}
-          <section className="to-muted bg-gradient-to-b from-background py-20 sm:py-32">
+          <section className="bg-gradient-to-b from-background to-muted py-20 sm:py-32">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center">
                 <h1 className="text-4xl font-extrabold tracking-tight text-primary sm:text-5xl md:text-6xl">
@@ -82,9 +82,9 @@ export default function HomePage() {
                 {features.map((feature, index) => (
                   <div
                     key={index}
-                    className="text-card-foreground rounded-lg bg-card p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    className="rounded-lg bg-card p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                   >
-                    <div className="bg-primary/10 mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                       {feature.icon}
                     </div>
                     <h3 className="mb-2 text-xl font-semibold">
@@ -100,7 +100,7 @@ export default function HomePage() {
           </section>
 
           {/* CTA Section */}
-          <section className="bg-primary py-20 sm:py-32">
+          <section className="rounded-lg bg-primary/20 py-20 sm:py-32">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center">
                 <h2 className="mb-6 text-3xl font-extrabold">

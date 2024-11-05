@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AppProviders } from "@/contexts/AppProviders";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
+import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Footer from "./footer";
 import Navbar from "./navbar";
@@ -11,9 +12,10 @@ import { TitleUpdater } from "./TitleUpdater";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Pomodoro App",
   description: "Pomodoro App",
+  // viewport: "width=device-width, initial-scale=1.0",
 };
 
 export default function RootLayout({

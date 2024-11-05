@@ -2,7 +2,7 @@
 
 import { MAX_TASK_CHARACTERS } from "@/lib/constants";
 import { Task } from "@/lib/types";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface TaskContextType {
   tasks: Task[];
@@ -19,7 +19,19 @@ const TaskContext = createContext<TaskContextType | undefined>(undefined);
 export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  // Initialize state from localStorage or empty array
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    if (typeof window !== "undefined") {
+      const savedTasks = localStorage.getItem("tasks");
+      return savedTasks ? JSON.parse(savedTasks) : [];
+    }
+    return [];
+  });
+
+  // Update localStorage whenever tasks change
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   // Helper function to validate task content
   const validateTaskContent = (content: string): string | null => {
