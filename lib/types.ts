@@ -22,7 +22,18 @@ export interface Session {
   index: number;
 }
 
+export interface TaskFamily {
+  id: string;
+  name: string;
+  order: number;
+  tasks: Task[];
+}
+
 export interface Task {
   id: string;
   content: string;
+  familyId: string;
+  parentTaskId?: string;
+  subtasks?: Task[];
+  order: number;
 }

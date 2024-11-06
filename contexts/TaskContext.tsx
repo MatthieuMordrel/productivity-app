@@ -68,6 +68,8 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
     const task: Task = {
       id: Date.now().toString(),
       content: trimmedContent,
+      familyId: "default",
+      order: tasks.length,
     };
     setTasks((prevTasks) => [...prevTasks, task]);
     return null; // Indicate success
