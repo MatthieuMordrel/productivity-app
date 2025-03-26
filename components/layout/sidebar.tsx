@@ -12,15 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import {
-  Activity,
-  Calendar,
-  ChartBar,
-  Home,
-  List,
-  LucideIcon,
-  Target,
-} from "lucide-react";
+import { Calendar, ChartBar, Home, LucideIcon, Target } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -35,11 +27,11 @@ const items: Array<{
     url: "/",
     icon: Home,
   },
-  {
-    title: "Task manager",
-    url: "/task-manager",
-    icon: List,
-  },
+  // {
+  //   title: "Task manager",
+  //   url: "/task-manager",
+  //   icon: List,
+  // },
   {
     title: "Calendar",
     url: "/calendar",
@@ -55,11 +47,11 @@ const items: Array<{
     url: "/focus",
     icon: Target,
   },
-  {
-    title: "Habit tracker",
-    url: "/habittracker",
-    icon: Activity,
-  },
+  // {
+  //   title: "Habit tracker",
+  //   url: "/habittracker",
+  //   icon: Activity,
+  // },
 ];
 
 export function AppSidebar() {
