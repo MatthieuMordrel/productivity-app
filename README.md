@@ -9,6 +9,7 @@
 
 ## TODO
 
+- Audio files should be removed from the public folder
 - Add a way to tick a task when done
 - Add a way to hide ticked tasks
 - Add a way to organise tasks better with folderish structure
