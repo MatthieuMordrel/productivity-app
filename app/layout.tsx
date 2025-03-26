@@ -1,3 +1,4 @@
+import Navbar from "@/components/layout/navbar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { AppProviders } from "@/contexts/AppProviders";
@@ -7,10 +8,10 @@ import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import Footer from "../components/layout/footer";
 import { AppSidebar } from "../components/layout/sidebar";
 import { TitleUpdater } from "../components/TitleUpdater";
-import Navbar from "@/components/layout/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,7 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
+        <Script
+          src="https://unpkg.com/react-scan/dist/auto.global.js"
+          async
+          defer
+        />
       </head>
       <body
         className={cn(

@@ -18,6 +18,9 @@ const nextConfig = {
     buildActivity: true,
     buildActivityPosition: "bottom-right",
   },
+  // eslint: {
+  //   ignoreDuringBuilds: true, //disable eslint for build
+  // },
 };
 
 export default nextConfig;
