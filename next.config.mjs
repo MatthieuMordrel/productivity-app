@@ -1,6 +1,10 @@
-import { NextConfig } from "next";
+// @ts-check
+// Need Next 15 to convert to ts
 
-const nextConfig: NextConfig = {
+/**
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
   reactStrictMode: false,
   logging: {
     fetches: {
