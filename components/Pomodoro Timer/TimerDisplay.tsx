@@ -20,7 +20,6 @@ export function TimerDisplay({
   type,
   colors,
   taskTitle,
-  remainingTime,
   displaytitle = true,
   className,
 }: TimerDisplayProps) {
