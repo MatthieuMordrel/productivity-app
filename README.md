@@ -9,6 +9,7 @@
 
 ## TODO
 
+- Fix why chimes don't work in production
 - Audio files should be removed from the public folder
 - Add a way to tick a task when done
 - Add a way to hide ticked tasks
