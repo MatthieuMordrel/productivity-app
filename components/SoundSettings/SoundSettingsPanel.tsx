@@ -17,10 +17,10 @@ import { Slider } from "@/components/ui/slider";
 import { AVAILABLE_SOUNDS } from "@/lib/constants";
 import { usePlaySound } from "@/lib/hooks/useSound";
 import {
-  useSoundEnabled,
-  useSoundVolume,
   useSessionSounds,
   useSoundActions,
+  useSoundEnabled,
+  useSoundVolume,
 } from "@/lib/stores/soundStore";
 import { SessionType } from "@/lib/types";
 import { Settings, Volume2, VolumeX } from "lucide-react";

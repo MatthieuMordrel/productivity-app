@@ -60,6 +60,12 @@ export const useSoundStore = create<SoundStoreState>()(
     }),
     {
       name: "sound-storage", // localStorage key
+      partialize: (state) => ({
+        // Only persist these state properties, exclude the actions
+        isSoundEnabled: state.isSoundEnabled,
+        sounds: state.sounds,
+        volume: state.volume,
+      }),
     },
   ),
 );
