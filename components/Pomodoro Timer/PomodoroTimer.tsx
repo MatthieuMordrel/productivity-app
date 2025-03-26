@@ -1,7 +1,7 @@
 "use client";
 
-import { useCurrentSession } from "@/contexts/currentSessionStore";
 import { getTypeColors } from "@/lib/logos";
+import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import { useSessionProgress } from "@/lib/stores/sessionCompletionStore";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";

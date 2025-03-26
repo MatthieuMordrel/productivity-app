@@ -1,8 +1,8 @@
 "use client";
 
-import { useCurrentSession } from "@/contexts/currentSessionStore";
 import { usePlaySound } from "@/hooks/useSound";
 import { useSessionTracker } from "@/lib/hooks/useSessionTracker";
+import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import {
   useCompletionActions,
   useSessionProgress,

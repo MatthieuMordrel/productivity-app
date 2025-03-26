@@ -1,6 +1,6 @@
 "use client";
 
-import { useCurrentSession } from "@/contexts/currentSessionStore";
+import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import { useSessionCompletionStore } from "@/lib/stores/sessionCompletionStore";
 import { useEffect, useRef } from "react";
 

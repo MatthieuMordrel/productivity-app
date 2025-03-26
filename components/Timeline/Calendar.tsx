@@ -1,8 +1,8 @@
 "use client";
 
-import { useCurrentSession } from "@/contexts/currentSessionStore";
 import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
 import { timeslots } from "@/lib/constants";
+import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import { CalendarViews, Session } from "@/lib/types";
 import { timeFormat } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
