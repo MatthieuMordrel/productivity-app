@@ -1,7 +1,7 @@
 "use client";
 
 import { useCurrentSession } from "@/lib/stores/currentSessionStore";
-import { useSessionCompletionStore } from "@/lib/stores/sessionCompletionStore";
+import { useCompletionActions } from "@/lib/stores/sessionCompletionStore";
 import { useEffect, useRef } from "react";
 
 /**
@@ -9,13 +9,10 @@ import { useEffect, useRef } from "react";
  * instead of polling every second
  */
 export function useSessionTracker() {
+  const actions = useCompletionActions();
   const currentSession = useCurrentSession();
-  const updateProgress = useSessionCompletionStore(
-    (state) => state.actions.updateProgress,
-  );
-  const resetCompletion = useSessionCompletionStore(
-    (state) => state.actions.resetCompletion,
-  );
+  const updateProgress = actions.updateProgress;
+  const resetCompletion = actions.resetCompletion;
 
   // References to avoid unnecessary effect triggers
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);

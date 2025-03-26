@@ -21,7 +21,7 @@ interface SessionCompletionState {
   };
 }
 
-export const useSessionCompletionStore = create<SessionCompletionState>(
+const useSessionCompletionStore = create<SessionCompletionState>(
   (set, get) => ({
     // Initial state
     remainingTime: "",
@@ -92,14 +92,28 @@ export const useSessionCompletionStore = create<SessionCompletionState>(
 // Custom hooks for components
 
 /**
+ * useRemainingTime
+ *
+ * A hook that returns only the remaining time from the session completion store.
+ */
+export const useRemainingTime = () =>
+  useSessionCompletionStore((state) => state.remainingTime);
+
+/**
  * useSessionProgress
  *
- * A hook that returns the remaining time, progress, and isComplete state from the session completion store.
+ * A hook that returns only the progress percentage from the session completion store.
  */
-export const useSessionProgress = () => {
-  const { remainingTime, progress, isComplete } = useSessionCompletionStore();
-  return { remainingTime, progress, isComplete };
-};
+export const useSessionProgress = () =>
+  useSessionCompletionStore((state) => state.progress);
+
+/**
+ * useSessionCompletion
+ *
+ * A hook that returns whether the current session is complete.
+ */
+export const useSessionCompletion = () =>
+  useSessionCompletionStore((state) => state.isComplete);
 
 /**
  * useCompletionActions

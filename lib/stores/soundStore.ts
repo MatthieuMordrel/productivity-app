@@ -34,7 +34,7 @@ interface SoundStoreState {
 }
 
 // Create the Zustand store with persistence
-export const useSoundStore = create<SoundStoreState>()(
+const useSoundStore = create<SoundStoreState>()(
   persist(
     (set) => ({
       // Initial state

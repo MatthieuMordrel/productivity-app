@@ -5,9 +5,11 @@ import { usePlaySound } from "@/lib/hooks/useSound";
 import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import {
   useCompletionActions,
+  useRemainingTime,
+  useSessionCompletion,
   useSessionProgress,
 } from "@/lib/stores/sessionCompletionStore";
-import { useSoundStore } from "@/lib/stores/soundStore";
+import { useSessionSounds } from "@/lib/stores/soundStore";
 import { ReactNode, useEffect } from "react";
 
 // This provider now just initializes the sound logic and session tracker
@@ -17,9 +19,9 @@ export function CompletionProvider({ children }: { children: ReactNode }) {
 
   // Set up sound playing on completion
   const playSound = usePlaySound();
-  const { sounds } = useSoundStore();
+  const sounds = useSessionSounds();
   const currentSession = useCurrentSession();
-  const { isComplete } = useSessionProgress();
+  const isComplete = useSessionCompletion();
 
   // Handle sound playback when a session completes
   // This effect only runs when isComplete changes to true
@@ -35,7 +37,9 @@ export function CompletionProvider({ children }: { children: ReactNode }) {
 // Export a hook for components to consume completion data
 export function useCompletion() {
   const currentSession = useCurrentSession();
-  const { remainingTime, progress, isComplete } = useSessionProgress();
+  const remainingTime = useRemainingTime();
+  const progress = useSessionProgress();
+  const isComplete = useSessionCompletion();
   const { handleCompletion } = useCompletionActions();
 
   return {

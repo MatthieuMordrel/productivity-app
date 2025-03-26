@@ -2,7 +2,10 @@
 
 import { getTypeColors } from "@/lib/logos";
 import { useCurrentSession } from "@/lib/stores/currentSessionStore";
-import { useSessionProgress } from "@/lib/stores/sessionCompletionStore";
+import {
+  useRemainingTime,
+  useSessionProgress,
+} from "@/lib/stores/sessionCompletionStore";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -29,7 +32,8 @@ export default function PomodoroTimer({ className }: PomodoroTimerProps) {
   // Use the selector hook directly from the Zustand store
   const currentSession = useCurrentSession();
   // Get real-time progress information
-  const { remainingTime, progress } = useSessionProgress();
+  const remainingTime = useRemainingTime();
+  const progress = useSessionProgress();
   const [isHovered, setIsHovered] = useState(false);
 
   // Render a placeholder if there's no active session
