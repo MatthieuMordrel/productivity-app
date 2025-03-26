@@ -29,9 +29,7 @@ interface PomodoroTimerProps {
  * @param className - Additional CSS classes
  */
 export default function PomodoroTimer({ className }: PomodoroTimerProps) {
-  // Use the selector hook directly from the Zustand store
   const currentSession = useCurrentSession();
-  // Get real-time progress information
   const remainingTime = useRemainingTime();
   const progress = useSessionProgress();
   const [isHovered, setIsHovered] = useState(false);
