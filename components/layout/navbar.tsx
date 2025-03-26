@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
-import { NotificationRequest } from "../components/Notification/NotificationRequest";
+import { NotificationRequest } from "../Notification/NotificationRequest";
 
 const navItems = [
   { label: "Home", href: "/" },

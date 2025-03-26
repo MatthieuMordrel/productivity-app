@@ -14,8 +14,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { usePlaySound } from "@/hooks/useSound";
 import { AVAILABLE_SOUNDS } from "@/lib/constants";
+import { usePlaySound } from "@/lib/hooks/useSound";
 import {
   useSessionSounds,
   useSoundActions,

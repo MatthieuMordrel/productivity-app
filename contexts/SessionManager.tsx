@@ -1,5 +1,5 @@
 "use client";
-import { useSessionManager } from "@/hooks/useSessionManager";
+import { useSessionManager } from "@/lib/hooks/useSessionManager";
 
 /**
  * SessionManager Component

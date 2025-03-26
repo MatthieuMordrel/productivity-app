@@ -2,7 +2,7 @@
 
 import { useEventContext } from "@/contexts/EventContext";
 import { useSessionsContext } from "@/contexts/SessionsContext";
-import { useViewControls } from "@/hooks/useViewControls";
+import { useViewControls } from "@/lib/hooks/useViewControls";
 import "@styles/calendar-agenda.css";
 import "@styles/calendar-currentTime.css";
 import "@styles/calendar-event.css";

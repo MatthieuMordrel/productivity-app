@@ -1,7 +1,7 @@
 "use client";
 
-import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
 import { timeslots } from "@/lib/constants";
+import { useCalendarHelpers } from "@/lib/hooks/useCalendarHelpers";
 import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import { CalendarViews, Session } from "@/lib/types";
 import { timeFormat } from "@/lib/utils";

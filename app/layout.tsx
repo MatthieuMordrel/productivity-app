@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Footer from "./footer";
+import Footer from "../components/layout/footer";
+import { AppSidebar } from "../components/layout/sidebar";
+import { TitleUpdater } from "../components/TitleUpdater";
 import Navbar from "./navbar";
-import { AppSidebar } from "./sidebar";
-import { TitleUpdater } from "./TitleUpdater";
 
 const inter = Inter({ subsets: ["latin"] });
 

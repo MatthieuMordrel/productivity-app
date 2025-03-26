@@ -1,5 +1,5 @@
 import { useTaskContext } from "@/contexts/TaskContext";
-import { useTaskActions } from "@/hooks/useTaskActions";
+import { useTaskActions } from "@/lib/hooks/useTaskActions";
 import type { Task } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Edit2, Trash2 } from "lucide-react";

@@ -1,7 +1,7 @@
 "use client";
 
-import { usePlaySound } from "@/hooks/useSound";
 import { useSessionTracker } from "@/lib/hooks/useSessionTracker";
+import { usePlaySound } from "@/lib/hooks/useSound";
 import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import {
   useCompletionActions,
