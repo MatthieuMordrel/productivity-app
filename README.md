@@ -1,4 +1,13 @@
-TO DO:
+## Info
+
+- This project is a work in progress
+- The code is not production ready
+- The code is not optimized
+- The code is not secure
+- The code is not scalable
+- The code is not maintainable
+
+## TODO
 
 - Add a way to tick a task when done
 - Add a way to hide ticked tasks
@@ -9,11 +18,11 @@ TO DO:
 - Add custom colors for each task that map to session in the timeline
 - Add a coding guy when it's time to work and a happy guy when it's time to rest
 
-Sound
+Sound:
 
 - Add sound when dropping a task into timeline
 
-Design
+Design:
 
 - Decide on the color palette (both light and dark modes)
 - Imagine global design of the page (think mobile first)
@@ -29,7 +38,7 @@ To go further:
 - Include a easy drag and drop way to organise task on the template calendar
 - Add a way to save your schedule
 - create a summary of the day page (that persist)
-- 
+-
 
 Done:
 
