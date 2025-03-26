@@ -1,15 +1,16 @@
-import { useCompletion } from "@/contexts/CompletionContext";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
 
 interface ProgressCircleProps {
   colors: {
     stroke: string;
+    textColor: string;
+    backgroundColor: string;
   };
+  progress: number;
 }
 
-export const ProgressCircle: React.FC<ProgressCircleProps> = ({ colors }) => {
-  const { progress } = useCompletion();
+export function ProgressCircle({ colors, progress }: ProgressCircleProps) {
   const controls = useAnimation();
 
   useEffect(() => {
@@ -35,4 +36,4 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({ colors }) => {
       />
     </svg>
   );
-};
+}

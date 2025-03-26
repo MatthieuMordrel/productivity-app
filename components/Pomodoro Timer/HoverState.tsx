@@ -1,12 +1,11 @@
-import { useCompletion } from "@/contexts/CompletionContext";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface HoverStateProps {
   isHovered: boolean;
+  progress: number;
 }
 
-export const HoverState: React.FC<HoverStateProps> = ({ isHovered }) => {
-  const { progress } = useCompletion();
+export function HoverState({ isHovered, progress }: HoverStateProps) {
   return (
     <AnimatePresence>
       {isHovered && (
@@ -24,4 +23,4 @@ export const HoverState: React.FC<HoverStateProps> = ({ isHovered }) => {
       )}
     </AnimatePresence>
   );
-};
+}

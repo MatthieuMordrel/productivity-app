@@ -2,6 +2,7 @@
 
 import { useCurrentSession } from "@/contexts/currentSessionStore";
 import { getTypeColors } from "@/lib/logos";
+import { useSessionProgress } from "@/lib/stores/sessionCompletionStore";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -27,6 +28,8 @@ interface PomodoroTimerProps {
 export default function PomodoroTimer({ className }: PomodoroTimerProps) {
   // Use the selector hook directly from the Zustand store
   const currentSession = useCurrentSession();
+  // Get real-time progress information
+  const { remainingTime, progress } = useSessionProgress();
   const [isHovered, setIsHovered] = useState(false);
 
   // Render a placeholder if there's no active session
@@ -59,10 +62,17 @@ export default function PomodoroTimer({ className }: PomodoroTimerProps) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       />
-      <ProgressCircle colors={colors} />
-      <TimerDisplay type={type} colors={colors} taskTitle={taskTitle} />
+      {/* Pass progress to ProgressCircle */}
+      <ProgressCircle colors={colors} progress={progress} />
+      {/* Pass remainingTime to TimerDisplay */}
+      <TimerDisplay
+        type={type}
+        colors={colors}
+        taskTitle={taskTitle}
+        remainingTime={remainingTime}
+      />
       {/* Hover overlay for progress percentage */}
-      <HoverState isHovered={isHovered} />
+      <HoverState isHovered={isHovered} progress={progress} />
       <CompletionOverlay />
     </div>
   );

@@ -123,6 +123,11 @@ export function SoundProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * useSoundContext
+ *
+ * A hook that returns the sound context.
+ */
 export function useSoundContext() {
   const context = useContext(SoundContext);
   if (context === undefined) {

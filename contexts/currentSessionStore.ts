@@ -17,8 +17,18 @@ export const useCurrentSessionStore = create<CurrentSessionState>((set) => ({
 }));
 
 // Selector hooks for better performance
+/**
+ * useCurrentSession
+ *
+ * A hook that returns the current session from the currentSessionStore.
+ */
 export const useCurrentSession = () =>
   useCurrentSessionStore((state) => state.currentSession);
 
+/**
+ * useSetCurrentSession
+ *
+ * A hook that returns the setCurrentSession function from the currentSessionStore.
+ */
 export const useSetCurrentSession = () =>
   useCurrentSessionStore((state) => state.setCurrentSession);

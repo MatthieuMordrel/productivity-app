@@ -1,122 +1,48 @@
 "use client";
 
+import { useCurrentSession } from "@/contexts/currentSessionStore";
 import { usePlaySound } from "@/hooks/useSound";
+import { useSessionTracker } from "@/lib/hooks/useSessionTracker";
 import {
-  showSystemNotificationOnCompletion,
-  showToastOnCompletion,
-} from "@/lib/functions/completion";
-import { calculateSessionProgress } from "@/lib/functions/sessionsUtils";
-import { Session } from "@/lib/types";
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-
+  useHandleCompletion,
+  useSessionProgress,
+} from "@/lib/stores/sessionCompletionStore";
+import { ReactNode, useEffect } from "react";
 import { useSoundContext } from "./SoundContext";
-import { useCurrentSession } from "./currentSessionStore";
 
-interface CompletionContextType {
-  handleCompletion: () => void;
-  currentSession: Session | null;
-  remainingTime: string;
-  progress: number;
-  isComplete: boolean;
-}
-
-const CompletionContext = createContext<CompletionContextType | undefined>(
-  undefined,
-);
-
+// This provider now just initializes the sound logic and session tracker
 export function CompletionProvider({ children }: { children: ReactNode }) {
+  // Initialize the session tracker
+  useSessionTracker();
+
+  // Set up sound playing on completion
   const playSound = usePlaySound();
-  const currentSession = useCurrentSession();
   const { sounds } = useSoundContext();
-  const [sessionInfo, setSessionInfo] = useState({
-    currentSession: null as Session | null,
-    remainingTime: "",
-    progress: 0,
-    isComplete: false,
-  });
-  // Trigger when a session is completed
-  const handleCompletion = useCallback(() => {
-    playSound(
-      "session sounds",
-      sounds[sessionInfo.currentSession?.type ?? "Work"],
-    );
-    showToastOnCompletion(sessionInfo.currentSession ?? null);
-    showSystemNotificationOnCompletion(sessionInfo.currentSession ?? null);
-  }, [sessionInfo.currentSession, sounds, playSound]);
-  // Calculate time and progress
-  const calculateTimeAndProgress = useCallback(
-    (current: Session | null, now: Date) => {
-      if (!current)
-        return { remainingTime: "", progress: 0, isComplete: false };
+  const currentSession = useCurrentSession();
+  const { isComplete } = useSessionProgress();
 
-      return calculateSessionProgress(current, now);
-    },
-    [],
-  );
-
-  // Set up an interval to update the session and time every second
+  // Handle sound playback when a session completes
+  // This effect only runs when isComplete changes to true
   useEffect(() => {
-    const updateSessionAndTime = () => {
-      const now = new Date();
-      const { remainingTime, progress, isComplete } = calculateTimeAndProgress(
-        currentSession,
-        now,
-      );
+    if (isComplete && currentSession) {
+      playSound("session sounds", sounds[currentSession.type]);
+    }
+  }, [isComplete, currentSession, sounds, playSound]);
 
-      // Only trigger handleCompletion if we have a current session and it's newly completed
-      if (isComplete && !sessionInfo.isComplete && currentSession) {
-        handleCompletion();
-      }
-
-      // Update the state with the new session and time
-      setSessionInfo((prevState) => {
-        // Only update if there are actual changes
-        if (
-          prevState.currentSession?.id !== currentSession?.id ||
-          prevState.remainingTime !== remainingTime ||
-          prevState.progress !== progress ||
-          prevState.isComplete !== isComplete
-        ) {
-          return {
-            currentSession: currentSession,
-            remainingTime,
-            progress,
-            isComplete,
-          };
-        }
-        return prevState;
-      });
-    };
-
-    updateSessionAndTime();
-    const interval = setInterval(updateSessionAndTime, 1000);
-    return () => clearInterval(interval);
-  }, [currentSession, calculateTimeAndProgress, handleCompletion]); // Remove sessionInfo dependencies
-
-  return (
-    <CompletionContext.Provider
-      value={{
-        handleCompletion,
-
-        ...sessionInfo, // Spread the session info
-      }}
-    >
-      {children}
-    </CompletionContext.Provider>
-  );
+  return <>{children}</>;
 }
 
+// Export a hook for components to consume completion data
 export function useCompletion() {
-  const context = useContext(CompletionContext);
-  if (context === undefined) {
-    throw new Error("useCompletion must be used within a CompletionProvider");
-  }
-  return context;
+  const currentSession = useCurrentSession();
+  const { remainingTime, progress, isComplete } = useSessionProgress();
+  const handleCompletion = useHandleCompletion();
+
+  return {
+    currentSession,
+    remainingTime,
+    progress,
+    isComplete,
+    handleCompletion,
+  };
 }

@@ -6,20 +6,24 @@ import TimeSession from "../SessionTracker/TimeSession";
 interface TimerDisplayProps {
   type: string;
   colors: {
+    stroke: string;
     textColor: string;
+    backgroundColor: string;
   };
   taskTitle: string;
+  remainingTime: string;
   displaytitle?: boolean;
   className?: string;
 }
 
-export const TimerDisplay: React.FC<TimerDisplayProps> = ({
+export function TimerDisplay({
   type,
   colors,
   taskTitle,
+  remainingTime,
   displaytitle = true,
   className,
-}) => {
+}: TimerDisplayProps) {
   const IconComponent = sessionIcons[type as keyof typeof sessionIcons];
   return (
     <div
@@ -53,4 +57,4 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
       )}
     </div>
   );
-};
+}
