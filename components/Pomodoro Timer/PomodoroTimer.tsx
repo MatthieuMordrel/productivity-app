@@ -1,8 +1,7 @@
 "use client";
 
-import { useSessionManager } from "@/hooks/useSessionManager";
+import { useCurrentSession } from "@/contexts/currentSessionStore";
 import { getTypeColors } from "@/lib/logos";
-import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -28,8 +27,6 @@ interface PomodoroTimerProps {
 export default function PomodoroTimer({ className }: PomodoroTimerProps) {
   // Use the selector hook directly from the Zustand store
   const currentSession = useCurrentSession();
-  useSessionManager();
-  console.log(currentSession);
   const [isHovered, setIsHovered] = useState(false);
 
   // Render a placeholder if there's no active session

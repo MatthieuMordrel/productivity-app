@@ -1,7 +1,7 @@
 import { Progress } from "@/components/ui/progress";
+import { useCurrentSession } from "@/contexts/currentSessionStore";
 import { getSessionTypeStats } from "@/lib/functions/sessionsUtils";
 import { getTypeColors, sessionIcons } from "@/lib/logos";
-import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import { Session, SessionType } from "@/lib/types";
 import { formatMinutesToHoursAndMinutes } from "@/lib/utils";
 import React, { useEffect, useState } from "react";

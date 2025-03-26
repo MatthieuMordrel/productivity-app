@@ -1,8 +1,8 @@
 "use client";
 
+import { useSetCurrentSession } from "@/contexts/currentSessionStore";
 import { useSessionsContext } from "@/contexts/SessionsContext";
 import { findCurrentSession } from "@/lib/functions/sessionsUtils";
-import { useSetCurrentSession } from "@/lib/stores/currentSessionStore";
 import { useEffect } from "react";
 
 /**

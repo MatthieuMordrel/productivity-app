@@ -1,7 +1,7 @@
+import { useCurrentSession } from "@/contexts/currentSessionStore";
 import { useSettingsContext } from "@/contexts/SettingsContext";
 import { getTimeRangeForDate } from "@/lib/functions/calendar";
 import { getTypeColors } from "@/lib/logos";
-import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import { Session } from "@/lib/types";
 import { useCallback, useMemo, useState } from "react";
 import { EventPropGetter } from "react-big-calendar";
