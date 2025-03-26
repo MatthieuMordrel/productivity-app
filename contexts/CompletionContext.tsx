@@ -7,8 +7,8 @@ import {
   useCompletionActions,
   useSessionProgress,
 } from "@/lib/stores/sessionCompletionStore";
+import { useSoundStore } from "@/lib/stores/soundStore";
 import { ReactNode, useEffect } from "react";
-import { useSoundContext } from "./SoundContext";
 
 // This provider now just initializes the sound logic and session tracker
 export function CompletionProvider({ children }: { children: ReactNode }) {
@@ -17,7 +17,7 @@ export function CompletionProvider({ children }: { children: ReactNode }) {
 
   // Set up sound playing on completion
   const playSound = usePlaySound();
-  const { sounds } = useSoundContext();
+  const { sounds } = useSoundStore();
   const currentSession = useCurrentSession();
   const { isComplete } = useSessionProgress();
 

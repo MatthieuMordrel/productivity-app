@@ -5,7 +5,6 @@ import { CompletionProvider } from "./CompletionContext";
 import { EventProvider } from "./EventContext";
 import { PomodoroCalendarProvider } from "./SessionsContext";
 import { PomodoroProvider } from "./SettingsContext";
-import { SoundProvider } from "./SoundContext";
 import { TaskProvider } from "./TaskContext";
 
 interface AppProvidersProps {
@@ -20,19 +19,17 @@ interface AppProvidersProps {
 export function AppProviders({ children }: AppProvidersProps) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <SoundProvider>
-        <SidebarProvider>
-          <PomodoroProvider>
-            <TaskProvider>
-              <PomodoroCalendarProvider>
-                <EventProvider>
-                  <CompletionProvider>{children}</CompletionProvider>
-                </EventProvider>
-              </PomodoroCalendarProvider>
-            </TaskProvider>
-          </PomodoroProvider>
-        </SidebarProvider>
-      </SoundProvider>
+      <SidebarProvider>
+        <PomodoroProvider>
+          <TaskProvider>
+            <PomodoroCalendarProvider>
+              <EventProvider>
+                <CompletionProvider>{children}</CompletionProvider>
+              </EventProvider>
+            </PomodoroCalendarProvider>
+          </TaskProvider>
+        </PomodoroProvider>
+      </SidebarProvider>
     </ThemeProvider>
   );
 }
