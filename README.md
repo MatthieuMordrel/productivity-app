@@ -2,8 +2,6 @@ TO DO:
 
 - Add a way to tick a task when done
 - Add a way to hide ticked tasks
-- Implement MDX for the pomodoro technique description page
-- Create preset values for the settings that are linked from the description page
 - Add a way to organise tasks better with folderish structure
 - Use duration instead of end time for the breaks
 - Add a second pause option to a real pomodoro pattern
@@ -27,11 +25,15 @@ Design
 To go further:
 
 - Add a way to save your settings
-- Add a way to add recurring tasks that will be setup by default
+- Add a way to add recurring tasks that will be setup by default over the week (make it easy to create like a the standard calendar for your week, and everyday it will show tasks as according to the template)
+- Include a easy drag and drop way to organise task on the template calendar
 - Add a way to save your schedule
+- create a summary of the day page (that persist)
+- 
 
 Done:
 
+- Create preset values for the settings that are linked from the description page
 - Consider tranforming the pomodoro timer into a progress bar that is sticky on top of the screenn or bottom of the screen
 - Add an effect to the current session on the event timeline
 - Try changing the color when hovering over a session with a task

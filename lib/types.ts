@@ -37,3 +37,5 @@ export interface Task {
   subtasks?: Task[];
   order: number;
 }
+
+export type CalendarViews = "day" | "agenda" | "week";

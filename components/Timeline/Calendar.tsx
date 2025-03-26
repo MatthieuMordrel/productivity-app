@@ -3,7 +3,7 @@
 import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
 import { timeslots } from "@/lib/constants";
-import { Session } from "@/lib/types";
+import { CalendarViews, Session } from "@/lib/types";
 import { timeFormat } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import moment from "moment";
@@ -14,15 +14,17 @@ import { CustomToolbar } from "./Toolbar";
 const localizer = momentLocalizer(moment);
 
 interface CalendarProps {
-  view: "day" | "agenda";
+  view: CalendarViews;
   filteredEvents: Session[]; // Replace 'any' with your event type
   calculatedStepSize: number;
+  isAmericanFormat: boolean;
 }
 
 export function CalendarComponent({
   view,
   filteredEvents,
   calculatedStepSize,
+  isAmericanFormat,
 }: CalendarProps) {
   const {
     getCurrentScrollTime,
@@ -52,9 +54,9 @@ export function CalendarComponent({
           events={filteredEvents}
           view={view}
           formats={{
-            timeGutterFormat: timeFormat,
+            timeGutterFormat: (date) => timeFormat(date, isAmericanFormat),
           }}
-          views={["day", "agenda"]}
+          views={["day", "agenda", "week"]}
           toolbar={true}
           dayLayoutAlgorithm="no-overlap"
           step={calculatedStepSize}

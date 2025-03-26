@@ -15,6 +15,7 @@ import { View } from "react-big-calendar";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { SheetSettings } from "../settings/SheetSettings";
+import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { CalendarComponent } from "./Calendar";
 import CalendarZoom from "./CalendarZoom";
@@ -41,6 +42,14 @@ export default function PomodoroDay() {
 
   const { filteredEvents } = useEventContext();
 
+  // State to manage time format, default is American
+  const [isAmericanFormat, setIsAmericanFormat] = useState(false);
+
+  // Function to toggle time format
+  const toggleTimeFormat = () => {
+    setIsAmericanFormat((prevFormat) => !prevFormat);
+  };
+
   return (
     <div className="mx-auto">
       <Card
@@ -63,6 +72,9 @@ export default function PomodoroDay() {
             <div className="flex flex-col space-y-4">
               <div className="flex items-center justify-between space-x-4">
                 <ViewSwitch view={view} setView={setView} />
+                <Button onClick={toggleTimeFormat} className="hidden">
+                  Toggle Time Format
+                </Button>
                 <div className="flex items-center space-x-4">
                   <CalendarZoom
                     view={view as View}
@@ -81,6 +93,7 @@ export default function PomodoroDay() {
               view={view as "day" | "agenda"}
               filteredEvents={filteredEvents}
               calculatedStepSize={calculatedStepSize}
+              isAmericanFormat={isAmericanFormat}
             />
           </>
         )}

@@ -8,6 +8,7 @@ rbc-label
 /* Whole Time Axis*/
 .rbc-time-gutter {
   border: none !important;
+  /* width: 80px; */
 }
 
 /* timeslot within the time axis */

@@ -18,9 +18,9 @@ export default function Navbar({ className }: { className?: string }) {
 
   return (
     <header className={cn("sticky top-0 z-50 backdrop-blur-sm", className)}>
-      <div className="container mx-auto px-2">
+      <div className="px-2">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
+          <div className="flex">
             <Link href="/" className="text-2xl font-bold text-primary">
               ProductivityApp
             </Link>

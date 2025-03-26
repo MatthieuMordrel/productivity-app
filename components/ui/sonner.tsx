@@ -7,7 +7,6 @@ type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme();
-  console.log(theme);
 
   // 1. group is a Tailwind utility class that creates a context for child elements to style themselves based on the parent's state.
   // 2. group-[.toaster] is a custom group name variant that allows you to have multiple different group contexts in the same component.

@@ -1,6 +1,6 @@
-import { TryRhythmButton } from "@/components/TryRhythmButton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { TryRhythmButton } from "./TryRhythmButton";
 
 export default function ProductivityRhythms() {
   return (

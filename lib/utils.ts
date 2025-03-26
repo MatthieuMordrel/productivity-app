@@ -67,15 +67,25 @@ export const showNotification = async (
 };
 
 /**
- * Formats a date object into a time string in 12-hour format with AM/PM
+ * Formats a date object into a time string.
+ * By default, it uses a 12-hour format with AM/PM.
+ * If `europeanFormat` is true, it uses a 24-hour format.
+ *
  * @param date - The date object to format
- * @returns A string representing the time in "h:mm A" format (e.g. "2:30 PM")
+ * @param europeanFormat - Optional boolean to specify if the format should be European (24-hour)
+ * @returns A string representing the time in the specified format
  *
  * @example
  * const date = new Date('2023-08-19T14:30:00');
  * timeFormat(date);
  * // returns "2:30 PM"
+ *
+ * @example
+ * timeFormat(date, true);
+ * // returns "14:30"
  */
-export function timeFormat(date: Date) {
-  return moment(date).format("h:mm A");
+export function timeFormat(date: Date, europeanFormat = false) {
+  return europeanFormat
+    ? moment(date).format("HH:mm")
+    : moment(date).format("h:mm A");
 }

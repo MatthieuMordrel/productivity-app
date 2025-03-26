@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import {
+  Activity,
   Calendar,
   ChartBar,
   Home,
@@ -53,6 +54,11 @@ const items: Array<{
     title: "Focus",
     url: "/focus",
     icon: Target,
+  },
+  {
+    title: "Habit tracker",
+    url: "/habittracker",
+    icon: Activity,
   },
 ];
 
