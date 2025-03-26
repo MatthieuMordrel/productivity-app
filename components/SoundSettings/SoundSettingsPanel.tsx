@@ -17,20 +17,19 @@ import { Slider } from "@/components/ui/slider";
 import { AVAILABLE_SOUNDS } from "@/lib/constants";
 import { usePlaySound } from "@/lib/hooks/useSound";
 import {
-  useSessionSounds,
-  useSoundActions,
   useSoundEnabled,
   useSoundVolume,
+  useSessionSounds,
+  useSoundActions,
 } from "@/lib/stores/soundStore";
 import { SessionType } from "@/lib/types";
 import { Settings, Volume2, VolumeX } from "lucide-react";
 
 export function SoundSettingsPanel() {
-  // Use atomic selectors for better performance
   const isSoundEnabled = useSoundEnabled();
   const volume = useSoundVolume();
   const sounds = useSessionSounds();
-  const { setSessionSound, toggleSound, setVolume } = useSoundActions();
+  const { toggleSound, setVolume, setSessionSound } = useSoundActions();
 
   const playSound = usePlaySound();
   const sessionTypes: SessionType[] = ["Work", "Break", "Pause"];
@@ -107,7 +106,9 @@ export function SoundSettingsPanel() {
                       variant="outline"
                       size="sm"
                       disabled={!isSoundEnabled}
-                      onClick={() => playSound("", sounds[sessionType])}
+                      onClick={() =>
+                        playSound("session sounds", sounds[sessionType])
+                      }
                     >
                       Test
                     </Button>

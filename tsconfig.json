@@ -24,7 +24,7 @@
       "@components/*": ["./components/*"],
       "@actions/*": ["./actions/*"],
       "@lib/*": ["./lib/*"],
-      "@hooks/*": ["lib/hooks/*"],
+      "@hooks/*": ["./lib/hooks/*"],
       "@functions/*": ["./lib/functions/*"],
       "@contexts/*": ["./contexts/*"]
     },

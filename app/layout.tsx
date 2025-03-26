@@ -10,7 +10,7 @@ import { Inter } from "next/font/google";
 import Footer from "../components/layout/footer";
 import { AppSidebar } from "../components/layout/sidebar";
 import { TitleUpdater } from "../components/TitleUpdater";
-import Navbar from "./navbar";
+import Navbar from "@/components/layout/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -1,12 +1,12 @@
 "use client";
 
 import { SoundSettingsPanel } from "@/components/SoundSettings/SoundSettingsPanel";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
 import { NotificationRequest } from "../Notification/NotificationRequest";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { label: "Home", href: "/" },

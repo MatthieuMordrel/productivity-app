@@ -74,13 +74,6 @@ export const useSoundEnabled = () =>
   useSoundStore((state) => state.isSoundEnabled);
 
 /**
- * useSoundVolume
- *
- * Returns the current sound volume (0-1)
- */
-export const useSoundVolume = () => useSoundStore((state) => state.volume);
-
-/**
  * useSessionSounds
  *
  * Returns the mapping of session types to sound files
@@ -88,12 +81,11 @@ export const useSoundVolume = () => useSoundStore((state) => state.volume);
 export const useSessionSounds = () => useSoundStore((state) => state.sounds);
 
 /**
- * useSessionSound
+ * useSoundVolume
  *
- * Returns the sound file for a specific session type
+ * Returns the current sound volume (0-1)
  */
-export const useSessionSound = (sessionType: SessionType) =>
-  useSoundStore((state) => state.sounds[sessionType]);
+export const useSoundVolume = () => useSoundStore((state) => state.volume);
 
 /**
  * useSoundActions
