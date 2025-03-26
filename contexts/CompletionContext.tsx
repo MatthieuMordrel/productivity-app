@@ -6,10 +6,7 @@ import {
   showSystemNotificationOnCompletion,
   showToastOnCompletion,
 } from "@/lib/functions/completion";
-import {
-  calculateSessionProgress,
-  findCurrentSession,
-} from "@/lib/functions/sessionsUtils";
+import { calculateSessionProgress } from "@/lib/functions/sessionsUtils";
 import { Session } from "@/lib/types";
 import {
   createContext,
@@ -21,6 +18,7 @@ import {
 } from "react";
 
 import { useSoundContext } from "./SoundContext";
+import { useCurrentSession } from "./currentSessionStore";
 
 interface CompletionContextType {
   handleCompletion: () => void;
@@ -36,6 +34,7 @@ const CompletionContext = createContext<CompletionContextType | undefined>(
 
 export function CompletionProvider({ children }: { children: ReactNode }) {
   const playSound = usePlaySound();
+  const currentSession = useCurrentSession();
   const { sessions } = useSessionsContext();
   const { sounds } = useSoundContext();
   const [sessionInfo, setSessionInfo] = useState({
@@ -68,14 +67,13 @@ export function CompletionProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const updateSessionAndTime = () => {
       const now = new Date();
-      const current = findCurrentSession(sessions);
       const { remainingTime, progress, isComplete } = calculateTimeAndProgress(
-        current,
+        currentSession,
         now,
       );
 
       // Only trigger handleCompletion if we have a current session and it's newly completed
-      if (isComplete && !sessionInfo.isComplete && current) {
+      if (isComplete && !sessionInfo.isComplete && currentSession) {
         handleCompletion();
       }
 
@@ -83,13 +81,13 @@ export function CompletionProvider({ children }: { children: ReactNode }) {
       setSessionInfo((prevState) => {
         // Only update if there are actual changes
         if (
-          prevState.currentSession?.id !== current?.id ||
+          prevState.currentSession?.id !== currentSession?.id ||
           prevState.remainingTime !== remainingTime ||
           prevState.progress !== progress ||
           prevState.isComplete !== isComplete
         ) {
           return {
-            currentSession: current,
+            currentSession: currentSession,
             remainingTime,
             progress,
             isComplete,
@@ -102,7 +100,7 @@ export function CompletionProvider({ children }: { children: ReactNode }) {
     updateSessionAndTime();
     const interval = setInterval(updateSessionAndTime, 1000);
     return () => clearInterval(interval);
-  }, [sessions, calculateTimeAndProgress, handleCompletion]); // Remove sessionInfo dependencies
+  }, [currentSession, calculateTimeAndProgress, handleCompletion]); // Remove sessionInfo dependencies
 
   return (
     <CompletionContext.Provider
