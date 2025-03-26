@@ -1,11 +1,11 @@
 "use client";
 
-import { useCurrentSession } from "@/contexts/CurrentSessionContext";
+import { useSessionManager } from "@/hooks/useSessionManager";
 import { getTypeColors, sessionIcons } from "@/lib/logos";
+import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import { cn, timeFormat } from "@/lib/utils";
 import { motion } from "framer-motion";
 import TimeSession from "./TimeSession";
-
 interface SessionTrackerProps {
   className?: string;
 }
@@ -17,7 +17,8 @@ interface SessionTrackerProps {
  * to provide constant visibility of the current session.
  */
 const SessionTracker = ({ className }: SessionTrackerProps) => {
-  const { currentSession } = useCurrentSession();
+  useSessionManager();
+  const currentSession = useCurrentSession();
 
   if (!currentSession) {
     return (

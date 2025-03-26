@@ -2,28 +2,18 @@
 
 import { useSessionsContext } from "@/contexts/SessionsContext";
 import { findCurrentSession } from "@/lib/functions/sessionsUtils";
-import { Session } from "@/lib/types";
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { useSetCurrentSession } from "@/lib/stores/currentSessionStore";
+import { useEffect } from "react";
 
-interface CurrentSessionContextType {
-  currentSession: Session | null;
-}
-
-const CurrentSessionContext = createContext<
-  CurrentSessionContextType | undefined
->(undefined);
-
-export function CurrentSessionProvider({ children }: { children: ReactNode }) {
+/**
+ * Hook to manage the current session based on timing
+ * This hook should be called at the root of your application
+ * or in a component that is always mounted.
+ */
+export function useSessionManager() {
   const { sessions } = useSessionsContext();
-  const [currentSession, setCurrentSession] = useState<Session | null>(null);
+  const setCurrentSession = useSetCurrentSession();
 
-  // Set up a timer to update the current session
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 
@@ -57,21 +47,5 @@ export function CurrentSessionProvider({ children }: { children: ReactNode }) {
         clearTimeout(timeoutId);
       }
     };
-  }, [sessions]); // Only re-run when sessions array changes
-
-  return (
-    <CurrentSessionContext.Provider value={{ currentSession }}>
-      {children}
-    </CurrentSessionContext.Provider>
-  );
-}
-
-export function useCurrentSession() {
-  const context = useContext(CurrentSessionContext);
-  if (context === undefined) {
-    throw new Error(
-      "useCurrentSession must be used within a CurrentSessionProvider",
-    );
-  }
-  return context;
+  }, [sessions, setCurrentSession]);
 }

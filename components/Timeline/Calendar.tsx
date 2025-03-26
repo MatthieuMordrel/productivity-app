@@ -1,8 +1,8 @@
 "use client";
 
-import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 import { useCalendarHelpers } from "@/hooks/useCalendarHelpers";
 import { timeslots } from "@/lib/constants";
+import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import { CalendarViews, Session } from "@/lib/types";
 import { timeFormat } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -35,7 +35,7 @@ export function CalendarComponent({
     shouldShowToolbar,
   } = useCalendarHelpers();
 
-  const { currentSession } = useCurrentSession();
+  const currentSession = useCurrentSession();
 
   console.log("Calendar re-rendered");
 

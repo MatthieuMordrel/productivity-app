@@ -1,7 +1,7 @@
 import { Progress } from "@/components/ui/progress";
-import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 import { getSessionTypeStats } from "@/lib/functions/sessionsUtils";
 import { getTypeColors, sessionIcons } from "@/lib/logos";
+import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import { Session, SessionType } from "@/lib/types";
 import { formatMinutesToHoursAndMinutes } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ interface SessionTypeSummaryProps {
 export const SessionTypeSummary: React.FC<SessionTypeSummaryProps> = React.memo(
   ({ type, staticStats, sessions }) => {
     const { textColor, stroke, backgroundColor } = getTypeColors(type);
-    const { currentSession } = useCurrentSession();
+    const currentSession = useCurrentSession();
     const isActive = currentSession?.type === type;
     const [percentagePassed, setPercentagePassed] = useState(0);
 

@@ -1,7 +1,7 @@
-import { useCurrentSession } from "@/contexts/CurrentSessionContext";
 import { useSettingsContext } from "@/contexts/SettingsContext";
 import { getTimeRangeForDate } from "@/lib/functions/calendar";
 import { getTypeColors } from "@/lib/logos";
+import { useCurrentSession } from "@/lib/stores/currentSessionStore";
 import { Session } from "@/lib/types";
 import { useCallback, useMemo, useState } from "react";
 import { EventPropGetter } from "react-big-calendar";
@@ -9,7 +9,7 @@ import { EventPropGetter } from "react-big-calendar";
 export const useCalendarHelpers = () => {
   const { state } = useSettingsContext();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const { currentSession } = useCurrentSession();
+  const currentSession = useCurrentSession();
   // console.log(currentSession);
 
   // Calculate time range based on current date

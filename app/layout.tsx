@@ -2,6 +2,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { AppProviders } from "@/contexts/AppProviders";
 import { DragDropContextProvider } from "@/contexts/DragDropContext";
+import SessionManager from "@/contexts/SessionManager";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Metadata } from "next";
@@ -27,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script src="https://unpkg.com/react-scan/dist/auto.global.js" async />
+        <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
       </head>
       <body
         className={cn(
@@ -49,6 +50,7 @@ export default function RootLayout({
               <main className="container mx-auto">{children}</main>
               <Toaster />
               <Footer />
+              <SessionManager />
             </div>
           </DragDropContextProvider>
         </AppProviders>
