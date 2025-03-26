@@ -1,6 +1,5 @@
 "use client";
 
-import { useSessionsContext } from "@/contexts/SessionsContext";
 import { usePlaySound } from "@/hooks/useSound";
 import {
   showSystemNotificationOnCompletion,
@@ -35,7 +34,6 @@ const CompletionContext = createContext<CompletionContextType | undefined>(
 export function CompletionProvider({ children }: { children: ReactNode }) {
   const playSound = usePlaySound();
   const currentSession = useCurrentSession();
-  const { sessions } = useSessionsContext();
   const { sounds } = useSoundContext();
   const [sessionInfo, setSessionInfo] = useState({
     currentSession: null as Session | null,
