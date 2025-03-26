@@ -11,10 +11,10 @@ import { useEffect, useRef } from "react";
 export function useSessionTracker() {
   const currentSession = useCurrentSession();
   const updateProgress = useSessionCompletionStore(
-    (state) => state.updateProgress,
+    (state) => state.actions.updateProgress,
   );
   const resetCompletion = useSessionCompletionStore(
-    (state) => state.resetCompletion,
+    (state) => state.actions.resetCompletion,
   );
 
   // References to avoid unnecessary effect triggers

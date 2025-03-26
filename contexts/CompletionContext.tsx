@@ -4,7 +4,7 @@ import { useCurrentSession } from "@/contexts/currentSessionStore";
 import { usePlaySound } from "@/hooks/useSound";
 import { useSessionTracker } from "@/lib/hooks/useSessionTracker";
 import {
-  useHandleCompletion,
+  useCompletionActions,
   useSessionProgress,
 } from "@/lib/stores/sessionCompletionStore";
 import { ReactNode, useEffect } from "react";
@@ -36,7 +36,7 @@ export function CompletionProvider({ children }: { children: ReactNode }) {
 export function useCompletion() {
   const currentSession = useCurrentSession();
   const { remainingTime, progress, isComplete } = useSessionProgress();
-  const handleCompletion = useHandleCompletion();
+  const { handleCompletion } = useCompletionActions();
 
   return {
     currentSession,

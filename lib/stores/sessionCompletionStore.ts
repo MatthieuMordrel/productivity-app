@@ -14,9 +14,11 @@ interface SessionCompletionState {
   isComplete: boolean;
 
   // Actions
-  updateProgress: (session: Session | null) => void;
-  handleCompletion: (session: Session | null) => void;
-  resetCompletion: () => void;
+  actions: {
+    updateProgress: (session: Session | null) => void;
+    handleCompletion: (session: Session | null) => void;
+    resetCompletion: () => void;
+  };
 }
 
 export const useSessionCompletionStore = create<SessionCompletionState>(
@@ -27,62 +29,62 @@ export const useSessionCompletionStore = create<SessionCompletionState>(
     isComplete: false,
 
     // Actions
-    updateProgress: (session) => {
-      if (!session) {
-        set({ remainingTime: "", progress: 0, isComplete: false });
-        return;
-      }
-
-      const now = new Date();
-      const { remainingTime, progress, isComplete } = calculateSessionProgress(
-        session,
-        now,
-      );
-
-      // Only update if there are changes (prevents unnecessary rerenders)
-      const currentState = get();
-
-      // For timer display, we need to update remainingTime regularly
-      // But we can be more conservative with progress updates (to avoid rerendering visual elements)
-      // Only update progress if it changed by at least 0.5%
-      const significantProgressChange =
-        Math.abs(currentState.progress - progress) >= 0.5;
-
-      if (
-        currentState.remainingTime !== remainingTime ||
-        significantProgressChange ||
-        currentState.isComplete !== isComplete
-      ) {
-        // Using a function to update ensures we only set what has changed
-        set((state) => ({
-          ...state,
-          remainingTime:
-            remainingTime !== state.remainingTime
-              ? remainingTime
-              : state.remainingTime,
-          progress: significantProgressChange ? progress : state.progress,
-          isComplete:
-            isComplete !== state.isComplete ? isComplete : state.isComplete,
-        }));
-
-        // If the session just completed, trigger the completion handler
-        if (isComplete && !currentState.isComplete) {
-          get().handleCompletion(session);
+    actions: {
+      updateProgress: (session) => {
+        if (!session) {
+          set({ remainingTime: "", progress: 0, isComplete: false });
+          return;
         }
-      }
-    },
 
-    handleCompletion: (session) => {
-      // We could import these from a hooks file or inject them if needed
-      if (session) {
-        showToastOnCompletion(session);
-        showSystemNotificationOnCompletion(session);
-        // Note: sound playback would need to be handled via a custom hook or callback
-      }
-    },
+        const now = new Date();
+        const { remainingTime, progress, isComplete } =
+          calculateSessionProgress(session, now);
 
-    resetCompletion: () => {
-      set({ remainingTime: "", progress: 0, isComplete: false });
+        // Only update if there are changes (prevents unnecessary rerenders)
+        const currentState = get();
+
+        // For timer display, we need to update remainingTime regularly
+        // But we can be more conservative with progress updates (to avoid rerendering visual elements)
+        // Only update progress if it changed by at least 0.5%
+        const significantProgressChange =
+          Math.abs(currentState.progress - progress) >= 0.5;
+
+        if (
+          currentState.remainingTime !== remainingTime ||
+          significantProgressChange ||
+          currentState.isComplete !== isComplete
+        ) {
+          // Using a function to update ensures we only set what has changed
+          set((state) => ({
+            ...state,
+            remainingTime:
+              remainingTime !== state.remainingTime
+                ? remainingTime
+                : state.remainingTime,
+            progress: significantProgressChange ? progress : state.progress,
+            isComplete:
+              isComplete !== state.isComplete ? isComplete : state.isComplete,
+          }));
+
+          // If the session just completed, trigger the completion handler
+          if (isComplete && !currentState.isComplete) {
+            get().actions.handleCompletion(session);
+          }
+        }
+      },
+
+      handleCompletion: (session) => {
+        // We could import these from a hooks file or inject them if needed
+        if (session) {
+          showToastOnCompletion(session);
+          showSystemNotificationOnCompletion(session);
+          // Note: sound playback would need to be handled via a custom hook or callback
+        }
+      },
+
+      resetCompletion: () => {
+        set({ remainingTime: "", progress: 0, isComplete: false });
+      },
     },
   }),
 );
@@ -100,9 +102,9 @@ export const useSessionProgress = () => {
 };
 
 /**
- * useHandleCompletion
+ * useCompletionActions
  *
- * A hook that returns the handleCompletion function from the session completion store.
+ * A hook that returns the actions from the session completion store.
  */
-export const useHandleCompletion = () =>
-  useSessionCompletionStore((state) => state.handleCompletion);
+export const useCompletionActions = () =>
+  useSessionCompletionStore((state) => state.actions);
